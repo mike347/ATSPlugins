@@ -1,0 +1,432 @@
+{
+	"ATS_Navcomp_DB": {
+	"version": 2.01,
+	"empires": [
+{
+"name": "Cardassian",
+	"desc":"Describe the empire here",
+	"borders":[
+		{ "name":"Cardassian", "x": -9337.944000, "y": 310.000000, "z": 20.000000, "radius":100 },
+		{ "name":"CU-Iure", "x": -9149.300000, "y": 346.133000, "z": -18.218000, "radius":5 },
+		{ "name":"CU-Kakra", "x": -9303.800000, "y": 327.400000, "z": 119.100000, "radius":5 }
+	],
+	"planets":[
+		{ "name":"Cardassia Prime / Cardassia IV", "x": -9292.700000, "y": 278.900000, "z": 23.200000, "cochranes":971, "market":1 },
+		{ "name":"Celtris III", "x": -9321.600000, "y": 363.800000, "z": 30.300000, "cochranes":1092, "market":2 },
+		{ "name":"Elosian City", "x": -9324.413300, "y": 226.485000, "z": -29.919000, "cochranes":1080, "market":2 },
+		{ "name":"Iure Prime", "x": -9149.300000, "y": 346.133000, "z": -18.218000, "cochranes":1352, "market":2 },
+		{ "name":"Kakrafoon", "x": -9303.800000, "y": 327.400000, "z": 119.100000, "cochranes":984, "market":2 },
+		{ "name":"Kora II", "x": -9415.200000, "y": 336.800000, "z": 2.200000, "cochranes":1546, "market":2 },
+		{ "name":"Omekla III", "x": -9332.823000, "y": 322.081000, "z": 47.755000, "cochranes":1177, "market":2 },
+		{ "name":"Orias III", "x": -9374.800000, "y": 280.800000, "z": 3.100000, "cochranes":1298, "market":2 },
+		{ "name":"Prim II", "x": -9374.544000, "y": 391.000000, "z": 25.200000, "cochranes":1298, "market":0 },
+		{ "name":"Siltalk", "x": -9244.244000, "y": 329.900000, "z": 4.800000, "cochranes":1291, "market":2 },
+		{ "name":"Tohvun", "x": -9329.900000, "y": 378.000000, "z": 30.000000, "cochranes":1169, "market":2 },
+		{ "name":"Velos VII", "x": -9331.300000, "y": 279.900000, "z": 55.000000, "cochranes":1150, "market":2 },
+		{ "name":"Volan", "x": -9340.700000, "y": 366.200000, "z": 10.100000, "cochranes":1271, "market":2 }
+	],
+	"stations":[
+		{ "name":"Alar Ser", "x": -9333.000000, "y": 322.000000, "z": 48.000000, "cochranes":1298, "market":-1 },
+		{ "name":"Demaz Ser", "x": -9258.000000, "y": 261.000000, "z": 1.000000, "cochranes":1298, "market":-1 },
+		{ "name":"Dolak Nor", "x": 6237.000000, "y": 6271.000000, "z": -17.000000, "cochranes":1298, "market":-1 },
+		{ "name":"Empok Nor", "x": -9415.000000, "y": 337.000000, "z": 2.000000, "cochranes":1298, "market":-1 },
+		{ "name":"Keitan Nor", "x": -9375.000000, "y": 391.000000, "z": 25.000000, "cochranes":1298, "market":-1 },
+		{ "name":"Litvok Ser", "x": -9375.000000, "y": 281.000000, "z": 3.000000, "cochranes":1298, "market":-1 },
+		{ "name":"Makbar Ser", "x": -9304.000000, "y": 327.000000, "z": 119.000000, "cochranes":1298, "market":-1 },
+		{ "name":"Rusot Facility", "x": -9322.000000, "y": 364.000000, "z": 30.000000, "cochranes":1298, "market":-1 },
+		{ "name":"Tehrak Nor", "x": -9149.000000, "y": 346.000000, "z": -18.000000, "cochranes":1298, "market":-1 },
+		{ "name":"Temar Nor", "x": -9244.000000, "y": 330.000000, "z": 5.000000, "cochranes":1298, "market":-1 },
+		{ "name":"Toran Ser", "x": -9341.000000, "y": 366.000000, "z": 10.000000, "cochranes":1298, "market":-1 },
+		{ "name":"Varohdan Nor", "x": -9292.744000, "y": 278.900000, "z": 23.200000, "cochranes":1298, "market":-1 },
+		{ "name":"Wraikor Ser", "x": -9330.000000, "y": 378.000000, "z": 30.000000, "cochranes":1298, "market":-1 },
+		{ "name":"Xran Ser", "x": -9331.000000, "y": 280.000000, "z": 55.000000, "cochranes":1298, "market":-1 },
+		{ "name":"Zorin Nor", "x": 7396.117000, "y": -5624.900000, "z": 78.700000, "cochranes":979, "market":-1 }
+	]},
+{
+"name": "Federation",
+	"desc":"Founded in 2161 on Earth, the United Federation of planets spans thousands of\nlightyears and 150+ member planets.\nTraditionally lead by a President, the Federation has been without one since\n SD 86621.568754 (2409) when President Armitage was assassinated.\n\nSince then, it has been loosely run by the ellusive Daystrom Institute (rumor)",
+	"government":"Federation", "leader":"Unknown (assassinated?)",
+	"homeworld":"Earth", "hwx":9174.044174, "hwy": 61.800000, "hwz": 0.000000,
+	"borders":[
+		{ "name":"Federation", "x": -9197.944000, "y": 0.000000, "z": 0.000000, "radius":240 }
+	],
+	"planets":[
+		{ "name":"Alpha Centauri", "x": -9173.253664, "y": 62.558679, "z": -1.032124, "cochranes":1509, "market":2 },
+		{ "name":"Andor", "x": -9172.144174, "y": 60.100000, "z": -2.400000, "cochranes":1501, "market":2 },
+		{ "name":"Antos IV", "x": -9179.844174, "y": -20.400000, "z": -6.100000, "cochranes":1298, "market":2 },
+		{ "name":"Argelius II", "x": -9352.644174, "y": -59.200000, "z": -121.200000, "cochranes":1321, "market":2 },
+		{ "name":"Betazed", "x": -9386.244174, "y": -93.300000, "z": -88.100000, "cochranes":1588, "market":2 },
+		{ "name":"Bynaus", "x": -9318.244174, "y": 98.900000, "z": 146.300000, "cochranes":1024, "market":2 },
+		{ "name":"Cait <Ferasa>", "x": -9156.044174, "y": -228.300000, "z": -12.600000, "cochranes":1381, "market":-1 },
+		{ "name":"Daran V", "x": -9325.499174, "y": -139.232000, "z": -19.774000, "cochranes":1075, "market":2 },
+		{ "name":"Darius III", "x": -9179.444174, "y": 200.000000, "z": -22.100000, "cochranes":1563, "market":2 },
+		{ "name":"Delta <Seyalia>", "x": -9010.644174, "y": 89.900000, "z": -17.300000, "cochranes":1596, "market":2 },
+		{ "name":"Draken IV", "x": -9133.537416, "y": -117.755082, "z": 32.526741, "cochranes":1139, "market":2 },
+		{ "name":"Earth <Terra>/Luna Terra", "x": -9174.044174, "y": 61.800000, "z": 0.000000, "cochranes":1515, "market":0 },
+		{ "name":"Eeiauo", "x": -9159.944174, "y": -126.000000, "z": 96.000000, "cochranes":1400, "market":2 },
+		{ "name":"Ekos", "x": -9125.144174, "y": -29.100000, "z": -68.700000, "cochranes":1065, "market":-1 },
+		{ "name":"Eminiar VII", "x": -9234.944174, "y": 222.300000, "z": 25.100000, "cochranes":1415, "market":2 },
+		{ "name":"Freehaven", "x": -9337.244174, "y": 207.000000, "z": -36.800000, "cochranes":1298, "market":-1 },
+		{ "name":"Lissajous IV", "x": 6254.176800, "y": 6234.263658, "z": 26.301745, "cochranes":1298, "market":-1 },
+		{ "name":"Magna Roma", "x": -9330.044174, "y": -101.100000, "z": -56.700000, "cochranes":1107, "market":2 },
+		{ "name":"Mars", "x": -9174.044166, "y": 61.799995, "z": 0.000001, "cochranes":1515, "market":-1 },
+		{ "name":"Melkot II", "x": -9274.862114, "y": -145.996700, "z": -12.771700, "cochranes":1298, "market":2 },
+		{ "name":"New Fabrina/Yonada", "x": -9249.044174, "y": -93.600000, "z": -91.400000, "cochranes":1297, "market":2 },
+		{ "name":"Organia", "x": -9310.544174, "y": 186.300000, "z": -12.100000, "cochranes":993, "market":2 },
+		{ "name":"Sivao", "x": -9097.226132, "y": -0.102246, "z": 146.784743, "cochranes":970, "market":2 },
+		{ "name":"Talos IV", "x": -9317.344174, "y": -43.700000, "z": -24.000000, "cochranes":1298, "market":-1 },
+		{ "name":"Taurus II", "x": -9264.444174, "y": 47.400000, "z": 8.100000, "cochranes":1149, "market":2 },
+		{ "name":"Tellar", "x": -9172.944174, "y": 60.100000, "z": 2.600000, "cochranes":1507, "market":2 },
+		{ "name":"Trill", "x": -9247.944174, "y": 75.000000, "z": 66.000000, "cochranes":1310, "market":2 },
+		{ "name":"Vulcan", "x": -9178.444174, "y": 60.000000, "z": -0.600000, "cochranes":1545, "market":2 }
+	],
+	"stations":[
+		{ "name":"Deep Space Nine <DS9>", "x": -9325.944000, "y": 221.700000, "z": -45.100000, "cochranes":1091, "market":-1 },
+		{ "name":"Epsilon 202", "x": -9179.000000, "y": -20.000000, "z": -6.000000, "cochranes":1298, "market":-1 },
+		{ "name":"Epsilon 209", "x": -9097.226000, "y": -0.102000, "z": 146.785000, "cochranes":1298, "market":-1 },
+		{ "name":"Epsilon 212", "x": -9156.044000, "y": -228.300000, "z": -12.600000, "cochranes":1298, "market":-1 },
+		{ "name":"Epsilon 216", "x": -9159.944000, "y": -126.000000, "z": 96.000000, "cochranes":1298, "market":-1 },
+		{ "name":"Epsilon 217", "x": -9125.144300, "y": -29.100000, "z": -68.700000, "cochranes":1298, "market":-1 },
+		{ "name":"Epsilon 301", "x": -9352.644174, "y": -59.200000, "z": -121.200000, "cochranes":1298, "market":-1 },
+		{ "name":"Epsilon 303", "x": -9249.044000, "y": -93.600000, "z": -91.400000, "cochranes":1298, "market":-1 },
+		{ "name":"Epsilon 308", "x": -9274.862300, "y": -145.997000, "z": -12.772000, "cochranes":1298, "market":-1 },
+		{ "name":"Epsilon 402", "x": -9234.944000, "y": 222.300000, "z": 25.100000, "cochranes":1298, "market":-1 },
+		{ "name":"Epsilon 413", "x": -9264.444000, "y": 47.400000, "z": 8.100000, "cochranes":1298, "market":-1 },
+		{ "name":"Epsilon 416", "x": -9318.244300, "y": 98.900000, "z": 146.300000, "cochranes":1298, "market":-1 },
+		{ "name":"Epsilon 615", "x": -9316.130300, "y": 204.690000, "z": -41.640000, "cochranes":1298, "market":-1 },
+		{ "name":"Epsilon 647", "x": -9394.946300, "y": 31.231000, "z": -122.427000, "cochranes":1298, "market":-1 },
+		{ "name":"Para Bellum", "x": -9330.518000, "y": 48.300000, "z": 12.124000, "cochranes":1108, "market":2 },
+		{ "name":"Starbase 001 <Spacedock>", "x": -9174.044174, "y": 61.800000, "z": 0.000000, "cochranes":1515, "market":-1 },
+		{ "name":"Starbase 002 <Andromeda>", "x": -9247.944300, "y": 75.000000, "z": 66.000000, "cochranes":1298, "market":-1 },
+		{ "name":"Starbase 257 <Alamo>", "x": -9010.644300, "y": 89.900000, "z": -17.300000, "cochranes":1298, "market":-1 },
+		{ "name":"Starbase 35 <Telstar>", "x": -9330.044000, "y": -101.100000, "z": -56.700000, "cochranes":1107, "market":-1 },
+		{ "name":"Starbase 73 <Camelot>", "x": -9310.544000, "y": 186.300000, "z": -12.100000, "cochranes":1298, "market":-1 },
+		{ "name":"Station 218 <Eurus>", "x": -9133.537000, "y": -117.755000, "z": 32.527000, "cochranes":1298, "market":-1 },
+		{ "name":"Station 309 <Notus>", "x": -9325.499000, "y": -139.232000, "z": -19.774000, "cochranes":1298, "market":-1 },
+		{ "name":"USB Apollo Station", "x": -9179.444300, "y": 200.000000, "z": -22.100000, "cochranes":1298, "market":-1 },
+		{ "name":"USB Eisenhower Outpost", "x": -9401.147000, "y": 18.932000, "z": -107.859000, "cochranes":1298, "market":-1 },
+		{ "name":"USB Gallipoli Outpost", "x": -9337.244174, "y": 207.000000, "z": -36.800000, "cochranes":1298, "market":-1 },
+		{ "name":"USB Invictus Outpost", "x": -9197.944300, "y": 0.000000, "z": 0.000000, "cochranes":1298, "market":-1 },
+		{ "name":"USB Kembri Outpost", "x": -9290.482000, "y": -129.997000, "z": -46.686000, "cochranes":1298, "market":-1 },
+		{ "name":"USB Leonidas Outpost", "x": -9386.244300, "y": -93.300000, "z": -88.100000, "cochranes":1298, "market":-1 },
+		{ "name":"USB Ankara Station", "x": 7446.049000, "y": -5376.000000, "z": 131.501000, "cochranes":1575, "market":-1 },
+		{ "name":"USB Safe Haven", "x": 7252.341000, "y": -5637.792000, "z": 55.796000, "cochranes":1584, "market":-1 }
+	]},
+{
+"name": "Bajoran",
+	"desc":"Describe the empire here",
+	"borders":[
+		{ "name":"Bajoran", "x": -9325.944000, "y": 221.700000, "z": -45.100000, "radius":5 }
+	],
+	"planets":[
+		{ "name":"Bajor/Jeraddo", "x": -9325.944078, "y": 221.700000, "z": -45.100001, "cochranes":1091, "market":2 }
+	],
+	"stations":[
+		{ "name":"Kainon Station", "x": 6316.800000, "y": 6324.700000, "z": 10.500000, "cochranes":1298, "market":-1 }
+	]},
+{
+"name": "Breen",
+	"desc":"Describe the empire here",
+	"borders":[
+		{ "name":"Breen", "x": -9359.000000, "y": 213.000000, "z": -30.000000, "radius":5 }
+	],
+	"planets":[
+		{ "name":"Breen", "x": -9376.050179, "y": 203.150816, "z": -46.281517, "cochranes":1298, "market":-1 },
+		{ "name":"Dozaria", "x": -9359.000000, "y": 213.000000, "z": -30.000000, "cochranes":1298, "market":-1 },
+		{ "name":"Portos V", "x": -9268.874000, "y": 231.877000, "z": 42.479000, "cochranes":1298, "market":-1 }
+	]},
+{
+"name": "Klingon",
+	"desc":"Founded in the 9th century by QeylIS (Kahless) the Unforgettable the Empire\nspans several thousand light years around it's homeworld of Qo'noS. In ancient\ntimes the Empire was ran as a dictatorship by the Emperor, however, in this age\nit is governed by the High Council and the Qang (Chancellor). The role of\nEmperor is retained as more of a religious figurehead, rather than\ndirect government control.\n\nThe Empire employs advancedphase-disruptor technology and cloaking devices in\nevery ship of the Imperial Navy, giving them an edge in any combat situation.\n",
+	"government":"Feudal Monarchy",
+	"leader":"Q'var Qang",
+	"homeworld":"Qo'noS", "hwx": -9519.444174, "hwy": 48.600000, "hwz": -87.900000,
+	
+	"borders":[
+		{ "name":"Klingon", "x": -9577.944000, "y": 120.000000, "z": -90.000000, "radius":160 },
+		{ "name":"KE-Beeble", "x": -9528.850000, "y": -113.663000, "z": -89.859000, "radius":10 },
+		{ "name":"KE-Narendra", "x": -9634.940000, "y": -114.000000, "z": -170.000000, "radius":10 },
+		{ "name":"KE-QIT", "x": -9439.940000, "y": -42.000000, "z": -28.000000, "radius":10 },
+		{ "name":"KE-Hunt", "x": -9424.783000, "y": 123.700000, "z": 34.706000, "radius":10 }
+	],
+	"planets":[
+		{ "name":"Beeblebrox", "x": -9528.850000, "y": -113.663000, "z": -89.859000, "cochranes":1098, "market":2 },
+		{ "name":"Beta Lankal", "x": -9536.344174, "y": 248.800000, "z": -96.400000, "cochranes":1188, "market":2 },
+		{ "name":"Beta Thoridar", "x": -9684.844174, "y": 118.100000, "z": -140.100000, "cochranes":1002, "market":2 },
+		{ "name":"Boreth", "x": -9588.044174, "y": 130.900000, "z": -100.500000, "cochranes":1596, "market":2 },
+		{ "name":"Gamma Eridon", "x": -9597.940000, "y": -25.000000, "z": -58.000000, "cochranes":1615, "market":2 },
+		{ "name":"Hunter's Refuge", "x": -9424.783000, "y": 123.700000, "z": 34.706000, "cochranes":1298, "market":2 },
+		{ "name":"Narendra III", "x": -9634.940000, "y": -114.000000, "z": -170.000000, "cochranes":1433, "market":2 },
+		{ "name":"QI'tomer", "x": -9439.940000, "y": -42.000000, "z": -28.000000, "cochranes":1392, "market":-1 },
+		{ "name":"Qo'noS/No'Mat", "x": -9519.444174, "y": 48.600000, "z": -87.900000, "cochranes":1028, "market":2 },
+		{ "name":"Rura Penthe", "x": -9444.844174, "y": 60.000000, "z": -66.400000, "cochranes":1342, "market":0 },
+		{ "name":"Zansellquasure", "x": -9478.009867, "y": 311.638052, "z": -56.560950, "cochranes":1013, "market":2 }
+	],
+	"stations":[
+		{ "name":"IKB wuQmoHwI'", "x": -9528.850000, "y": -113.663000, "z": -89.859000, "cochranes": 1098 },
+		{ "name":"IKA noch vagh", "x": -9536.344174, "y": 248.800000, "z": -96.400000, "cochranes": 1188 },
+		{ "name":"IKA noch loS", "x": -9684.844174, "y": 118.100000, "z": -140.100000, "cochranes": 1002 },
+		{ "name":"IKB qul cha'", "x": -9588.044174, "y": 130.900000, "z": -100.500000, "cochranes": 1596 },
+		{ "name":"IKA leSSov", "x": -9597.940000, "y": -25.000000, "z": -58.000000, "cochranes": 1615 },
+		{ "name":"IKB pegh waw'", "x": -9634.940000, "y": -114.000000, "z": -170.000000, "cochranes": 1433 },
+		{ "name":"IKB 'oy'qem", "x": -9439.940000, "y": -42.000000, "z": -28.000000, "cochranes": 1392 },
+		{ "name":"IKB juHwaw'", "x": -9519.444174, "y": 48.600000, "z": -87.900000, "cochranes": 1028 },
+		{ "name":"IKB Qulpo'", "x": -9444.844174, "y": 60.000000, "z": -66.400000, "cochranes": 1342 },
+		{ "name":"IKB yoH hubwI'", "x": -9478.009867, "y": 311.638052, "z": -56.560950, "cochranes": 1013 },
+		{ "name":"IKB Hegh nach", "x": 7369.536000, "y": -5276.597000, "z": -49.229000, "cochranes": 1156 }
+	]},
+{
+"name": "Romulan",
+	"desc":"Describe the empire here",
+	"borders":[
+		{ "name":"Romulan", "x": -9477.000000, "y": -230.000000, "z": 10.000000, "radius":120 }
+	],
+	"planets":[
+		{ "name":"Addams IX", "x": -9484.058519, "y": 367.519852, "z": -105.792164, "cochranes":1298, "market":-1 },
+		{ "name":"Jeglae XI", "x": 7234.131000, "y": -5189.726000, "z": -55.079000, "cochranes":1298, "market":-1 },
+		{ "name":"Levaeri Asteroids", "x": -9565.944174, "y": -302.200000, "z": 13.200000, "cochranes":1298, "market":-1 },
+		{ "name":"Marion III", "x": -9484.317611, "y": 368.050979, "z": -105.070637, "cochranes":1298, "market":-1 },
+		{ "name":"Nelvana III", "x": -9391.244174, "y": -148.700000, "z": 16.000000, "cochranes":1298, "market":-1 },
+		{ "name":"Nogark", "x": -9383.380000, "y": -160.704000, "z": 33.659000, "cochranes":1298, "market":-1 },
+		{ "name":"Rhei'llhne", "x": -9444.944174, "y": -184.000000, "z": 68.000000, "cochranes":1298, "market":-1 },
+		{ "name":"Santraginus V", "x": -9507.774194, "y": 345.217185, "z": -125.827115, "cochranes":1298, "market":-1 },
+		{ "name":"Thieurrull", "x": -9433.944174, "y": -246.000000, "z": -26.000000, "cochranes":1298, "market":-1 },
+		{ "name":"ch'Havran", "x": -9384.244174, "y": -158.800000, "z": -1.800000, "cochranes":1298, "market":-1 },
+		{ "name":"ch'Nahir", "x": -9507.044174, "y": -128.000000, "z": -19.100000, "cochranes":1298, "market":-1 },
+		{ "name":"ch'Rihan", "x": -9384.244174, "y": -158.800000, "z": -1.800000, "cochranes":1298, "market":-1 }
+	],
+	"stations":[
+		{ "name":"RIS Sienovan B", "x": -9581.352300, "y": -314.942000, "z": 13.693000, "cochranes":1298, "market":-1 }
+	]},
+{
+"name": "Ferengi",
+	"desc":"Describe the empire here",
+	"borders":[
+		{ "name":"Ferengi", "x": -8977.944000, "y": 260.000000, "z": -50.000000, "radius":100 }
+	],
+	"planets":[
+		{ "name":"Arcybite", "x": -8982.565430, "y": 240.626306, "z": -26.940100, "cochranes":1584, "market":2 },
+		{ "name":"Artificier II", "x": 6287.573000, "y": 6249.993000, "z": 9.727000, "cochranes":1298, "market":-1 },
+		{ "name":"Chemarra", "x": -8905.663399, "y": 266.258273, "z": -17.130635, "cochranes":1298, "market":0 },
+		{ "name":"Fenalgar", "x": -8995.604111, "y": 302.521799, "z": -60.548258, "cochranes":1615, "market":2 },
+		{ "name":"Ferenganor", "x": -8969.545098, "y": 292.579839, "z": -43.900428, "cochranes":1516, "market":2 },
+		{ "name":"Golgafrincham XI", "x": -9075.838671, "y": -395.931128, "z": -1.302726, "cochranes":1007, "market":2 },
+		{ "name":"Laissez-Faire", "x": -8980.714000, "y": 258.600000, "z": 55.588000, "cochranes":1578, "market":2 },
+		{ "name":"Llystad", "x": -9038.221744, "y": 285.872559, "z": -47.785562, "cochranes":1365, "market":2 },
+		{ "name":"Nausicaa", "x": -9022.786865, "y": 205.064703, "z": -20.937833, "cochranes":1520, "market":2 },
+		{ "name":"Quinn's Moon", "x": -9023.031716, "y": 205.064976, "z": -20.849225, "cochranes":1298, "market":-1 },
+		{ "name":"Tolagor", "x": -8953.947696, "y": 276.884008, "z": -95.171788, "cochranes":1375, "market":2 },
+		{ "name":"Zekit", "x": -9048.346357, "y": 223.158750, "z": -52.169469, "cochranes":1281, "market":2 }
+	],
+	"stations":[
+		{ "name":"JFS Facility", "x": -9165.336000, "y": 258.472000, "z": 4.896000, "cochranes":1298, "market":-1 },
+		{ "name":"FSB Skymart III", "x": 7233.902000, "y": -5371.594000, "z": -3.391000, "cochranes":1298, "market":-1 }
+	]},
+{
+"name": "Orion",
+	"desc":"Describe the empire here",
+	"borders":[
+		{ "name":"Orion", "x": -9407.844174, "y": 7.700001, "z": -135.999923, "radius":5 }
+	],
+	"planets":[
+		{ "name":"Aphrodite VIII", "x": 6191.658552, "y": 6227.973513, "z": 23.944103, "cochranes":1298, "market":1 },
+		{ "name":"Gamora III", "x": -9410.744174, "y": 1.400000, "z": -139.000000, "cochranes":1298, "market":1 },
+		{ "name":"Rigel VIII/XII", "x": -9407.844174, "y": 7.700001, "z": -135.999923, "cochranes":1298, "market":1 },
+		{ "name":"Viltvodle VI", "x": -9514.000498, "y": -167.995678, "z": -93.458616, "cochranes":1298, "market":1 }
+	]},
+{
+"name": "Dominion",
+	"desc":"Describe the empire here",
+	"borders":[
+		{ "name":"Dominion", "x": 0.000000, "y": 0.000000, "z": 0.000000, "radius":100 }
+	],
+	"planets":[
+		{ "name":"Callinon VII", "x": 6458.800000, "y": 6286.200000, "z": -32.400000, "cochranes":1298, "market":1 },
+		{ "name":"Ceranon", "x": 6554.000000, "y": 6568.900000, "z": -42.700000, "cochranes":1298, "market":1 },
+		{ "name":"D'ko Fafnir", "x": 6578.100000, "y": 6459.800000, "z": -19.500000, "cochranes":1298, "market":1 },
+		{ "name":"Domini V", "x": 6707.800000, "y": 6438.100000, "z": 28.600000, "cochranes":970, "market":1 },
+		{ "name":"Hardol", "x": 6597.400000, "y": 6389.800000, "z": 6.100000, "cochranes":1298, "market":1 },
+		{ "name":"Idran X", "x": 6316.800000, "y": 6324.700000, "z": 10.500000, "cochranes":1298, "market":-1 },
+		{ "name":"Internment Camp 371", "x": 6367.272000, "y": 6372.995000, "z": 7.607000, "cochranes":1298, "market":-1 },
+		{ "name":"Kaos", "x": 6330.000000, "y": 6337.100000, "z": 15.600000, "cochranes":1298, "market":-1 },
+		{ "name":"Kareel Prime", "x": 6694.500000, "y": 6519.400000, "z": 73.600000, "cochranes":1298, "market":1 },
+		{ "name":"Karemma", "x": 6330.200000, "y": 6336.900000, "z": 15.300000, "cochranes":1298, "market":1 },
+		{ "name":"Kryseis", "x": 6643.900000, "y": 6642.400000, "z": 17.200000, "cochranes":1298, "market":1 },
+		{ "name":"Omaria", "x": 6500.000000, "y": 6500.000000, "z": 0.000000, "cochranes":1298, "market":-1 },
+		{ "name":"Sumn'Kapta", "x": 6506.100000, "y": 6670.700000, "z": 20.200000, "cochranes":1298, "market":1 },
+		{ "name":"Vegan", "x": 6384.300000, "y": 6439.800000, "z": 101.700000, "cochranes":1298, "market":1 },
+		{ "name":"Veronica Prime", "x": 6304.524556, "y": 6288.311594, "z": -26.045920, "cochranes":1298, "market":1 }
+	]},
+{
+"name": "Unity",
+	"desc":"Describe the empire here",
+	"borders":[
+		{ "name":"Unity", "x": 0.000000, "y": 0.000000, "z": 0.000000, "radius":100 }
+	],
+	"planets":[
+		{ "name":"Angela V", "x": 6125.350290, "y": 6126.116216, "z": -40.743949, "cochranes":1298, "market":-1 },
+		{ "name":"Deneb III", "x": -9055.244174, "y": -143.400000, "z": 382.500000, "cochranes":577, "market":2 },
+		{ "name":"Donatu V", "x": -9404.544174, "y": 154.100000, "z": -141.000000, "cochranes":1610, "market":2 },
+		{ "name":"Kelso II", "x": 6129.214991, "y": 6127.104155, "z": -26.014402, "cochranes":1298, "market":-1 },
+		{ "name":"Kelvira IX", "x": -9159.000000, "y": 254.000000, "z": -4.000000, "cochranes":1416, "market":2 },
+		{ "name":"Kildare V / Kildare IX / Kildare XI / USB Stormwatch", "x": 16800.000000, "y": -7100.000000, "z": 5500.000000, "cochranes":1, "market":2 },
+		{ "name":"Krios", "x": -9423.944174, "y": 76.000000, "z": 90.000000, "cochranes":1526, "market":2 },
+		{ "name":"Lily Yo II / USB Celestine Gate", "x": 7345.880000, "y": -5452.994000, "z": 45.441000, "cochranes":1278, "market":2 },
+		{ "name":"New Auria", "x": -9401.344174, "y": -290.400000, "z": 227.000000, "cochranes":1610, "market":2 },
+		{ "name":"New Risa / USB Lothlorien", "x": -9327.944000, "y": 49.000000, "z": 17.500000, "cochranes":1087, "market":2 },
+		{ "name":"Nimbus III", "x": -9492.744174, "y": -49.000000, "z": -35.600000, "cochranes":977, "market":2 },
+		{ "name":"Old Risa/USB Khazad-Dum", "x": -9289.544174, "y": -86.700000, "z": -215.900000, "cochranes":985, "market":2 },
+		{ "name":"Sherman's Planet / USB Galadriel", "x": -9422.644174, "y": 214.500000, "z": -100.700000, "cochranes":1520, "market":2 }
+	],
+	"stations":[
+		{ "name":"Dark Phoenix City / USB Milliways", "x": -8977.944000, "y": 260.000000, "z": 60.000000, "cochranes":1563, "market":2 }
+	]},
+{
+"name": "Tholian",
+	"desc":"Describe the empire here",
+	"borders":[
+		{ "name":"Tholian", "x": -9107.944000, "y": -290.000000, "z": -10.000000, "radius":50 }
+	],
+	"planets":[
+		{ "name":"Celestia/Luna Celestia", "x": -9127.844174, "y": -307.200000, "z": 0.900000, "cochranes":1298, "market":-1 },
+		{ "name":"Crystal Moon", "x": -9107.944174, "y": -290.000000, "z": -10.000000, "cochranes":1298, "market":-1 },
+		{ "name":"Etheria", "x": -9104.944174, "y": -294.000000, "z": -32.000000, "cochranes":1298, "market":-1 },
+		{ "name":"Tholia", "x": -9108.940000, "y": -285.000000, "z": 29.000000, "cochranes":1298, "market":-1 }
+	]},
+{
+"name": "Qvarne",
+	"desc":"Describe the empire here",
+	"borders":[
+		{ "name":"Qvarne", "x": -9109.941000, "y": 228.477000, "z": -135.785000, "radius":10 }
+	],
+	"planets":[
+		{ "name":"Flamarion II", "x": -9543.340008, "y": -108.565436, "z": -37.688798, "cochranes":1231, "market":2 },
+		{ "name":"Munspelheim", "x": -9483.597022, "y": -74.090490, "z": -37.498596, "cochranes":1010, "market":2 },
+		{ "name":"Pryan/Luna Kaigun", "x": -9522.645877, "y": -73.543452, "z": -34.701889, "cochranes":1049, "market":2 },
+		{ "name":"Qvarne IV", "x": -9109.941898, "y": 228.477574, "z": -135.785688, "cochranes":1298, "market":-1 },
+		{ "name":"Traal", "x": -9543.352014, "y": -39.594749, "z": -37.539687, "cochranes":1226, "market":2 }
+	],
+	"stations":[
+		{ "name":"Atlas Ultrayards", "x": -9109.942000, "y": 228.478000, "z": -135.786000, "cochranes":995, "market":2 },
+		{ "name":"New Neresia", "x": 7422.000000, "y": -5502.000000, "z": 114.000000, "cochranes":1298, "market":-1 }
+	]},
+{
+"name": "Qvarne",
+	"desc":"Describe the empire here",
+	"borders":[
+		{ "name":"Qvarne", "x": -9522.645877, "y": -73.543452, "z": -34.701889, "radius":10 }
+	],
+	"planets":[
+		{ "name":"Flamarion II", "x": -9543.340008, "y": -108.565436, "z": -37.688798, "cochranes":1231, "market":2 },
+		{ "name":"Munspelheim", "x": -9483.597022, "y": -74.090490, "z": -37.498596, "cochranes":1010, "market":2 },
+		{ "name":"Pryan/Luna Kaigun", "x": -9522.645877, "y": -73.543452, "z": -34.701889, "cochranes":1049, "market":2 },
+		{ "name":"Qvarne IV", "x": -9109.941898, "y": 228.477574, "z": -135.785688, "cochranes":1298, "market":-1 },
+		{ "name":"Traal", "x": -9543.352014, "y": -39.594749, "z": -37.539687, "cochranes":1226, "market":2 }
+	],
+	"stations":[
+		{ "name":"Atlas Ultrayards", "x": -9109.942000, "y": 228.478000, "z": -135.786000, "cochranes":995, "market":2 },
+		{ "name":"New Neresia", "x": 7422.000000, "y": -5502.000000, "z": 114.000000, "cochranes":1298, "market":-1 }
+	]},
+{
+"name": "Gorn",
+	"desc":"Describe the empire here",
+	"borders":[
+		{ "name":"Gorn", "x": -9267.944000, "y": -330.000000, "z": 80.000000, "radius":80 }
+	],
+	"planets":[
+		{ "name":"Arkleseizure", "x": -9312.877310, "y": -247.150914, "z": 47.981427, "cochranes":1298, "market":-1 },
+		{ "name":"Cestus III", "x": -9188.553000, "y": -344.200000, "z": 119.601000, "cochranes":1298, "market":-1 },
+		{ "name":"Ghdarin II", "x": -9310.236000, "y": -270.000000, "z": 109.310000, "cochranes":1298, "market":-1 },
+		{ "name":"Ghehak VI", "x": -9206.632000, "y": -283.700000, "z": 60.456000, "cochranes":1298, "market":-1 },
+		{ "name":"Gornar V", "x": -9272.366000, "y": -332.200000, "z": 81.114000, "cochranes":1298, "market":-1 },
+		{ "name":"Gymine Prime", "x": -9284.976000, "y": -395.400000, "z": 37.375000, "cochranes":1298, "market":-1 },
+		{ "name":"Troldar II", "x": -9267.729000, "y": -389.400000, "z": 69.348000, "cochranes":1298, "market":-1 }
+	],
+	"stations":[
+		{ "name":"GSO Oblo Kale", "x": 7020.577000, "y": -5606.577000, "z": 94.444000, "cochranes":1578, "market":-1 }
+	]},
+{
+"name": "Independent",
+	"desc":"Describe the empire here",
+	"borders":[
+		{ "name":"Independent", "x": 0.000000, "y": 0.000000, "z": 0.000000, "radius":100 }
+	],
+	"planets":[
+		{ "name":"Aglaboogh VII", "x": -8982.306174, "y": -464.566000, "z": 5.397000, "cochranes":1298, "market":-1 },
+		{ "name":"Aozaproag Prime", "x": -8876.486174, "y": -222.494000, "z": 16.017000, "cochranes":1298, "market":-1 },
+		{ "name":"Arcadia Prime", "x": 7747.785000, "y": -6371.844000, "z": 128.383000, "cochranes":1298, "market":-1 },
+		{ "name":"Astoa III", "x": 7618.377000, "y": -5318.577000, "z": 47.795000, "cochranes":1298, "market":-1 },
+		{ "name":"Aufria II", "x": 7055.077000, "y": -5126.073000, "z": 83.423000, "cochranes":1298, "market":-1 },
+		{ "name":"Auquac IV", "x": 6992.746000, "y": -5275.089000, "z": 95.556000, "cochranes":1298, "market":-1 },
+		{ "name":"Avarice Prime", "x": 6274.119000, "y": 6221.450000, "z": 9.793000, "cochranes":1298, "market":2 },
+		{ "name":"Bavo II", "x": -8990.196174, "y": -306.017000, "z": 48.773000, "cochranes":1298, "market":-1 },
+		{ "name":"Chiune V", "x": 7252.341000, "y": -5637.792000, "z": 55.796000, "cochranes":1584, "market":2 },
+		{ "name":"Cisp X", "x": 7471.562000, "y": -5170.704000, "z": -33.250000, "cochranes":1298, "market":-1 },
+		{ "name":"Clispau IX", "x": 7396.117000, "y": -5624.900000, "z": 78.700000, "cochranes":979, "market":2 },
+		{ "name":"Cloobith II", "x": -9062.607174, "y": -207.870000, "z": 96.331000, "cochranes":1298, "market":-1 },
+		{ "name":"D-572", "x": -9261.447000, "y": 248.430000, "z": 16.421000, "cochranes":1298, "market":-1 },
+		{ "name":"Easle IX", "x": -8906.822174, "y": -380.967000, "z": 27.467000, "cochranes":1298, "market":-1 },
+		{ "name":"Egnach IV", "x": -9082.456174, "y": 408.671000, "z": 20.222000, "cochranes":1298, "market":-1 },
+		{ "name":"Eheutra Prime", "x": -9652.350174, "y": -199.355000, "z": -37.731000, "cochranes":1298, "market":-1 },
+		{ "name":"Eita VI", "x": 7648.931000, "y": -5189.132000, "z": 116.485000, "cochranes":1298, "market":-1 },
+		{ "name":"Evensong Nation", "x": -8805.000000, "y": -400.000000, "z": -0.000000, "cochranes":1298, "market":-1 },
+		{ "name":"Flaubea X", "x": -9624.352174, "y": 265.740000, "z": 51.859000, "cochranes":1298, "market":-1 },
+		{ "name":"Floach II", "x": -9690.480174, "y": 258.945000, "z": -18.427000, "cochranes":1298, "market":-1 },
+		{ "name":"Fraspait Prime", "x": -9295.454174, "y": 468.735000, "z": 82.720000, "cochranes":1298, "market":-1 },
+		{ "name":"Fuezia III", "x": 7351.123000, "y": -5853.708000, "z": 78.529000, "cochranes":1298, "market":-1 },
+		{ "name":"Ghosco V", "x": -8754.312174, "y": 249.667000, "z": -91.045000, "cochranes":1298, "market":-1 },
+		{ "name":"Gloguipoo II", "x": -8904.784174, "y": 426.400000, "z": 77.432000, "cochranes":1298, "market":-1 },
+		{ "name":"Goedot V", "x": 6988.361000, "y": -4610.728000, "z": -8.522000, "cochranes":1298, "market":-1 },
+		{ "name":"Grime IV", "x": 7784.585000, "y": -5399.124000, "z": 210.168000, "cochranes":1298, "market":-1 },
+		{ "name":"Grutitrust IX", "x": -8722.025174, "y": -77.022000, "z": -19.349000, "cochranes":1298, "market":-1 },
+		{ "name":"Hopruu II", "x": -8628.000000, "y": -22.000000, "z": 10.000000, "cochranes":1298, "market":-1 },
+		{ "name":"Iokono IV", "x": 7128.521000, "y": -5727.190000, "z": 96.049000, "cochranes":1298, "market":-1 },
+		{ "name":"Iuka IV", "x": -8703.226174, "y": -310.962000, "z": -90.058000, "cochranes":1298, "market":-1 },
+		{ "name":"Jesp IV", "x": -9280.787174, "y": -484.123000, "z": 16.589000, "cochranes":1298, "market":-1 },
+		{ "name":"Kloggen XI", "x": 7331.246000, "y": -5592.223000, "z": -34.348000, "cochranes":1298, "market":-1 },
+		{ "name":"Krussel IX", "x": -9474.700000, "y": -33.400000, "z": 66.300000, "cochranes":1298, "market":1 },
+		{ "name":"Latinum Planet", "x": -9221.219174, "y": 47.222000, "z": -328.813000, "cochranes":1298, "market":-1 },
+		{ "name":"Lizrae XII", "x": 7317.001000, "y": -5865.982000, "z": -33.662000, "cochranes":1298, "market":-1 },
+		{ "name":"Maust III", "x": 7312.568000, "y": -5203.543000, "z": 11.594000, "cochranes":1521, "market":2 },
+		{ "name":"Meufie V", "x": -9461.384174, "y": 424.385000, "z": 28.043000, "cochranes":1298, "market":-1 },
+		{ "name":"Meufie V", "x": -9461.384000, "y": 424.385000, "z": 28.043000, "cochranes":1298, "market":-1 },
+		{ "name":"Mitundri Prime", "x": -8991.803000, "y": 45.101000, "z": -124.125000, "cochranes":1298, "market":-1 },
+		{ "name":"New Hallee", "x": -9473.974000, "y": -35.679000, "z": -133.042000, "cochranes":1298, "market":-1 },
+		{ "name":"Odach VI", "x": -9298.308174, "y": -345.039000, "z": -44.753000, "cochranes":1298, "market":-1 },
+		{ "name":"Oglaroon", "x": -8944.871608, "y": 67.810590, "z": -46.850639, "cochranes":1298, "market":-1 },
+		{ "name":"Ohespae VII", "x": 7368.627000, "y": -5391.671000, "z": 140.684000, "cochranes":1107, "market":2 },
+		{ "name":"Ouble III", "x": -9687.353174, "y": -1.643000, "z": 67.658000, "cochranes":1298, "market":-1 },
+		{ "name":"Pluine IX", "x": 7740.842000, "y": -5857.020000, "z": 10.752000, "cochranes":1298, "market":-1 },
+		{ "name":"Preria IV", "x": -8771.570174, "y": -233.347000, "z": 41.478000, "cochranes":1298, "market":-1 },
+		{ "name":"Prodaze IX", "x": 7020.577000, "y": -5606.577000, "z": 94.444000, "cochranes":1578, "market":2 },
+		{ "name":"Pruxav VII <Acheron>", "x": 7323.553000, "y": -4998.710000, "z": 111.047000, "cochranes":1298, "market":-1 },
+		{ "name":"Quegger X", "x": -9383.537174, "y": -453.175000, "z": -98.263000, "cochranes":1298, "market":-1 },
+		{ "name":"Quordlepleen II", "x": -8833.725186, "y": -217.429483, "z": 167.952190, "cochranes":1298, "market":-1 },
+		{ "name":"Salvo IX", "x": 6236.913370, "y": 6271.402476, "z": -17.030470, "cochranes":1298, "market":2 },
+		{ "name":"Sniet VI", "x": 7145.044000, "y": -5644.616000, "z": -36.663000, "cochranes":1298, "market":-1 },
+		{ "name":"Snozi III", "x": -8812.276174, "y": 256.804000, "z": 22.529000, "cochranes":1298, "market":-1 },
+		{ "name":"Spitzrath II", "x": -8701.338174, "y": -468.751000, "z": 84.215000, "cochranes":1298, "market":-1 },
+		{ "name":"Spoja V", "x": -8789.293000, "y": -433.819000, "z": 10.498000, "cochranes":1298, "market":-1 },
+		{ "name":"Spoja V", "x": -8789.293174, "y": -433.819000, "z": 10.498000, "cochranes":1298, "market":-1 },
+		{ "name":"Stobi III", "x": -8875.129174, "y": -49.772000, "z": 42.840000, "cochranes":1298, "market":-1 },
+		{ "name":"This Planet", "x": -8875.129000, "y": -49.772000, "z": 42.840000, "cochranes":1298, "market":-1 },
+		{ "name":"Tuosho Prime", "x": 7601.996000, "y": -5197.729000, "z": -22.884000, "cochranes":1298, "market":-1 },
+		{ "name":"Urss", "x": -9663.822000, "y": 434.853000, "z": 86.496000, "cochranes":1298, "market":-1 },
+		{ "name":"Usho Prime", "x": 7446.049000, "y": -5376.000000, "z": 131.501000, "cochranes":1575, "market":2 },
+		{ "name":"Usubau VII", "x": -9000.986174, "y": 449.987000, "z": -51.791000, "cochranes":1298, "market":-1 },
+		{ "name":"Whousnod III", "x": -9499.273174, "y": -457.956000, "z": -9.871000, "cochranes":1298, "market":-1 },
+		{ "name":"Wosnav Prime", "x": 7551.731000, "y": -5267.641000, "z": -94.157000, "cochranes":1298, "market":-1 },
+		{ "name":"Wroja III", "x": 7233.902000, "y": -5371.594000, "z": -3.391000, "cochranes":1298, "market":2 },
+		{ "name":"Xob VIII", "x": -8802.619174, "y": 130.684000, "z": 44.825000, "cochranes":1298, "market":-1 },
+		{ "name":"Xofu VII", "x": -8729.240174, "y": 70.156000, "z": 4.162000, "cochranes":1298, "market":-1 },
+		{ "name":"Yodixxo II", "x": 7265.834000, "y": -5388.170000, "z": -96.473000, "cochranes":1298, "market":-1 },
+		{ "name":"Yoolu VI", "x": 7683.403000, "y": -5113.280000, "z": 47.527000, "cochranes":1298, "market":-1 },
+		{ "name":"Yozerob VI", "x": 7111.099000, "y": -5348.459000, "z": -84.371000, "cochranes":1298, "market":-1 },
+		{ "name":"Zarniwoop IV", "x": -8809.782656, "y": -61.478745, "z": -74.808896, "cochranes":1298, "market":-1 },
+		{ "name":"Zausta VI", "x": 7369.536000, "y": -5276.597000, "z": -49.229000, "cochranes":1156, "market":2 },
+		{ "name":"Zhara II", "x": 7739.851000, "y": -5604.221000, "z": -124.050000, "cochranes":1298, "market":-1 }
+	],
+	"stations":[
+		{ "name":"HirogenBase", "x": 7300.000000, "y": -5400.000000, "z": 100.300000, "cochranes":1298, "market":-1 },
+		{ "name":"Quaard 821 <Borg Planet>", "x": -9599.900000, "y": -400.100000, "z": 0.100000, "cochranes":1298, "market":-1 }
+	]}]}}
