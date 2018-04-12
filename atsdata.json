@@ -1,6 +1,6 @@
 {
 	"ATS_Navcomp_DB": {
-	"version": 2.01,
+	"version": 2.15,
 	"empires": [
 {
 "name": "Cardassian",
@@ -48,7 +48,8 @@
 	"government":"Federation", "leader":"Unknown (assassinated?)",
 	"homeworld":"Earth", "hwx":9174.044174, "hwy": 61.800000, "hwz": 0.000000,
 	"borders":[
-		{ "name":"Federation", "x": -9197.944000, "y": 0.000000, "z": 0.000000, "radius":240 }
+		{ "name":"Federation", "x": -9197.944000, "y": 0.000000, "z": 0.000000, "radius":240 },
+		{ "name":"Talos Exclusion Zone", "x": -9317.344174, "y": -43.700000, "z": -24.000000, "radius":10 }
 	],
 	"planets":[
 		{ "name":"Alpha Centauri", "x": -9173.253664, "y": 62.558679, "z": -1.032124, "cochranes":1509, "market":2 },
@@ -93,7 +94,7 @@
 		{ "name":"Epsilon 402", "x": -9234.944000, "y": 222.300000, "z": 25.100000, "cochranes":1298, "market":-1 },
 		{ "name":"Epsilon 413", "x": -9264.444000, "y": 47.400000, "z": 8.100000, "cochranes":1298, "market":-1 },
 		{ "name":"Epsilon 416", "x": -9318.244300, "y": 98.900000, "z": 146.300000, "cochranes":1298, "market":-1 },
-		{ "name":"Epsilon 615", "x": -9316.130300, "y": 204.690000, "z": -41.640000, "cochranes":1298, "market":-1 },
+		{ "name":"Epsilon 618", "x": -9128.197000, "y": 184.604000, "z": -108.63000, "cochranes":1103.287, "market":-1 },
 		{ "name":"Epsilon 647", "x": -9394.946300, "y": 31.231000, "z": -122.427000, "cochranes":1298, "market":-1 },
 		{ "name":"Para Bellum", "x": -9330.518000, "y": 48.300000, "z": 12.124000, "cochranes":1108, "market":2 },
 		{ "name":"Starbase 001 <Spacedock>", "x": -9174.044174, "y": 61.800000, "z": 0.000000, "cochranes":1515, "market":-1 },
@@ -103,7 +104,7 @@
 		{ "name":"Starbase 73 <Camelot>", "x": -9310.544000, "y": 186.300000, "z": -12.100000, "cochranes":1298, "market":-1 },
 		{ "name":"Station 218 <Eurus>", "x": -9133.537000, "y": -117.755000, "z": 32.527000, "cochranes":1298, "market":-1 },
 		{ "name":"Station 309 <Notus>", "x": -9325.499000, "y": -139.232000, "z": -19.774000, "cochranes":1298, "market":-1 },
-		{ "name":"USB Apollo Station", "x": -9179.444300, "y": 200.000000, "z": -22.100000, "cochranes":1298, "market":-1 },
+		{ "name":"USB Triton Station", "x": -9179.444300, "y": 200.000000, "z": -22.100000, "cochranes":1298, "market":-1 },
 		{ "name":"USB Eisenhower Outpost", "x": -9401.147000, "y": 18.932000, "z": -107.859000, "cochranes":1298, "market":-1 },
 		{ "name":"USB Gallipoli Outpost", "x": -9337.244174, "y": 207.000000, "z": -36.800000, "cochranes":1298, "market":-1 },
 		{ "name":"USB Invictus Outpost", "x": -9197.944300, "y": 0.000000, "z": 0.000000, "cochranes":1298, "market":-1 },
@@ -193,35 +194,52 @@
 		{ "name":"Thieurrull", "x": -9433.944174, "y": -246.000000, "z": -26.000000, "cochranes":1298, "market":-1 },
 		{ "name":"ch'Havran", "x": -9384.244174, "y": -158.800000, "z": -1.800000, "cochranes":1298, "market":-1 },
 		{ "name":"ch'Nahir", "x": -9507.044174, "y": -128.000000, "z": -19.100000, "cochranes":1298, "market":-1 },
+		{ "name":"Mol'Rihan <New Romulus>", "x": -9429.742, "y": -147.389, "z": -8.21, "cochranes":1475.271911805, "market":-1 },
 		{ "name":"ch'Rihan", "x": -9384.244174, "y": -158.800000, "z": -1.800000, "cochranes":1298, "market":-1 }
+        
 	],
 	"stations":[
-		{ "name":"RIS Sienovan B", "x": -9581.352300, "y": -314.942000, "z": 13.693000, "cochranes":1298, "market":-1 }
+		{ "name":"RIS Sienovan B", "x": -9581.352300, "y": -314.942000, "z": 13.693000, "cochranes":1298, "market":-1 },
+        { "name":"RSB Deleth", "x": -9383, "y": -161, "z": 34, "cochranes": 1298, "market":-1 },
+        { "name":"RSB Ralaaram", "x": -9445, "y": -184, "z": 68, "cochranes": 1298, "market":-1 },
+        { "name":"RSB Uerrho'lhiet", "x": -9434, "y": -246, "z": -26, "cochranes": 1298, "market":-1 },
+        { "name":"RSB Ael'Theirr", "x": -9430, "y": -147, "z": -8, "cochranes": 1298, "market":-1 },
+        { "name":"RSB Cas'idine", "x": -9507, "y": -128, "z": -19, "cochranes": 1298, "market":-1 },
+        { "name":"RSB Avrrhinul", "x": -9497, "y": -150, "z": -10, "cochranes": 1298, "market":-1 },
+        { "name":"GSO Flagrante Bello", "x": 7312.568, "y": -5203.543, "z": 11.594, "cochranes": 1521.202, "market":-1 }
 	]},
 {
-"name": "Ferengi",
-	"desc":"Describe the empire here",
-	"borders":[
-		{ "name":"Ferengi", "x": -8977.944000, "y": 260.000000, "z": -50.000000, "radius":100 }
-	],
-	"planets":[
-		{ "name":"Arcybite", "x": -8982.565430, "y": 240.626306, "z": -26.940100, "cochranes":1584, "market":2 },
-		{ "name":"Artificier II", "x": 6287.573000, "y": 6249.993000, "z": 9.727000, "cochranes":1298, "market":-1 },
-		{ "name":"Chemarra", "x": -8905.663399, "y": 266.258273, "z": -17.130635, "cochranes":1298, "market":0 },
-		{ "name":"Fenalgar", "x": -8995.604111, "y": 302.521799, "z": -60.548258, "cochranes":1615, "market":2 },
-		{ "name":"Ferenganor", "x": -8969.545098, "y": 292.579839, "z": -43.900428, "cochranes":1516, "market":2 },
-		{ "name":"Golgafrincham XI", "x": -9075.838671, "y": -395.931128, "z": -1.302726, "cochranes":1007, "market":2 },
-		{ "name":"Laissez-Faire", "x": -8980.714000, "y": 258.600000, "z": 55.588000, "cochranes":1578, "market":2 },
-		{ "name":"Llystad", "x": -9038.221744, "y": 285.872559, "z": -47.785562, "cochranes":1365, "market":2 },
-		{ "name":"Nausicaa", "x": -9022.786865, "y": 205.064703, "z": -20.937833, "cochranes":1520, "market":2 },
-		{ "name":"Quinn's Moon", "x": -9023.031716, "y": 205.064976, "z": -20.849225, "cochranes":1298, "market":-1 },
-		{ "name":"Tolagor", "x": -8953.947696, "y": 276.884008, "z": -95.171788, "cochranes":1375, "market":2 },
-		{ "name":"Zekit", "x": -9048.346357, "y": 223.158750, "z": -52.169469, "cochranes":1281, "market":2 }
-	],
-	"stations":[
-		{ "name":"JFS Facility", "x": -9165.336000, "y": 258.472000, "z": 4.896000, "cochranes":1298, "market":-1 },
-		{ "name":"FSB Skymart III", "x": 7233.902000, "y": -5371.594000, "z": -3.391000, "cochranes":1298, "market":-1 }
-	]},
+    "name": "GFA",
+    "desc":"The Galactic Ferengi Alliance is a sparse cluster of planets, centered around Ferenganor, which is colonized by the Ferengi and governed by the Ferengi Commerce Authority (or FCA). As an intensely capitalist society, the alliance is inclusive of most races which are capable of turning a profit. ",
+
+    "borders":[
+        { "name":"GFA", "x": -8977.944000, "y": 260.000000, "z":-50.000000, "radius":100 }
+    ],
+    "planets":[
+        { "name":"Arcybite", "x": -8982.565430, "y": 240.626306, "z":-26.940100, "cochranes":1584, "market":2 },
+        { "name":"Artificier II", "x": 6287.573000, "y": 6249.993000,"z": 9.727000, "cochranes":1298, "market":-1 },
+        { "name":"Chemarra", "x": -8905.663399, "y": 266.258273, "z":-17.130635, "cochranes":1298, "market":0 },
+        { "name":"Fenalgar", "x": -8995.604111, "y": 302.521799, "z":-60.548258, "cochranes":1615, "market":2 },
+        { "name":"Ferenganor", "x": -8969.545098, "y": 292.579839, "z":-43.900428, "cochranes":1516, "market":2 },
+        { "name":"Golgafrincham XI", "x": -9075.838671, "y":-395.931128, "z": -1.302726, "cochranes":1007, "market":2 },
+        { "name":"Latinum Galleria", "x": -8980.714000, "y": 258.600000,"z": 55.588000, "cochranes":1578, "market":2 },
+        { "name":"Llystad", "x": -9038.221744, "y": 285.872559, "z":-47.785562, "cochranes":1365, "market":2 },
+        { "name":"Nausicaa", "x": -9022.786865, "y": 205.064703, "z":-20.937833, "cochranes":1520, "market":2 },
+        { "name":"Quinn's Moon", "x": -9023.031716, "y": 205.064976,"z": -20.849225, "cochranes":1298, "market":-1 },
+        { "name":"Tolagor", "x": -8953.947696, "y": 276.884008, "z":-95.171788, "cochranes":1375, "market":2 },
+        { "name":"Zekit", "x": -9048.346357, "y": 223.158750, "z":-52.169469, "cochranes":1281, "market":2 }
+    ],
+    "stations":[
+        { "name":"JFS Facility", "x": -9165.336000, "y": 258.472000,"z": 4.896000, "cochranes":1298, "market":-1 },
+        { "name":"FSB Skymart III", "x": 7233.902000, "y":-5371.594000, "z": -3.391000, "cochranes":1298, "market":-1 },
+        { "name":"FSB Black Scholes", "x": -8905.663399, "y":266.258273, "z": -17.130635, "cochranes":1298, "market":-1 },
+        { "name":"FSB Paladium", "x": -9038.221744, "y": 285.872559,"z": -47.785562, "cochranes":1365, "market":-1 },
+        { "name":"FSB Kriton", "x": -9022.786865, "y": 205.064703, "z":-20.937833, "cochranes":1520, "market":-1 },
+        { "name":"FSB Brz'aak", "x": -8995.604111, "y": 302.521799,"z": -60.548258, "cochranes":1615, "market":-1 },
+        { "name":"FSA fthg", "x": -8953.947696, "y": 276.884008, "z":-95.171788, "cochranes":1375, "market":-1 },
+        { "name":"FSB Ferengal", "x": -8969.545098, "y": 292.579839,"z": -43.900428, "cochranes":1516, "market":-1 },
+        { "name":"FSB Honest Broker", "x": -9048.346357, "y":223.158750, "z": -52.169469, "cochranes":1281, "market":-1 }
+    ]},
 {
 "name": "Orion",
 	"desc":"Describe the empire here",
@@ -238,7 +256,7 @@
 "name": "Dominion",
 	"desc":"Describe the empire here",
 	"borders":[
-		{ "name":"Dominion", "x": 0.000000, "y": 0.000000, "z": 0.000000, "radius":100 }
+		{ "name":"Dominion", "x": 6400.000000, "y": 6400.000000, "z": 0.000000, "radius":240 }
 	],
 	"planets":[
 		{ "name":"Callinon VII", "x": 6458.800000, "y": 6286.200000, "z": -32.400000, "cochranes":1298, "market":1 },
@@ -260,9 +278,6 @@
 {
 "name": "Unity",
 	"desc":"Describe the empire here",
-	"borders":[
-		{ "name":"Unity", "x": 0.000000, "y": 0.000000, "z": 0.000000, "radius":100 }
-	],
 	"planets":[
 		{ "name":"Angela V", "x": 6125.350290, "y": 6126.116216, "z": -40.743949, "cochranes":1298, "market":-1 },
 		{ "name":"Deneb III", "x": -9055.244174, "y": -143.400000, "z": 382.500000, "cochranes":577, "market":2 },
@@ -279,7 +294,7 @@
 		{ "name":"Sherman's Planet / USB Galadriel", "x": -9422.644174, "y": 214.500000, "z": -100.700000, "cochranes":1520, "market":2 }
 	],
 	"stations":[
-		{ "name":"Dark Phoenix City / USB Milliways", "x": -8977.944000, "y": 260.000000, "z": 60.000000, "cochranes":1563, "market":2 }
+		{ "name":"Dark Phoenix City / USB Milliways", "x": -9410.744, "y": 1.400, "z": -139.0000, "cochranes":1597.668, "market":3 }
 	]},
 {
 "name": "Tholian",
@@ -292,23 +307,6 @@
 		{ "name":"Crystal Moon", "x": -9107.944174, "y": -290.000000, "z": -10.000000, "cochranes":1298, "market":-1 },
 		{ "name":"Etheria", "x": -9104.944174, "y": -294.000000, "z": -32.000000, "cochranes":1298, "market":-1 },
 		{ "name":"Tholia", "x": -9108.940000, "y": -285.000000, "z": 29.000000, "cochranes":1298, "market":-1 }
-	]},
-{
-"name": "Qvarne",
-	"desc":"Describe the empire here",
-	"borders":[
-		{ "name":"Qvarne", "x": -9109.941000, "y": 228.477000, "z": -135.785000, "radius":10 }
-	],
-	"planets":[
-		{ "name":"Flamarion II", "x": -9543.340008, "y": -108.565436, "z": -37.688798, "cochranes":1231, "market":2 },
-		{ "name":"Munspelheim", "x": -9483.597022, "y": -74.090490, "z": -37.498596, "cochranes":1010, "market":2 },
-		{ "name":"Pryan/Luna Kaigun", "x": -9522.645877, "y": -73.543452, "z": -34.701889, "cochranes":1049, "market":2 },
-		{ "name":"Qvarne IV", "x": -9109.941898, "y": 228.477574, "z": -135.785688, "cochranes":1298, "market":-1 },
-		{ "name":"Traal", "x": -9543.352014, "y": -39.594749, "z": -37.539687, "cochranes":1226, "market":2 }
-	],
-	"stations":[
-		{ "name":"Atlas Ultrayards", "x": -9109.942000, "y": 228.478000, "z": -135.786000, "cochranes":995, "market":2 },
-		{ "name":"New Neresia", "x": 7422.000000, "y": -5502.000000, "z": 114.000000, "cochranes":1298, "market":-1 }
 	]},
 {
 "name": "Qvarne",
@@ -348,9 +346,7 @@
 {
 "name": "Independent",
 	"desc":"Describe the empire here",
-	"borders":[
-		{ "name":"Independent", "x": 0.000000, "y": 0.000000, "z": 0.000000, "radius":100 }
-	],
+	
 	"planets":[
 		{ "name":"Aglaboogh VII", "x": -8982.306174, "y": -464.566000, "z": 5.397000, "cochranes":1298, "market":-1 },
 		{ "name":"Aozaproag Prime", "x": -8876.486174, "y": -222.494000, "z": 16.017000, "cochranes":1298, "market":-1 },

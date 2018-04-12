@@ -16,7 +16,7 @@
     date_written="2010-04-04"
     date_modified="2015-01-02"
     requires="4.84"
-    version="2.20"
+    version="2.23"
     save_state="y"
     >
 	
@@ -37,7 +37,7 @@ USAGE:
 
     <trigger
     enabled="y" regexp="y"
-    match="^([\w:\-\s\d_']+)\s\((\d+)\)\swas\sheading\sfor:.*$"
+    match="^(.+) (\(\d+\)) (\(.+->\)).+ \[([\d.]+)\].+$"
     script="message_handler"
     omit_from_output="y"
     sequence="100"
@@ -203,7 +203,7 @@ BODY_FONT_NAME = GetVariable("bodyfont") or "Dina"
 BODY_FONT_SIZE = tonumber(GetVariable("font_size") or 8)
 
 SCROLL_BAR_WIDTH = 15
-MAX_LINES = 10000 -- how many lines to store in scrollback
+MAX_LINES = 7500 -- how many lines to store in scrollback
 
 -- date_format = "[%d %b %H:%M:%S] "        -- [30 Aug 13:29:49]   date and time 24 hour
 -- date_format = "[%d %b %I:%M:%S%p] "  -- [30 Aug 01:20:12PM]     date and time 12 hour

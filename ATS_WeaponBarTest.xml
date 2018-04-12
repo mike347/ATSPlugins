@@ -1,0 +1,1023 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE muclient [
+  <!ENTITY horizontal "y" > 
+  <!ENTITY show_time "y" >
+]>
+
+<muclient>
+<plugin
+   name="ATS_WeaponBar"
+   author="Mike Taylor / Nick Gammon"
+   id="f92c816b178f0707847fcd1d"
+   language="Lua"
+   purpose="Displays a list of buttons that represent your weapon recycle times."
+   date_written="2009-02-26 09:00"
+   date_modified="2014-06-29 07:22"
+   requires="4.84"
+   save_state="y"
+   version="2.06"
+   >
+   
+<description trim="y">
+<![CDATA[
+This plugin creates a row of buttons that represent your weapons in ATS, as you define in the file.
+It tracks their recycle times and announces when they are ready using TTS (if you have the TTS plugin) or
+it can play a sound. Both are optional.
+
+It also will detect your tunings and modify (and save) your new recycle times based on your tuning.
+You must manually add each weapon you want to track.
+
+This Plugin was originally written by Nick Gammon, and modified by Mike Taylor (Qon@ATS TrekMUSH) 
+for our purposes in TrekMUSH. All credit goes to Nick for this awesome plugin.
+]]>
+</description>
+
+</plugin>
+
+<!--  Timers  -->
+
+<timers>
+  <timer 
+    script="handle_cooldowns" 
+    enabled="y" second="1.00" 
+    active_closed="y" >
+  </timer>
+</timers>
+
+<triggers>
+  <trigger
+   match="^\[(Beam|Missile) Weapon\s([\d+\s]+)\s+(Beam|Missile)\sWeapon\s([0-9\s+]+)\s+recycled\]$"
+   name="Recycle1"
+   regexp="y"
+   enabled="y"
+   send_to="12"
+   sequence="100"
+  >
+  <send>handle_recycle("%1","%2")
+handle_recycle("%3", "%4")
+
+</send>
+  </trigger>
+  <trigger
+   match="^\[(Beam|Missile)\sWeapon\s([\d+\s]+)\s+recycled\]$"
+   name="Recycle2"
+   regexp="y"
+   enabled="y"
+   send_to="12"
+   sequence="100"
+  >
+  <send>handle_recycle("%1","%2")</send>
+  </trigger>
+
+  <trigger
+   match="^\[[A-za-z0-9'_\s\-]+\]--\[Firing at ([A-Za-z0-9'\-.\s]+)\s\(\d+\):\s(.*)\]$"
+   name="FiringAt"
+   regexp="y"
+   enabled="y"
+   send_to="12"
+   sequence="100"
+  >
+  <send>handle_firing("%2")  </send>
+  </trigger>
+</triggers>
+<aliases>
+  <alias
+   script="toggle_tts"
+   match="^toggletts(.*)$"
+   enabled="y"
+   regexp="y"
+   send_to="12"
+   ignore_case="y"
+   sequence="100"
+  >
+  </alias>
+</aliases>
+
+<!--  Script  -->
+
+<script>
+<![CDATA[
+
+-- table of buttons
+
+--[[
+  Each button can have up to four entries:
+  
+  icon - filename of the image to draw
+  tooltip - what to show if you hover the mouse over the button
+  send - what to send to the MUSH (optional)
+  script - a script function to call (optional)
+  cooldown - Weapon recycle time (in seconds)
+  sound - sound to play when weapon is recycled
+  tts = Uses text to speech to play (sound) when recycled 
+  name = Must be in the form of B1, B2, B3, or M1, M2, M3. Depending on what hardpoint the weapon is. MUST BE SET TO WORK
+  
+  Star Trek Online has alot of icons that can be used for this plugin, that's what I used.
+    
+  Note my examples below. I recommend choosing only one weapon per arc as the weapon that has a tts or sound attached; I use the first missile in each arc. 
+  Reason is, if you have 6 weapons that all recycle at once, you will get alot of 'spam' noise or tts talking. And it will go on until the end, it does not cut off.
+--]]
+  
+
+show_time = true
+Active_Windows = { }
+button_table = { }
+horizontal = { }
+pending_delete = { }
+
+button_table[1] = {
+        {
+            icon = "DisruptorCannon.png",  -- icon image
+            tooltip = "Disruptor 1",  -- tooltip help text
+            cooldown = 50,          -- cooldown time in seconds
+            tts = "Disruptor 1 ready", -- Speaks using windows built in Text-to-speech
+            name = "B1", -- Hardpoint location of the weapon
+        }
+    }
+
+button_table[2] = { 
+    {
+  icon = "Tricobalt.png",
+  tooltip = "Missile 1",
+  cooldown = 72,  
+  tts = "Forward torpedoes ready",
+  name = "M1",
+    },
+}
+
+-- configuration
+
+-- load Lua COM
+  luacom = require("luacom")
+  
+  -- Instantiate a SAPI voice obejct
+  tts = luacom.CreateObject ("SAPI.SpVoice")
+  ttsenabled = true
+  
+  function do_tts(s,priority)
+	if (not tts or not ttsenabled or not tts.Speak) then
+		return -- Failed to load the libraty or something.
+	end
+	if (priority) then
+		tts:Speak(s,3)
+	else
+		tts:Speak(s,1)
+	end
+end
+		
+
+ICON_SIZE = 32
+
+BACKGROUND_COLOUR = ColourNameToRGB "bisque"
+BOX_COLOUR = ColourNameToRGB "royalblue"
+BUTTON_EDGE = ColourNameToRGB "silver"
+
+MOUSE_DOWN_COLOUR = ColourNameToRGB "darkorange"
+
+-- where to put the window
+WINDOW_POSITION = 12  -- top right
+OFFSET = 4  -- gap inside box
+EDGE_WIDTH = 2 -- size of border stroke
+
+--[[
+Useful positions:
+
+4 = top left
+5 = center left-right at top
+6 = top right
+7 = on right, center top-bottom
+8 = on right, at bottom
+9 = center left-right at bottom
+--]]
+
+-- font and size to use
+
+FONT_NAME = "Lucida Sans Unicode"
+FONT_SIZE = 18
+FONT_SIZE_MEDIUM = 14
+FONT_SIZE_SMALL = 10
+FONT_COLOUR = ColourNameToRGB "yellow"
+FONT2_COLOUR = ColourNameToRGB "lime"
+
+-- sound to play if on cooldown
+ON_COOLDOWN_SOUND = "ding.wav"
+
+frames = {}  -- remember where each icon was
+
+require "commas"
+
+function mousedown (flags, hotspot_id)
+    local tmp = hotspot_id:split("_")
+    if (#tmp < 2) then
+        return
+    end
+    local win = tmp[1]
+    local hotspot = tmp[2]
+    
+    startx, starty = WindowInfo (win, 14), WindowInfo (win, 15)
+    
+    -- find where window is in case we drag it offscreen
+    origx, origy = WindowInfo (win, 10), WindowInfo (win, 11)
+
+    if (hotspot == "Main") then
+  
+    -- find where mouse is so we can adjust window relative to mouse
+    startx, starty = WindowInfo (win, 14), WindowInfo (win, 15)
+    
+    -- find where window is in case we drag it offscreen
+    origx, origy = WindowInfo (win, 10), WindowInfo (win, 11)
+
+    return
+    end -- if
+  -- tmp[3] should be the button number
+  local n = tonumber (tmp[3] or 0)
+  
+  if (n == 0) then 
+    return
+  end
+  -- draw the button border in another colour for visual feedback
+  WindowRectOp (win, 1, 
+                frames[win][n].x1, frames[win][n].y1, frames[win][n].x2, frames[win][n].y2, 
+                MOUSE_DOWN_COLOUR) 
+  
+  Redraw ()
+  
+end -- mousedown
+
+function cancelmousedown (flags, hotspot_id)
+  local tmp = hotspot_id:split("_")
+    if (#tmp < 2) then
+        return
+    end  
+    local win = tmp[1]
+   
+  local n = tonumber (tmp[2])
+  if (n) then
+  -- draw the button border in original colour for visual feedback
+  WindowRectOp (win, 1, 
+                frames[win][n].x1, frames[win][n].y1, frames[win][n].x2, frames[win][n].y2, 
+                BUTTON_EDGE) 
+  end
+              
+  Redraw ()                
+
+end -- cancelmousedown
+
+function mouseup (flags, hotspot_id)
+  --Note(hotspot_id)
+    local tmp = hotspot_id:split("_")
+    if (#tmp < 2) then
+        return
+    end  
+    local win = tmp[1]
+    local hotspot = tmp[2]
+    
+   if(flags == miniwin.hotspot_got_rh_mouse) then
+        right_click_menu(win,hotspot)
+        return
+    end
+  local n = tonumber(hotspot)
+  if (not n) then
+    return
+  end
+  
+  local button = button_table[win][n] 
+    -- fix border colour
+  cancelmousedown (flags, hotspot_id)
+  
+    -- shift key clears cooldown
+  if bit.band (flags, 1) == 1 then
+    SetCooldown (win, n, nil)
+    return
+  end -- if
+  
+  -- can't press button if on cooldown
+  if (button.cooldown_left or 0) > 0 then
+    Sound (ON_COOLDOWN_SOUND)
+    return
+  end -- still on cooldown
+  
+  if (not button.send and not button.script) then -- If we don't have send or script command defined, clicking does nothing
+    return
+  end
+  	
+  Queue(button.send, false)
+  SetCooldown (win, n, button.cooldown)
+  
+end -- mouseup
+
+function dragmove(flags, hotspot_id)
+    local tmp = hotspot_id:split("_")
+    if (#tmp < 2) then
+        return
+    end  
+    local win = tmp[1]
+    -- local hotspot = tmp[2]-
+    
+  -- find where it is now
+  local posx, posy = WindowInfo (win, 17),
+                     WindowInfo (win, 18)
+
+  -- move the window to the new location
+  WindowPosition(win, posx - startx, posy - starty, 0, 2);
+  
+  -- change the mouse cursor shape appropriately
+  if posx < 0 or posx > GetInfo (281) or
+     posy < 0 or posy > GetInfo (280) then
+    SetCursor (11)   -- X cursor
+  else
+    SetCursor (10)   -- arrow (NS/EW) cursor
+  end -- if
+  
+end -- dragmove
+
+function dragrelease(flags, hotspot_id)
+local tmp = hotspot_id:split("_")
+    if (#tmp < 2) then
+        return
+    end  
+    local win = tmp[1]
+    local hotspot = tmp[2]
+    
+  local newx, newy = WindowInfo (win, 17), WindowInfo (win, 18)
+  
+  -- don't let them drag it out of view
+  if newx < 0 or newx > GetInfo (281) or
+     newy < 0 or newy > GetInfo (280) then
+     -- put it back
+    WindowPosition(win, origx, origy, 0, 2);
+  end -- if out of bounds
+  
+end -- dragrelease
+
+function SetCooldown(win, n, amount)
+ 
+  if amount then
+    assert (amount >= 0, "Bad amount " .. amount .. " to SetCooldown")
+  end -- if
+          
+  local frame = frames[win][n] 
+  local x1, y1, x2, y2 = frame.x1 + 1, frame.y1 + 1, frame.x2 - 1, frame.y2 - 1         
+  button_table[win][n].cooldown_left = amount  -- cooldown time left in seconds
+  local max = button_table[win][n].cooldown or 0   -- max cooldown time
+  local percent  -- how far cooled down we are as a percent
+  
+  if max > 0 then
+    percent = (amount or 0) / max 
+  else
+    percent = 0  -- don't divide by zero!
+  end -- if
+  
+  -- reload the image
+  if WindowDrawImage(win, n, 
+                  x1, y1,   -- left, top
+                  x2, y2,  -- right, bottom
+                  2)  -- mode - stretch or shrink
+    ~= error_code.eOK then
+    WindowRectOp (win, 2, x1, y1,   -- left, top
+                  x2, y2,  -- right, bottom
+                  BACKGROUND_COLOUR)
+  end
+	if(button_table[win][n].name )then -- If we have a name set, show it.
+	  local x_offset = -1
+	  local y_offset = 18
+	  WindowText(win, "f3",button_table[win][n].name, x1 + x_offset +2, y1 + y_offset +2, x2, y2, 0x000000)
+	  WindowText(win, "f3", button_table[win][n].name, x1 + x_offset, y1 + y_offset, x2, y2, FONT2_COLOUR)
+	end              
+  if amount and amount > 0 then
+  
+    -- calculate pie end point
+    local endx = math.cos (math.rad (percent * 360 + 90)) * ICON_SIZE + ICON_SIZE / 2
+    local endy = -1 * math.sin (math.rad (percent * 360 + 90)) * ICON_SIZE + ICON_SIZE / 2
+    
+    -- clear temporary window
+    WindowRectOp (tempwin, 2, 0, 0, 0, 0, 0xFFFFFF)  -- fill with white
+    
+    -- draw the pie showing amount of cooldown
+    WindowCircleOp (tempwin, 5, -10, -10, ICON_SIZE + 10, ICON_SIZE + 10,   -- pie
+          0x000000, 5, 0,   -- no pen
+          0x000000, 0,  -- solid brush, black
+          ICON_SIZE / 2, 0,   -- from 12 o'clock position
+          endx, endy)
+    
+    -- turn pie shape into an image
+    WindowImageFromWindow(win, "mask", tempwin)
+                      
+    -- blend in (darken mode) with 50% opacity
+    WindowBlendImage(win, "mask", 
+                     x1, y1, x2, y2,  -- rectangle
+                     5,  -- darken
+                     0.5)  -- opacity
+                  
+    -- if they want to see the time left (text on top of the button) do that now   
+    if show_time then
+      local font = "f"
+      local time_left = 0
+      if(amount < 99) then
+        time_left = amount
+      else
+        time_left = convert_time (amount)
+        time_left = string.gsub (time_left, "[ s]", "") -- get rid of spaces, and "s"
+      end
+      local time_len = WindowTextWidth (win, font, time_left)
+      
+      -- use smaller font if it doesn't fit
+      if time_len > ICON_SIZE then
+        font = "f2"
+        time_len = WindowTextWidth (win, font, time_left)
+  
+        -- still too big?        
+        if time_len > ICON_SIZE then
+          font = "f3"
+          time_len = WindowTextWidth (win, font, time_left)
+        end -- if
+     
+      end -- if
+      local font_height = WindowFontInfo (win, font, 1)  
+      local x_offset = math.max ((ICON_SIZE - time_len) / 2, 0)
+      local y_offset = math.max ((ICON_SIZE - font_height) / 2, 0)
+      
+      WindowText (win, font, time_left, x1 + x_offset + 2, y1 + y_offset + 2, x2, y2, 0x000000)
+      WindowText (win, font, time_left, x1 + x_offset, y1 + y_offset, x2, y2, FONT_COLOUR)
+    end -- show_time
+    
+  	
+  else
+    button_table[win][n].cooldown_left = nil
+
+  end -- if
+  
+  Redraw ()
+  
+end -- function SetCooldown
+
+function OnPluginInstall ()
+        
+	local enabled = tostring(GetVariable("ttsenabled" or "true"))
+	
+    if (enabled and enabled == "false" ) then
+		ttsenabled = false
+	else
+		ttsenabled = true
+	end
+    if (#Active_Windows < 1) then -- We have nothing in ACtive_Windows, try to load
+      --Note("Active windows less than 1, reloading")
+      local windows = GetVariable("Window_List")
+      local t = { }
+      if (windows) then
+          t = windows:split("|")
+          for i = 1, #t do
+              SetupWindow(t[i])
+              Active_Windows[#Active_Windows+1] = t[i]
+          end
+      else
+        
+          SetupWindow(GetPluginID())
+          Active_Windows[1] = GetPluginID()
+      end
+    else
+      --Note("Active windows. Reloading in-place")
+      for i = 1, #Active_Windows do
+        --Note(string.format("%s -- %d", Active_Windows[i], i))
+        SetupWindow(Active_Windows[i])
+      end
+      if (pending_delete) then
+        for i = 1, #pending_delete do
+          WindowShow(pending_delete[i], false)
+          WindowDelete(pending_delete[i])
+        end
+      end
+    end
+    
+  tempwin = GetPluginID() .. ":temp"
+        
+  -- for drawing cooldowns (window not visible)
+  WindowCreate (tempwin, 
+             0, 0,   -- left, top 
+             ICON_SIZE,     -- width
+             ICON_SIZE,  -- height
+             12,   -- position mode
+             0,  -- flags
+             ColourNameToRGB "white") 
+
+  
+  if GetVariable ("enabled") == "false" then
+    ColourNote ("yellow", "", "Warning: Plugin " .. GetPluginName ().. " is currently disabled.")
+    EnablePlugin (GetPluginID (), false)
+    return
+  end -- they didn't enable us last time
+    
+end -- OnPluginInstall
+
+-- hide window on removal
+function OnPluginClose ()
+   for i = 1, #Active_Windows do
+        WindowShow (Active_Windows[i],  false)  -- hide it
+   end
+end -- OnPluginClose
+
+-- show window on enable
+function OnPluginEnable ()
+    for i = 1, #Active_Windows do
+        WindowShow (Active_Windows[i],  true)  -- show it
+    end
+end -- OnPluginEnable
+
+-- hide window on disable
+function OnPluginDisable ()
+    for i = 1, #Active_Windows do
+        WindowShow (Active_Windows[i],  false)  -- hide it
+    end
+end -- OnPluginDisable
+
+function OnPluginSaveState ()
+  require "serialize"
+  local Windows = ""
+  
+  for n, v in ipairs(Active_Windows) do
+    if (n > 1) then
+      Windows = Windows .. "|" .. v
+    else
+      Windows = v
+    end
+  
+    SetVariable(v .. "_windowx",     WindowInfo (v, 10))
+    SetVariable(v .. "_windowy",     WindowInfo (v, 11))
+    SetVariable(v .. "_windowmode",  WindowInfo (v, 7))
+    SetVariable(v .. "_windowflags", WindowInfo (v, 8))
+    SetVariable(v .. "_buttons", "buttons = " .. serialize.save_simple(button_table[v]))
+    if (horizontal[v]) then
+      SetVariable(v .. "_horizontal", 1)
+    else
+      DeleteVariable(v .. "_horizontal")
+    end
+  end
+  SetVariable("ttsenabled", tostring(ttsenabled))
+  SetVariable ("enabled",     tostring (GetPluginInfo (GetPluginID (), 17)))
+  
+  SetVariable("Window_List", Windows)
+  
+end -- OnPluginSaveState
+
+-- called every second on a timer
+function handle_cooldowns ()
+  for i = 1, #Active_Windows do
+    for n, k in ipairs(button_table[Active_Windows[i]]) do
+      if (k.cooldown_left) then
+        SetCooldown(Active_Windows[i],n, k.cooldown_left - 1) 
+        end -- if some cooldown left
+    end -- for
+  end
+end -- function handle_cooldowns
+
+function handle_firing(wstring)
+	assert(wstring, "handle_firing(): string is nil")
+	local weapons = {}
+	for wep in string.gmatch(wstring, "([BM0-9]+):[0-9-]+") do 
+		for i = 1, #Active_Windows do
+      for n, v in ipairs (button_table[Active_Windows[i]]) do
+        if (v.name == wep) then
+          SetCooldown(Active_Windows[i], n, v.cooldown)
+          v.firedTime = os.time()
+        end
+      end
+    end
+  end
+end
+function handle_recycle(weaponType, wstring)
+	local prefix = "B"
+  
+  if (weaponType == "Beam") then
+		prefix = "B"
+	else
+		prefix = "M"
+	end
+	for val in wstring:gmatch("%S+") do 
+		for i = 1, #Active_Windows do
+      for n, v in ipairs(button_table[Active_Windows[i]]) do
+        if (v.name == (prefix..val)) then
+          SetCooldown(Active_Windows[i], n, nil)
+          if (v.tts and tts) then
+            do_tts(v.tts)
+          end
+          if (v.sound) then
+            Sound(v.sound)
+          end -- sound to play
+          if (v.firedTime) then
+            local delta = math.abs(v.firedTime - os.time())
+            if (v.cooldown ~= delta and (math.abs(delta - v.cooldown) < 120 ))then -- Different and not TOO different (sanity check)
+              v.cooldown = delta
+            end -- cooldown
+          end -- firedtime
+        end
+      end
+     end
+	end
+end
+
+function toggle_tts(name, line, wildcards)
+	if (ttsenabled) then
+		ttsenabled = false
+		Note("ATS_Weaponbar: TTS disabled.")
+		return
+	else
+		ttsenabled = true
+		Note("ATS_Weaponbar: TTS enabled.")
+		return
+	end
+	
+end
+
+function number_check(s)
+  local n = tonumber(s)
+  
+  if (not n) then
+    utils.msgbox (s .. " is not numeric")
+    return false
+  end -- if
+  if (n < 0 or n > 1000) then
+    utils.msgbox(s .. "Too small or too large")
+    return false
+  end
+  return true
+end
+
+function right_click_menu(win,hotspot)
+  
+  -- Regular options
+  local options1 =  { box_width = 180,
+          box_height = 135, 
+          prompt_width = 150,
+          prompt_height = 25,
+          reply_width = 80,
+          reply_height = 10,
+          max_length = 25 }
+  -- Max lenth 4
+  local options2 = { box_width = 180,
+          box_height = 135, 
+          prompt_width = 150,
+          prompt_height = 25,
+          reply_width = 80,
+          reply_height = 10, 
+          max_length = 4 }
+  -- For cooldowns (number verification)
+  local options3 = { box_width = 180,
+          box_height = 135, 
+          prompt_width = 150,
+          prompt_height = 25,
+          reply_width = 80,
+          reply_height = 10, 
+          max_length = 4,
+          validate = number_check }
+local options4 = { box_width = 210,
+          box_height = 170, 
+          prompt_width = 150,
+          prompt_height = 60,
+          reply_width = 200,
+          reply_height = 10, 
+          max_length = 25, }        
+  local menustring = string.format("^WeaponBar v%.3f|-|", GetPluginInfo(GetPluginID(), 19))
+
+  menustring = menustring .. "Toggle Horizontal|Add Button|New Bar"
+  if (tonumber(hotspot)) then
+    hotspot = tonumber(hotspot)
+    menustring = menustring .. string.format("|>Edit Button|^%s / %d|-|Hardpoint|Icon|TTS|Cooldown|%sClick To Fire|Remove Button|<", button_table[win][hotspot].name, button_table[win][hotspot].cooldown,
+      button_table[win][hotspot].send and "+" or "")
+  end
+    menustring = menustring .. "|>Presets|Save|<|>Delete Bar|>Are you sure?|>Double Sure?|Fine!"
+    
+    local result = WindowMenu (win, 
+        WindowInfo (win, 14),  -- x position
+        WindowInfo (win, 15),   -- y position
+        menustring) -- content
+    if (not result) then
+        return
+    end
+    if(result == "Toggle Horizontal") then
+        if(horizontal[win]) then
+            horizontal[win] = false
+            ColourNote("yellow", "", "Horizontal mode toggled OFF")
+        else
+            horizontal[win] = true
+            ColourNote("yellow", "", "Horizontal mode toggled ON.")
+        end
+        OnPluginSaveState()
+        OnPluginInstall()
+    elseif (result == "Add Button") then
+        local newbutton = { }
+        local tmp = utils.inputbox ("Weapon hardpoint (e.g. B1, M3, etc. Should be unique)", "ATS WeaponBar", "", "Courier", 9, options2)
+        if (tmp and #tmp > 1) then
+            newbutton.name = string.upper(tmp)
+            tmp = utils.inputbox ("Default Cooldown (in seconds)", "ATS WeaponBar", "", "Courier", 9, options3)
+            if (tmp) then 
+                newbutton.cooldown = tonumber(tmp or 30)
+                tmp = utils.inputbox ("Text-To-Speech name (to be spoken when the weapon is ready to fire) Leave blank to skip", "ATS WeaponBar", "", "Courier", 9, options4)
+                if(tmp) then
+                    if (#tmp >1) then
+                        newbutton.tts = tmp
+                    end
+                    if(button_table[win][1] and button_table[win][1].icon) then
+                        tmp = utils.inputbox ("Icon filename (Must be in plugins folder)", "ATS WeaponBar", button_table[win][1].icon, "Courier", 9, options4)
+                    else
+                        tmp = utils.inputbox ("Icon filename Must be in plugins folder)", "ATS WeaponBar", "IconName.png", "Courier", 9, options4)
+                    end
+                    if (tmp) then
+                        newbutton.icon = tmp
+                        if (not newbutton.icon or not newbutton.name or not newbutton.cooldown ) then
+                          ColourNote("red", "", "Error adding button. Missing info?")
+                          return
+                        end
+                        
+                        ColourNote("yellow", "", string.format("Adding new button labled %s", newbutton.name))
+                        button_table[win][#button_table[win]+1] = newbutton
+                        OnPluginSaveState()
+                        OnPluginInstall()
+                        return
+                    end
+                end
+            end
+        end
+        ColourNote("red", "", "Error adding new button. Try again.")
+    elseif (result == "New Bar") then
+      local tmp = "a" .. GetUniqueID()
+      Active_Windows[#Active_Windows+1] = tmp
+      SetupDefaults(tmp)
+      SetupWindow(tmp)
+      OnPluginSaveState()
+      return
+    elseif (result == "Hardpoint") then
+        local tmp = utils.inputbox ("Weapon hardpoint (e.g. B1, M3, etc. Must be unique)", "ATS WeaponBar", button_table[win][hotspot].name, "Courier", 9, options2)
+        if (tmp) then
+          button_table[win][hotspot].name = tmp
+        end
+    elseif (result == "Cooldown") then
+        local tmp = utils.inputbox ("Default Cooldown (in seconds)", "ATS WeaponBar", "", "Courier", 9, options3)
+        if (tmp and tonumber(tmp)) then
+          button_table[win][hotspot].cooldown = tonumber(tmp)
+        end
+        
+    elseif (result == "Icon") then
+       local tmp = utils.inputbox ("Icon filename (Must be in plugins folder)", "ATS WeaponBar", button_table[win][hotspot].icon, "Courier", 9, options4)
+        if (tmp) then
+          button_table[win][hotspot].icon = tmp
+        end
+    elseif (result == "TTS") then
+      local tmp = utils.inputbox ("Text-To-Speech name (to be spoken when the weapon is ready to fire) Leave blank to skip", "ATS WeaponBar", button_table[win][hotspot].tts or "", "Courier", 9, options4)
+      if (tmp and #tmp > 1) then
+        button_table[win][hotspot].tts = tmp
+      else
+        button_table[win][hotspot].tts = nil
+      end
+    elseif (result == "Click To Fire") then
+      if (button_table[win][hotspot].send) then
+        ColourNote("yellow", "", string.format("%s click-to-fire toggled off.", button_table[win][hotspot].name))
+        button_table[win][hotspot].send = nil
+      else
+        ColourNote("yellow", "", string.format("%s click-to-fire toggled on.", button_table[win][hotspot].name))
+        local t, n = string.match(button_table[win][hotspot].name, "(%w)(%d+)")
+        local str 
+        if (t == "B") then
+          str = "fire beam " .. tostring(n)
+        else
+          str = "fire missile " .. tostring(n)
+        end
+        button_table[win][hotspot].send = str
+      end
+    elseif (result == "Remove Button") then
+      table.remove(button_table[win], hotspot)
+      ColourNote("yellow", "", "Button removed.")
+    elseif (result == "Fine!") then
+      if (win == GetPluginID()) then
+        ColourNote("red", "", "Nice try! You have to have at least one bar!")
+        return
+      else
+        local result = nil
+        pending_delete[#pending_delete+1] = win
+        for i = 1, #Active_Windows do
+          if (Active_Windows[i] == win) then
+            result = i
+          end
+        end
+        if (result) then
+          table.remove(Active_Windows, result)
+          local Windows = ""
+          for n, v in ipairs(Active_Windows) do
+            if (n > 1) then 
+              Windows = Windows .. "|" .. v
+            else
+              Windows = v
+            end
+          end
+          SetVariable("Window_List", Windows)  
+          ColourNote("yellow", "", "Deleting bar..")
+          pending_delete[#pending_delete+1] = win
+          
+        end
+      end
+    elseif (result == "Save") then
+      require("serialize")
+      local s = ""
+      for n, v in ipairs(Active_Windows) do
+        if (n == 1) then
+          Windows = v
+        else
+          Windows = Windows .. "|" .. v
+        end
+       end
+       s = serialize.save("button_table")
+       s = s .. serialize.save("horizontal")
+       local comp = utils.compress(s,9)
+       ColourTell("yellow", "", "@mail or email Qon with the following text:\n")
+       ColourTell("white", "", utils.base64encode(comp,true))
+       AnsiNote()
+    end -- Result
+    OnPluginSaveState()
+    OnPluginInstall()
+end
+function SetupWindow(Win)
+  
+    -- Load Window variables if any
+  local x, y, mode, flags = 
+      tonumber (GetVariable (Win .. "_windowx")) or 0,
+      tonumber (GetVariable (Win .. "_windowy")) or 0,
+      tonumber (GetVariable (Win .. "_windowmode")) or WINDOW_POSITION, -- top right
+      tonumber (GetVariable (Win .. "_windowflags")) or 0
+  
+  
+  if (GetVariable(Win .. "_horizontal")) then
+    horizontal[Win] = true
+  end
+  
+    if (not button_table[Win]) then
+        local t = { }
+        setfenv(assert(loadstring(GetVariable(Win .. "_buttons") or "")),t)()
+        button_table[Win] = t.buttons
+    end
+    if (not button_table[Win] or #button_table[Win] < 1) then
+        SetupDefaults(Win)
+    end
+  local gauge_height, gauge_width
+  
+  if horizontal[Win] then
+    window_width = (#button_table[Win] * (ICON_SIZE + OFFSET)) + OFFSET
+    window_height = ICON_SIZE + (OFFSET * 2)
+  else
+    window_width = ICON_SIZE + (OFFSET * 2)
+    window_height = (#button_table[Win] * (ICON_SIZE + OFFSET)) + OFFSET
+  end -- if
+  
+  -- make the miniwindow
+  WindowCreate (Win, 
+             x, y,   -- left, top (auto-positions)
+             window_width,     -- width
+             window_height,  -- height
+             mode,   -- position mode
+             flags,  -- flags
+             BACKGROUND_COLOUR) 
+   
+    -- grab fonts
+  WindowFont (Win, "f", FONT_NAME, FONT_SIZE, true) 
+  WindowFont (Win, "f2", FONT_NAME, FONT_SIZE_MEDIUM, true) 
+  WindowFont (Win, "f3", FONT_NAME, FONT_SIZE_SMALL, true) 
+  
+  for n, v in ipairs (button_table[Win]) do
+    if v.icon then
+      if WindowLoadImage (Win, n, GetInfo (60) .. v.icon) ~= error_code.eOK then
+          DoAfterSpecial (1, string.format ([[
+              ColourNote ("white", "red", "Could not load image '%s'")]], 
+                          string.gsub (GetInfo (60) .. v.icon, '\\', '\\\\')),
+                          sendto.script)
+      end -- if
+    end -- if icon specified
+       
+    local x1, y1, x2, y2
+
+    -- where to draw the icon
+    if horizontal[Win] then
+      x1, y1 = (n - 1) * (ICON_SIZE + OFFSET) + OFFSET, OFFSET
+      x2, y2 = n * (ICON_SIZE + OFFSET), ICON_SIZE + OFFSET
+    else
+      x1, y1 = OFFSET, (n - 1) * (ICON_SIZE + OFFSET) + OFFSET
+      x2, y2 = ICON_SIZE + OFFSET, n * (ICON_SIZE + OFFSET)
+    end -- if
+        
+    -- draw the image
+    if WindowDrawImage(Win, n, 
+                    x1, y1,   -- left, top
+                    x2, y2,  -- right, bottom
+                    2)  -- mode - stretch or shrink
+        ~= error_code.eOK then
+      WindowRectOp (Win, 2, x1, y1,   -- left, top
+                    x2, y2,  -- right, bottom
+                    BACKGROUND_COLOUR)
+		
+    end -- if
+               
+    -- remember where to draw the frame, for mouse clicks
+    if (not frames[Win]) then
+      frames[Win] = { }
+    end
+    
+    frames[Win][n] = { 
+            x1 = x1 - 1,
+            y1 = y1 - 1,
+            x2 = x2 + 1,
+            y2 = y2 + 1
+            }
+    
+    -- draw the button border
+    WindowRectOp (Win, 1, 
+                  frames[Win][n].x1, frames[Win][n].y1, frames[Win][n].x2, frames[Win][n].y2, 
+                  BUTTON_EDGE) 
+    
+    -- make a hotspot we can click on
+    local tt 
+    if (v.send) then
+      tt = "Click to fire"
+    else
+      tt = "Click to drag"
+    end
+    
+        WindowAddHotspot(Win, Win .. "_" .. n,  
+                 frames[Win][n].x1, frames[Win][n].y1, frames[Win][n].x2, frames[Win][n].y2,   -- rectangle
+                 "",   -- mouseover
+                 "",   -- cancelmouseover
+                 "mousedown",
+                 "cancelmousedown", 
+                 "mouseup", 
+                 tt,  -- tooltip text
+                 1, 0)  -- hand cursor
+    --end
+    if (not v.send) then
+      WindowDragHandler(Win, Win .. "_" .. n, "dragmove", "dragrelease", 0) 
+   end
+	if(v.name) then -- If we have a name set, show it.
+	  local x_offset = -1
+	  local y_offset = 18
+	  WindowText(Win, "f3", v.name, x1 + x_offset +2, y1 + y_offset +2, x2, y2, 0x000000)
+	  WindowText(Win, "f3", v.name, x1 + x_offset, y1 + y_offset, x2, y2, FONT2_COLOUR)
+	end              
+  end -- for each button
+  -- draw the border of the whole box
+  WindowCircleOp (Win, 2, 0, 0, 0, 0, BOX_COLOUR, 6, EDGE_WIDTH, 0x000000, 1) 
+    
+  -- make a hotspot
+  WindowAddHotspot(Win, Win .. "_Main",
+                   0, 0, 0, 0,   -- whole window
+                   "",   -- MouseOver
+                   "",   -- CancelMouseOver
+                   "mousedown",
+                   "",   -- CancelMouseDown
+                   "mouseup",   -- MouseUp
+                   "Drag to move",  -- tooltip text
+                   10, 0)  -- arrow (NS/EW) cursor
+                   
+  WindowDragHandler(Win, Win .. "_Main", "dragmove", "dragrelease", 0) 
+  
+  -- ensure window visible
+  WindowShow (Win, true)
+  
+end -- SetupWindow(Win)
+
+function string:split(sep)
+    if not sep then
+      sep = "%s"
+    end
+    
+    local t={}  
+    local i=1
+    for str in string.gmatch(self, "([^"..sep.."]+)") do
+      t[i] = str
+      i = i + 1
+    end
+    return t
+end
+function SetupDefaults(Win)
+  if (#Active_Windows < 1) then
+    button_table[Win] = 
+  {
+      {
+            icon = "DisruptorCannon.png",  -- icon image
+            --tooltip = "Disruptor 1",  -- tooltip help text
+            cooldown = 50,          -- cooldown time in seconds
+            tts = "Disruptor 1 ready", -- Speaks using windows built in Text-to-speech
+            name = "B1", -- Hardpoint location of the weapon
+    }
+}
+else
+    button_table[Win] = 
+  {
+      {
+            icon = "Tricobalt.png",  -- icon image
+            --tooltip = "Tricobalt Torpedo 1",  -- tooltip help text
+            cooldown = 50,          -- cooldown time in seconds
+            tts = "Disruptor 1 ready", -- Speaks using windows built in Text-to-speech
+            name = "M1", -- Hardpoint location of the weapon
+    }
+}
+end
+end
+	]]>
+</script>
+
+</muclient>
