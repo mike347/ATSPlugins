@@ -3187,7 +3187,7 @@ function fun_best_route(_, _ , wildcards)
     weta = r / Velocity(speed, wormhole.cochranes, space_objs[dRef].cochranes)
     s = bordercrossings(wormhole.x, wormhole.y,wormhole.z, dx, dy, dz, Velocity(speed, wormhole.cochranes, dc))
     route[#route+1] = { name = space_objs[dRef].name, x = dx, y = dy, z = dz, eta = weta, range = r, wh = false, sg = false, bc = s or nil }
-    eta = eta + weta
+    eta = eta + weta + twceta
     range = range + r
   else -- Nothing to do with GQ, check gates and move on with our life.
     Debug("No GQ. Easy life!")
