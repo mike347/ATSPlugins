@@ -20,9 +20,9 @@ version_info =
 	},
 	["8e3fd4f9c269365839520477"] = 
 	{
-		name = "ATS_Navcomp", version = 1.58, page = "http://zen.trekmush.org/ats/beta/",
+		name = "ATS_Navcomp", version = 1.59, page = "http://zen.trekmush.org/ats/beta/",
 		filename = "ATS_Navcomp.xml",  infopage = "http://zen.trekmush.org/ats-navcomp/",
-        whatsnew = "Fixes TWG->Wormhole interactions. Added new TWG's",
+        whatsnew = "More TWG->WH fixes.",
 	},
 	["1ec11b537d60054d832b896a"] = 
 	{
