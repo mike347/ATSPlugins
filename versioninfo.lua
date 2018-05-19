@@ -20,7 +20,7 @@ version_info =
 	},
 	["8e3fd4f9c269365839520477"] = 
 	{
-		name = "ATS_Navcomp", version = 1.60, page = "http://zen.trekmush.org/ats/beta/",
+		name = "ATS_Navcomp", version = 1.61, page = "http://zen.trekmush.org/ats/beta/",
 		filename = "ATS_Navcomp.xml",  infopage = "http://zen.trekmush.org/ats-navcomp/",
         whatsnew = "See github commit messages",
 	},
