@@ -17,7 +17,7 @@
     date_written="2010-04-04"
     date_modified="2015-01-02"
     requires="4.84"
-    version="2.24"
+    version="2.25"
     save_state="y"
     >
 
@@ -1449,6 +1449,9 @@ function search(term)
 	local start, position = 0, 0
 	-- "rex" is a table supplied by MUSHclient for PCRE functionality.
 	local re = rex.new("(?:https?://|mailto:)\\S*[\\w/\=@#\*\\-\\?]")
+	if (re == nil) then
+		return nil
+	end
 	re:gmatch(text,
 		function (link, _)
 			start, position = string.find(text, link, position, true)
