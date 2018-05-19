@@ -20,7 +20,7 @@
 
   date_modified="2018-02-27 09:02"
 
-  version="1.60">
+  version="1.61">
 
     <description trim="y">
 
@@ -398,7 +398,7 @@ If you find problems, have ideas, or anything related to this plugin, you can fi
 
 <trigger
 
-   enabled="y"
+   enabled="n"
 
    group="ATSPlugin_SpecSheetGrabber"
 
