@@ -3,18 +3,18 @@ version_info =
 { 
 	["de6b99ef3f79191fd27d59b0"] = 
 	{ 
-		name = "ChatGrabberMain", version = 2.24, page = "http://zen.trekmush.org/ats/beta/",
+		name = "ChatGrabberMain", version = 2.25, page = "http://zen.trekmush.org/ats/beta/",
 		filename = "ATS_Chatgrabber.xml", infopage = "http://zen.trekmush.org/chatgrabber/",
-        whatsnew = "(2.24) Bugfixes.",
+        whatsnew = "(2.25) Fix crashbug with older versions of MC.",
 	}, 
 	["981f20859e43e90c624fa1ff"] = 
 	{
-		name = "ChatGrabberSlave1", version = 2.24, page = "http://zen.trekmush.org/ats/beta/",
+		name = "ChatGrabberSlave1", version = 2.25, page = "http://zen.trekmush.org/ats/beta/",
 		filename = "ATS_ChatgrabberSlave1.xml",  infopage = "http://zen.trekmush.org/chatgrabber/",
 	},
 	["d183a293b696885487d3ad83"] =
 	{
-		name = "ChatGrabberSlave2", version = 2.24, page = "http://zen.trekmush.org/ats/beta/", 
+		name = "ChatGrabberSlave2", version = 2.25, page = "http://zen.trekmush.org/ats/beta/", 
 		filename = "ATS_ChatgrabberSlave2.xml", infopage = "http://zen.trekmush.org/chatgrabber/",
 		
 	},
