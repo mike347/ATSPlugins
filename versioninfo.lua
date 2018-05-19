@@ -1,6 +1,6 @@
 -- ATS Navcomp Version info
 version_info = 
-{  
+{ 
 	["de6b99ef3f79191fd27d59b0"] = 
 	{ 
 		name = "ChatGrabberMain", version = 2.25, page = "http://zen.trekmush.org/ats/beta/",
@@ -62,7 +62,7 @@ version_info =
 --]]
 }
 
-
+--[[
 
 ats_navcomp_info = {
 	plugin_version = "1.15",
@@ -91,5 +91,5 @@ ats_navcomp_info = {
 	]==],
 	
 }
-
+--]]
 
