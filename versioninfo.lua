@@ -20,9 +20,9 @@ version_info =
 	},
 	["8e3fd4f9c269365839520477"] = 
 	{
-		name = "ATS_Navcomp", version = 1.59, page = "http://zen.trekmush.org/ats/beta/",
+		name = "ATS_Navcomp", version = 1.60, page = "http://zen.trekmush.org/ats/beta/",
 		filename = "ATS_Navcomp.xml",  infopage = "http://zen.trekmush.org/ats-navcomp/",
-        whatsnew = "More TWG->WH fixes.",
+        whatsnew = "See github commit messages",
 	},
 	["1ec11b537d60054d832b896a"] = 
 	{
