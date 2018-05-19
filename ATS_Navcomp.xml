@@ -20,7 +20,7 @@
 
   date_modified="2018-02-27 09:02"
 
-  version="1.59">
+  version="1.60">
 
     <description trim="y">
 
@@ -1842,9 +1842,9 @@ function fun_traceheading(name, _, wildcards)
      local t = newtraceheading(wildcards.yaw, wildcards.pitch, source, wildcards.speed, false)
      if ( tonumber(t)) then
         if(tonumber(t) == 0) then
-          ColourNote("red", "", "Source location not found in database. Please send full base name and GRC Coordinates, or planet name where this base is located to Qon@TrekMUSH.")
+          Debug("Source location not found in database. Please send full base name and GRC Coordinates, or planet name where this base is located to Qon@TrekMUSH.")
         elseif (tonumber(t) == -1) then
-          ColourNote("red", "", "Destination not found.")
+          Debug("Destination not found.")
         end
         
       return  
