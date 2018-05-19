@@ -2,7 +2,7 @@
 version_info = 
 {  
 	["de6b99ef3f79191fd27d59b0"] = 
-	{  
+	{ 
 		name = "ChatGrabberMain", version = 2.25, page = "http://zen.trekmush.org/ats/beta/",
 		filename = "ATS_Chatgrabber.xml", infopage = "http://zen.trekmush.org/chatgrabber/",
         whatsnew = "(2.25) Fix crashbug with older versions of MC.",
