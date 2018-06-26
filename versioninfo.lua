@@ -22,7 +22,7 @@ version_info =
 	{
 		name = "ATS_Navcomp", version = 1.62, page = "http://zen.trekmush.org/ats/beta/",
 		filename = "ATS_Navcomp.xml",  infopage = "http://zen.trekmush.org/ats-navcomp/",
-        whatsnew = "See github commit messages",
+        whatsnew = "Add Thieurull to conduit list.",
 	},
 	["1ec11b537d60054d832b896a"] = 
 	{
