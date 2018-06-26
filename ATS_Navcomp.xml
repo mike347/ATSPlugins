@@ -20,7 +20,7 @@
 
   date_modified="2018-02-27 09:02"
 
-  version="1.61">
+  version="1.62">
 
     <description trim="y">
 
@@ -2871,7 +2871,7 @@ function fun_fromto(name, _ , wildcards)
     end
     
     if (gate[sresult].range <= 0) then
-      str1 = str1 .. string.format("%sUse local %sTranswarp Conduit%s, exiting at %s%s\n\r", ANSI(36), ANSI(1,33), ANSI(22,36), ANSI(1,36), gate[dresult].name)
+      str1 = str1 .. string.format("%sUse local %sTranswarp %s, exiting at %s%s\n\r", ANSI(36), ANSI(1,33), ANSI(22,36), ANSI(1,36), gate[dresult].name)
     else
       str1 = str1 .. string.format("%s%s %s----->%s %s [%.3f] %s\r\n%s%s\r\n", ANSI(1, 32), pname,  ANSI(1, 37), ANSI(1, 32), gate[sresult].name, gate[sresult].range, 
          timestring(gate[sresult].eta), ANSI(1, 32), bc1 or "No border crossings\r\n") 
@@ -2902,7 +2902,7 @@ end
 
 local function best_route(px, py, pz, pc, speed, dx, dy, dz, dc)
   local gate = { }
-  local known_conduits = {"Boreth", "Magna Roma", "Elosian City", "Usho Prime", "Zausta VI", "Clispau IX", "Latinum Galleria" }
+  local known_conduits = {"Boreth", "Magna Roma", "Elosian City", "Usho Prime", "Zausta VI", "Clispau IX", "Latinum Galleria", "Thieurrull" }
   local quadrant = xyz2quadrant(px, py, pz)
   
   for i = 1, #known_conduits do
