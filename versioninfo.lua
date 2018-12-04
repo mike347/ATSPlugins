@@ -35,7 +35,6 @@ version_info =
 		filename = "ATS_ShieldStatus.xml", 
 		requires = { "GMCP_handler.xml" },
 	},
-	},
 	["14f4885e803e076273a4767a"] = 
 	{
 		name = "Paste_As_MUSH", version = 1.22, page = "http://zen.trekmush.org/ats/beta/",
