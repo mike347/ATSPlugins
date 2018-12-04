@@ -20,7 +20,7 @@ version_info =
 	},
 	["8e3fd4f9c269365839520477"] = 
 	{
-		name = "ATS_Navcomp", version = 1.62, page = "http://zen.trekmush.org/ats/beta/",
+		name = "ATS_Navcomp", version = 1.63, page = "http://zen.trekmush.org/ats/beta/",
 		filename = "ATS_Navcomp.xml",  infopage = "http://zen.trekmush.org/ats-navcomp/",
         whatsnew = "Add Thieurull to conduit list.",
 	},
@@ -33,7 +33,6 @@ version_info =
 	{
 		name = "ShieldStatus", version = 1.03, page = "http://zen.trekmush.org/ats/beta/",
 		filename = "ATS_ShieldStatus.xml", 
-		requires = { "GMCP_handler.xml" },
 	},
 	["14f4885e803e076273a4767a"] = 
 	{
