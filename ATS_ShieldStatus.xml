@@ -14,7 +14,7 @@
    purpose="To visually show shield status"
    date_written="2014-05-23 21:33:22"
    requires="4.84"
-   version="1.03"
+   version="1.10"
    save_state="y"
    >
 
@@ -110,46 +110,14 @@
   >
   </trigger>
 
-  <trigger
-   enabled="y"
-   group="ATS_ShieldStatus"
-   lines_to_match="4"
-   keep_evaluating="y"
-   match="^--\[Damage Control Status Report\][-]+\sSystem Name\s+Integ\s+Condition\s+[-]+\s[-]+\s[-]+\s[-]{79}$"
-   multi_line="y"
-   name="damstat_alllrepaired"
-   regexp="y"
-   script="fun_reset"
-   sequence="100"
-  >
-  </trigger>
-
-  <trigger
-   enabled="y"
-   group="ATS_ShieldStatus"
-   keep_evaluating="y"
-   match="^^\[.*?\]--\[(Shield\srepaired\sto\s([\d-.]+)%|Shield\srepairs\scomplete)\]$"
-   name="repaired_shield_percent"
-   regexp="y"
-   script="fun_shield_repaired"
-   sequence="100"
-  >
-  </trigger>
-
-  <trigger
-   enabled="y"
-   group="ATS_ShieldStatus"
-   lines_to_match="11"
-   match="^\s+Shield Freq:\s+[\d.\sGHz]+.*\s+[-]{79}\s+System Name\s+Funct Status\s+Specifics\s+[-\s]+Forward shield\s+([\d-]+)%\s.*\s+Starboard shield\s+([\d-]+)%.*\s+Aft shield\s+([\d-]+)%\s.*\s+Port shield\s+([\d-]+)%\s.*\s+Dorsal shield\s+([\d-]+)%\s.*\s+Ventral\sshield\s+([\d-.]+)%\s.*\s+[-]{79}$"
-   multi_line="y"
-   name="helmstat_shields2"
-   regexp="y"
-   script="fun_update_shields"
-   sequence="100"
-  >
-  </trigger>
-
   </triggers>
+<timers>
+  <timer name="ShieldStatus_Updater" enabled="n" second="1.00" offset_second="0.00"    send_to="12"
+>
+  <send>CallPlugin("74f8c420df7d59ad5aa66246", "Send_GMCP_Packet", "Space.FullUpdate")</send>
+
+  </timer>
+</timers>
 
 <!--  Script  -->
 
@@ -157,10 +125,12 @@
 <script>
 <![CDATA[
 require "mw"
+require "json"
+GMCPID = "74f8c420df7d59ad5aa66246"
 
-ShieldStatus = { ["Forward"] = 1.0, ["Starboard"] = 1.0, ["Aft"] = 1.0, ["Port"] = 1.0, ["Dorsal"] = 1.0, ["Ventral"] = 1.0, ["SS"] = 1.0 }
+ShieldStatus = { ["Forward"] = 1.0, ["Starboard"] = 1.0, ["Aft"] = 1.0, ["Port"] = 1.0, ["Dorsal"] = 1.0, ["Ventral"] = 1.0, ["SS"] = 1.0, ["Name"] = nil, ["Mode"] = "Unknown", ["Pitch"] = 0.0, ["Yaw"] = 0.0, ["Speed"] = 0.0, ["Velocity"] = 0.0, ["Class"] = "Unknown" }
+ShieldPriority = { ["Forward"] = 0, ["Starboard"] = 0, ["Aft"] = 0, ["Port"] = 0, ["Dorsal"] = 0, ["Ventral"] = 0, ["SS"] = 0, ["RepCapRate"] = 0 }
 debugmode = false
-
 
 function Debug(t, ...)
   if not debugmode or not t then 
@@ -169,6 +139,104 @@ function Debug(t, ...)
   Note("DEBUG: " .. string.format(t,...))
 end
 
+function OnPluginBroadcast (msg, id, name, text)
+ if (id == "74f8c420df7d59ad5aa66246" ) then  -- GMCP_handler
+ -- pull out GMCP message, plus the data belonging to it
+   message, params = string.match (text, "([%a.]+)%s+(.*)")
+  
+   -- no match? oops!
+   if not message then
+      return
+   end -- if
+   
+   if (message == "console.unman") then -- Turn off timer when not manning a console
+     EnableTimer("ShieldStatus_Updater", false);
+    WindowFilter (win, 0, 0,  WINDOW_WIDTH, WINDOW_HEIGHT, 25, 0) -- blur both directions
+   elseif (message == "console.man") then
+     EnableTimer("ShieldStatus_Updater", true);
+     UpdateDisplay()
+   end
+  
+   if (message ~= "shield.status") then -- We only care about shields
+     return
+   end
+   
+   -- ensure we have an array or object
+   if not string.match (params, "^[%[{]") then
+      params =  "[" .. params .. "]"  -- JSON hack, make msg first element of an array.
+   end -- if 
+   
+   -- decode it
+   result = assert (json.decode (params))
+   if (result["fore"]) then
+    ShieldStatus.Forward = result["fore"]
+   end
+   if (result["star"]) then
+    ShieldStatus.Starboard = result["star"]
+   end
+   if (result["aft"]) then 
+     ShieldStatus.Aft = result["aft"]
+   end
+   if (result["port"]) then
+     ShieldStatus.Port = result["port"]
+   end
+   if (result["dors"]) then
+     ShieldStatus.Dorsal = result["dors"]
+   end
+   if (result["vent"]) then
+     ShieldStatus.Ventral = result["vent"]
+   end
+   if (result["ss"]) then
+     ShieldStatus.SS = result["ss"]
+   end
+   if (result["name"]) then
+     ShieldStatus.Name = result["name"]
+   end
+   if (result["class"]) then
+     ShieldStatus.Class = result["class"]
+   end
+   if (result["vel"]) then
+    ShieldStatus.Velocity = result["vel"]
+   end
+   if (result["speed"]) then
+     ShieldStatus.Speed = result["speed"]
+   end
+   if (result["yaw"]) then
+     ShieldStatus.Yaw = result["yaw"]
+   end
+   if (result["pitch"]) then
+     ShieldStatus.Pitch = result["pitch"]
+   end
+   
+    if (result["pri_fore"]) then
+    ShieldPriority.Forward = result["pri_fore"]
+   end
+   if (result["pri_star"]) then
+    ShieldPriority.Starboard = result["pri_star"]
+   end
+   if (result["pri_aft"]) then 
+     ShieldPriority.Aft = result["pri_aft"]
+   end
+   if (result["pri_port"]) then
+     ShieldPriority.Port = result["pri_port"]
+   end
+   if (result["pri_dors"]) then
+     ShieldPriority.Dorsal = result["pri_dors"]
+   end
+   if (result["pri_vent"]) then
+     ShieldPriority.Ventral = result["pri_vent"]
+   end
+   if (result["pri_ss"]) then
+     ShieldPriority.SS = result["pri_ss"]
+   end
+   if (result["repcap_rate"]) then
+	 ShieldPriority.RepCapRate = result["repcap_rate"]
+	end
+	
+   UpdateDisplay()
+
+   end
+ end
 -- Forward, Starboard, Aft, Port, Dorsal, Ventral
 function fun_update_shields(name, _, wildcards)
   
@@ -292,17 +360,20 @@ function fun_shield_repaired(name,_,wildcards)
 -- Modified for our own usage.
 --]]
 
-GAUGE_LEFT = 55
+GAUGE_LEFT = 80
 GAUGE_HEIGHT = 15
 
-WINDOW_WIDTH = 200
-WINDOW_HEIGHT = 145
+WINDOW_WIDTH = 260
+WINDOW_HEIGHT = 215
 NUMBER_OF_TICKS = 4
 
 BACKGROUND_COLOR = ColourNameToRGB("black")
 FONT_COLOR = ColourNameToRGB("orange")
 BORDER_COLOR = ColourNameToRGB("#553333")
 FONT2_COLOR = ColourNameToRGB("white")
+STATUS_COLOR = ColourNameToRGB("lightsteelblue")
+STATUS_COLOR2 = ColourNameToRGB("lime")
+VEL_COLOR = ColourNameToRGB("yellow")
 
 function mousedown(flags, hotspot_id)
 
@@ -419,16 +490,61 @@ function UpdateDisplay()
   
   -- Edge around box rectangle
   check (WindowCircleOp (win, 3, 0, 0, 0, 0, BORDER_COLOR, 0, 2, 0, 1))
+  vertical = 6
+  local offset = 5
+  if(ShieldStatus.Name == nil or #ShieldStatus.Name <= 1) then
+    WindowText(win, font_id, "Please man a console", offset, vertical, 0, 0, STATUS_COLOR2)
+    vertical = vertical + font_height +3
+    WindowText(win, font_id, " or type a space command to", offset, vertical, 0, 0, STATUS_COLOR2)
+    vertical = vertical + font_height +3
+    WindowText(win, font_id, "update data.", offset, vertical, 0, 0, STATUS_COLOR2)
+    WindowShow (win, true)
+    return
+  end
+  
+  WindowText(win, font_id, "Ship: ", offset, vertical, 0, 0, STATUS_COLOR2)
+  WindowText(win, font_id, ShieldStatus.Name, offset + (font_width * string.len("Ship: ")), vertical, 0, 0, STATUS_COLOR)
+  vertical = vertical + font_height + 3
+  
+  WindowText(win, font_id, "Class: ", offset, vertical, 0, 0, STATUS_COLOR2)
+  WindowText(win, font_id, ShieldStatus.Class, offset + (font_width * string.len("Class: ")), vertical, 0, 0, STATUS_COLOR)
+  vertical = vertical + font_height + 3
+  WindowText(win, font_id, "Heading: ", offset, vertical, 0, 0, STATUS_COLOR2)
+  WindowText(win, font_id, ShieldStatus.Yaw .. " / " .. ShieldStatus.Pitch, offset + (font_width * string.len("Heading:  ")), vertical, 0, 0, STATUS_COLOR)
+  vertical = vertical + font_height + 3
+  WindowText(win, font_id, "Spd" , offset, vertical, 0, 0, STATUS_COLOR2)
+  WindowText(win, font_id, " - " , offset + (font_width * string.len("Spd ")), vertical, 0, 0, STATUS_COLOR)
+  WindowText(win, font_id, "Vel:" , offset + (font_width * string.len("Spd  - ")), vertical, 0, 0, VEL_COLOR)
+  
+  if (ShieldStatus.Speed == 0) then
+    WindowText(win, font_id, "  Stationary", offset + (font_width * string.len("Spd - Vel: ")), vertical, 0, 0, STATUS_COLOR)
+  else
+    local s
+    if (ShieldStatus.Speed >= 1.0 or ShieldStatus.Speed <= -1.0) then
+      s = " w" .. ShieldStatus.Speed
+    else
+      s = " " .. ShieldStatus.Speed * 100 .. "%"
+    end
+    local v
+    if (ShieldStatus.Velocity:find("%[")) then
+      v = ShieldStatus.Velocity .. " PC/s"
+    else
+      v = ShieldStatus.Velocity .. " SU/s"
+    end
+    
+    WindowText(win, font_id, s .. " ", offset + (font_width * string.len("Spd - Vel: ")), vertical, 0, 0, STATUS_COLOR)
+    WindowText(win, font_id, v, offset + (font_width * (string.len("Spd - Vel: ") + #s + 4)), vertical, 0, 0, VEL_COLOR)
+  end
+  
+  vertical = vertical + font_height + 5 -- pixel to start at
 
-  vertical = 6  -- pixel to start at
-
-  DoGauge ("Fore: ", ShieldStatus.Forward)
-  DoGauge ("Star: ", ShieldStatus.Starboard)
-  DoGauge ("Aft: ", ShieldStatus.Aft)
-  DoGauge ("Port: ",ShieldStatus.Port)
-  DoGauge ("Vent: ",ShieldStatus.Ventral)
-  DoGauge("Dors: ", ShieldStatus.Dorsal)
-  DoGauge("SS: ", ShieldStatus.SS)
+  DoGauge ("(" .. ShieldPriority.Forward .. ") " .. "Fore: ", ShieldStatus.Forward)
+  DoGauge ("(" .. ShieldPriority.Starboard .. ") " .. "Star: ", ShieldStatus.Starboard)
+  DoGauge ("(" .. ShieldPriority.Aft .. ") " .. "Aft: ", ShieldStatus.Aft)
+  DoGauge ("(" .. ShieldPriority.Port .. ") " .. "Port: ",ShieldStatus.Port)
+  DoGauge ("(" .. ShieldPriority.Ventral .. ") " .. "Vent: ",ShieldStatus.Ventral)
+  DoGauge ("(" .. ShieldPriority.Dorsal .. ") " .. "Dors: ", ShieldStatus.Dorsal)
+  DoGauge ("(" .. ShieldPriority.SS .. ") " .. "SS: ", ShieldStatus.SS)
   WindowShow (win, true)
   
 end -- draw_bar
@@ -436,12 +552,31 @@ end -- draw_bar
 function OnPluginConnect ()
 fun_reset()
 end -- function
+
 function OnPluginInstall ()
-  ColourNote("orange", "", "ATS_ShieldStatus v" .. GetPluginInfo(GetPluginID(),19) .. " loaded.")
+  
+  if (IsPluginInstalled(GMCPID)) then
+    ColourNote("orange", "", "ATS_ShieldStatus (GMCP-Aware) v" .. GetPluginInfo(GetPluginID(),19) .. " loaded.")
+    EnableTriggerGroup("ATS_ShieldStatus", true) -- Still use the trigger group, for damage, etc.
+    CallPlugin(GMCPID, "Send_GMCP_Packet", "Space.FullUpdate")
+  else
+    ColourNote("orange", "", "Attempting to load GMCP Handler...")
+       local finfo = utils.info()
+       local plugin_folder = finfo["plugins_directory"]
+    if (LoadPlugin (plugin_folder .. "/" .. "GMCP_Handler.xml") == error_code.eOK) then
+      ColourNote("orange", "", "Success! Now loading Shield status plugin..")
+      EnableTriggerGroup("ATS_ShieldStatus", true)
+    else
+      ColourNote("orange", "", "Error loading GMCP Handler. Please run Qupdate or re-install shield status plugin using qinstall.")
+      EnableTriggerGroup("ATS_ShieldStatus", false)
+    return
+  end
+end
+    
   win = GetPluginID ()
   font_id = "fn"
   
-  font_name = "Fixedsys"    -- the actual font
+  font_name = "Verdana"    -- the actual font
 
   local x, y, mode, flags = 
       tonumber (GetVariable ("windowx")) or 0,
@@ -472,6 +607,7 @@ function OnPluginInstall ()
   check (WindowFont (win, font_id, font_name, 9, false, false, false, false, 0, 0))  -- normal
   
   font_height = WindowFontInfo (win, font_id, 1)  -- height
+  font_width = WindowFontInfo (win, font_id, 6)
   UpdateDisplay()
   
   if GetVariable ("enabled") == "false" then
@@ -493,6 +629,7 @@ function OnPluginSaveState ()
   SetVariable ("windowmode", tostring (WindowInfo (win, 7)))
   SetVariable ("windowflags", tostring (WindowInfo (win, 8)))
 end -- OnPluginSaveState
+
 
 ]]>
 </script>
