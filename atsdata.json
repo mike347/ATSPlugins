@@ -1,6 +1,6 @@
 {
 	"ATS_Navcomp_DB": {
-	"version": 2.15,
+	"version": 2.16,
 	"empires": [
 {
 "name": "Cardassian",
@@ -110,7 +110,7 @@
 		{ "name":"USB Invictus Outpost", "x": -9197.944300, "y": 0.000000, "z": 0.000000, "cochranes":1298, "market":-1 },
 		{ "name":"USB Kembri Outpost", "x": -9290.482000, "y": -129.997000, "z": -46.686000, "cochranes":1298, "market":-1 },
 		{ "name":"USB Leonidas Outpost", "x": -9386.244300, "y": -93.300000, "z": -88.100000, "cochranes":1298, "market":-1 },
-		{ "name":"USB Ankara Station", "x": 7446.049000, "y": -5376.000000, "z": 131.501000, "cochranes":1575, "market":-1 },
+		{ "name":"USB Ankara Starbase", "x": 7446.049000, "y": -5376.000000, "z": 131.501000, "cochranes":1575, "market":-1 },
 		{ "name":"USB Safe Haven", "x": 7252.341000, "y": -5637.792000, "z": 55.796000, "cochranes":1584, "market":-1 }
 	]},
 {
@@ -174,7 +174,8 @@
 		{ "name":"IKB juHwaw'", "x": -9519.444174, "y": 48.600000, "z": -87.900000, "cochranes": 1028 },
 		{ "name":"IKB Qulpo'", "x": -9444.844174, "y": 60.000000, "z": -66.400000, "cochranes": 1342 },
 		{ "name":"IKB yoH hubwI'", "x": -9478.009867, "y": 311.638052, "z": -56.560950, "cochranes": 1013 },
-		{ "name":"IKB Hegh nach", "x": 7369.536000, "y": -5276.597000, "z": -49.229000, "cochranes": 1156 }
+		{ "name":"IKB Hegh nach", "x": 7369.536000, "y": -5276.597000, "z": -49.229000, "cochranes": 1156 },
+		{ "name":"IKA Kadesh Hub waw'", "x": 9407.844, "y": 7.7, "z": -136.0, "cochranes":1606.133}
 	]},
 {
 "name": "Romulan",
