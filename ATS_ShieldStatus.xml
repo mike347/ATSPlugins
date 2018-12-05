@@ -14,7 +14,7 @@
    purpose="To visually show shield status"
    date_written="2014-05-23 21:33:22"
    requires="4.84"
-   version="1.10"
+   version="1.11"
    save_state="y"
    >
 
@@ -126,13 +126,36 @@
 <![CDATA[
 require "mw"
 require "json"
-GMCPID = "74f8c420df7d59ad5aa66246"
+local GMCPID = "74f8c420df7d59ad5aa66246"
 
-ShieldStatus = { ["Forward"] = 1.0, ["Starboard"] = 1.0, ["Aft"] = 1.0, ["Port"] = 1.0, ["Dorsal"] = 1.0, ["Ventral"] = 1.0, ["SS"] = 1.0, ["Name"] = nil, ["Mode"] = "Unknown", ["Pitch"] = 0.0, ["Yaw"] = 0.0, ["Speed"] = 0.0, ["Velocity"] = 0.0, ["Class"] = "Unknown" }
-ShieldPriority = { ["Forward"] = 0, ["Starboard"] = 0, ["Aft"] = 0, ["Port"] = 0, ["Dorsal"] = 0, ["Ventral"] = 0, ["SS"] = 0, ["RepCapRate"] = 0 }
-debugmode = false
+local ShieldStatus = { ["Forward"] = 1.0, ["Starboard"] = 1.0, ["Aft"] = 1.0, ["Port"] = 1.0, ["Dorsal"] = 1.0, ["Ventral"] = 1.0, ["SS"] = 1.0, ["Name"] = nil, ["Mode"] = "Unknown" }
+local Course = { ["Autopilot"] = 0, ["Pitch"] = 0.0, ["Yaw"] = 0.0, ["Roll"] = 0.0, ["Speed"] = 0.0, ["Velocity"] = 0.0, ["Cochranes"] = 0.0, ["DestX"] = 0.0, ["DestY"] = 0.0, ["DestZ"] = 0.0, ["CoordX"] = 0.0, ["CoordY"] = 0.0, ["CoordZ"] = 0.0 }
+local ShieldPriority = { ["Forward"] = 0, ["Starboard"] = 0, ["Aft"] = 0, ["Port"] = 0, ["Dorsal"] = 0, ["Ventral"] = 0, ["SS"] = 0, ["RepCapRate"] = 0 }
+local debugmode = false
+local colorscheme = "Default"
+local GAUGE_LEFT = 100
+local GAUGE_HEIGHT = 15
 
-function Debug(t, ...)
+local WINDOW_WIDTH = 260
+local WINDOW_HEIGHT = 215
+local NUMBER_OF_TICKS = 4
+
+local BACKGROUND_COLOR = ColourNameToRGB("black")
+local FONT_COLOR = ColourNameToRGB("orange")
+local BORDER_COLOR = ColourNameToRGB("#553333")
+local FONT2_COLOR = ColourNameToRGB("white")
+local TEXT_VALUE_COLOR = ColourNameToRGB("lightsteelblue")
+local TEXT_ITEM_COLOR = ColourNameToRGB("lime")
+local TEXT_VALUE_COLOR2 = ColourNameToRGB("yellow")
+
+local win = GetPluginID ()
+local font_id = "fn_" .. GetPluginID()
+local font_name = "Verdana"    -- the actual font
+local font_size = 9
+local font_height = 0 -- These are set later when we make the actual window
+local font_width = 0 -- Because we cant get this until a window exists
+
+local function Debug(t, ...)
   if not debugmode or not t then 
     return 
   end
@@ -192,7 +215,7 @@ function OnPluginBroadcast (msg, id, name, text)
    if (result["name"]) then
      ShieldStatus.Name = result["name"]
    end
-   if (result["class"]) then
+--[[   if (result["class"]) then
      ShieldStatus.Class = result["class"]
    end
    if (result["vel"]) then
@@ -207,7 +230,7 @@ function OnPluginBroadcast (msg, id, name, text)
    if (result["pitch"]) then
      ShieldStatus.Pitch = result["pitch"]
    end
-   
+--]]
     if (result["pri_fore"]) then
     ShieldPriority.Forward = result["pri_fore"]
    end
@@ -233,6 +256,13 @@ function OnPluginBroadcast (msg, id, name, text)
 	 ShieldPriority.RepCapRate = result["repcap_rate"]
 	end
 	
+  for k, v in pairs(Course) do
+    if(result[k]) then
+      Course[k] = tonumber(result[k])
+    end
+  end
+  
+  
    UpdateDisplay()
 
    end
@@ -360,20 +390,84 @@ function fun_shield_repaired(name,_,wildcards)
 -- Modified for our own usage.
 --]]
 
-GAUGE_LEFT = 80
-GAUGE_HEIGHT = 15
+function right_click_menu ()
+	menustring = string.format("^Shield Status v%s|-|", tostring(GetPluginInfo(GetPluginID(), 19)))
+  menustring = menustring .. "Manual Refresh"
+  menustring = menustring .. "|>Settings|Change Font|Gauge Width|Gauge Ticks|<"
+  menustring = menustring.. string.format("|>Color Scheme|%sDefault|%sSpro's Favorite|%sCustom", colorscheme == "Default" and "+" or "", colorscheme == "Spro" and "+" or "", colorscheme == "Custom" and "+" or "")
+  menustring = menustring .. "|>Custom Colors|Label Color|Value Color|Value Hilight Color|Background Color|System Name Color|System Percent Color|Border Color|<|Reload Defaults|<"
+  
+  local result = WindowMenu (win, 
+        WindowInfo (win, 14),  -- x position
+        WindowInfo (win, 15),   -- y position
+        menustring) -- content
+  if ( result == "Manual Refresh") then
+        CallPlugin(GMCPID, "Send_GMCP_Packet", "Space.FullUpdate")
+        ColourNote("yellow", "", "Sending manual GMCP Update request..")
+  elseif (result == "Default") then
+    colorscheme = "Default"
+    ColourNote("yellow", "", "Shield Status: Setting color scheme to Default.")
+  elseif (result == "Spro's Favorite") then
+    colorscheme = "Spro"
+    ColourNote("yellow", "", "Shield Status: Setting color scheme to Spro's Favorite.")
+  elseif (result == "Custom") then
+    colorscheme = "Custom"
+    ColourNote("yellow", "", "Shield Status: Loading custom color scheme.")
+  elseif (result == "Change Font") then
+        wanted_font = utils.fontpicker (font_name, font_size) --font dialog
+        if (wanted_font) then
+            font_name = wanted_font.name
+            font_size = wanted_font.size
+            SetVariable ("font_name", font_name)
+            SetVariable ("font_size", font_size)
+            OnPluginInstall()
+        end
+  elseif (result == "Gauge Width") then
+      local tmp = utils.inputbox ("Gauge Width in pixels. Default is 100. Lower numbers increase size, higher decreases.", "ATS Shield Status", GAUGE_LEFT, "Courier", 9, {max_length = 4 }) 
+      if (tmp and tonumber(tmp) ~=GAUGE_LEFT) then
+        ColourNote("yellow", "", "Gauge width changed to " .. tmp)
+        GAUGE_LEFT = tonumber(tmp)
+        UpdateDisplay()
+      end
+  elseif (result == "Gauge Ticks") then
+      local tmp = utils.inputbox("Number of Gauge ticks (seperators in the percentage bar). Set to 0 to disable entirely.", "ATS Shield Status", NUMBER_OF_TICKS, "Courier", 9, {max_length = 4})
+      if (tmp and tonumber(tmp) ~= NUMBER_OF_TICKS) then
+        ColourNote("yellow", "", "ShieldStatus: Gauge Ticks set to " .. tmp)
+        NUMBER_OF_TICKS = tonumber(tmp)
+        UpdateDisplay()
+      end
+  elseif (result == "Label Color") then
+    SetVariable("TEXT_ITEM_COLOR", PickColour(TEXT_ITEM_COLOR))
+  elseif (result == "Value Color") then
+    SetVariable("TEXT_VALUE_COLOR", PickColour(TEXT_VALUE_COLOR))
+  elseif (result == "Value Hilight Color") then
+    SetVariable("TEXT_VALUE_COLOR2", PickColour(TEXT_VALUE_COLOR2))
+  elseif (result == "Background Color") then
+    SetVariable("BACKGROUND_COLOR", PickColour(BACKGROUND_COLOR))
+  elseif (result == "System Name Color") then
+    SetVariable("FONT_COLOR", PickColour(FONT_COLOR))
+  elseif (result == "System Percent Color") then
+    SetVariable("FONT2_COLOR", PickColour(FONT2_COLOR))
+  elseif (result == "Border Color") then
+    SetVariable("BORDER_COLOR", PickColour(BORDER_COLOR))
+  elseif (result == "Reload Defaults") then
+    SetVariable("BACKGROUND_COLOR", ColourNameToRGB("black"))
+    SetVariable("FONT_COLOR",  ColourNameToRGB("orange"))
+    SetVariable("BORDER_COLOR", ColourNameToRGB("#553333"))
+    SetVariable("FONT2_COLOR",  ColourNameToRGB("white"))
+    SetVariable("TEXT_VALUE_COLOR",  ColourNameToRGB("lightsteelblue"))
+    SetVariable("TEXT_ITEM_COLOR",  ColourNameToRGB("lime"))
+    SetVariable("TEXT_VALUE_COLOR2", ColourNameToRGB("yellow"))
+  end
+  set_color_scheme(colorscheme)
+end
 
-WINDOW_WIDTH = 260
-WINDOW_HEIGHT = 215
-NUMBER_OF_TICKS = 4
 
-BACKGROUND_COLOR = ColourNameToRGB("black")
-FONT_COLOR = ColourNameToRGB("orange")
-BORDER_COLOR = ColourNameToRGB("#553333")
-FONT2_COLOR = ColourNameToRGB("white")
-STATUS_COLOR = ColourNameToRGB("lightsteelblue")
-STATUS_COLOR2 = ColourNameToRGB("lime")
-VEL_COLOR = ColourNameToRGB("yellow")
+function mouseUp(flags, hotspot_id)
+  if(flags == miniwin.hotspot_got_rh_mouse) then
+    right_click_menu()
+  end
+end
 
 function mousedown(flags, hotspot_id)
 
@@ -385,7 +479,10 @@ function mousedown(flags, hotspot_id)
 end -- mousedown
 
 function dragmove(flags, hotspot_id)
-
+  if (flags == miniwin.hotspot_got_rh_mouse) then
+    return
+  end
+  
   -- find where it is now
   local posx, posy = WindowInfo (win, 17),
                      WindowInfo (win, 18)
@@ -460,14 +557,16 @@ end
   end -- non-zero
   
   -- show ticks
-  local ticks_at = (WINDOW_WIDTH - GAUGE_LEFT - 5) / (NUMBER_OF_TICKS + 1)
+  
   
   -- ticks
-  for i = 1, NUMBER_OF_TICKS do
-    WindowLine (win, GAUGE_LEFT + (i * ticks_at), vertical, 
-                GAUGE_LEFT + (i * ticks_at), vertical + GAUGE_HEIGHT, ColourNameToRGB ("silver"), 0, 1)
-  end -- for
-
+  if (NUMBER_OF_TICKS > 0) then
+    local ticks_at = (WINDOW_WIDTH - GAUGE_LEFT - 5) / (NUMBER_OF_TICKS + 1)
+    for i = 1, NUMBER_OF_TICKS do
+      WindowLine (win, GAUGE_LEFT + (i * ticks_at), vertical, 
+                  GAUGE_LEFT + (i * ticks_at), vertical + GAUGE_HEIGHT, ColourNameToRGB ("silver"), 0, 1)
+    end -- for
+  end
   -- draw a box around it
   check (WindowRectOp (win, 1, GAUGE_LEFT, vertical, WINDOW_WIDTH - 5, vertical + GAUGE_HEIGHT, 
           ColourNameToRGB ("lightgrey")))  -- frame entire box
@@ -484,56 +583,80 @@ end -- function
 
 function UpdateDisplay()
 
+  vertical = 6
+  offset = 5
+  offset_tmp = 0
   
   -- fill entire box to clear it
   check (WindowRectOp (win, 2, 0, 0, 0, 0, BACKGROUND_COLOR))  -- fill entire box
   
   -- Edge around box rectangle
   check (WindowCircleOp (win, 3, 0, 0, 0, 0, BORDER_COLOR, 0, 2, 0, 1))
-  vertical = 6
-  local offset = 5
+
   if(ShieldStatus.Name == nil or #ShieldStatus.Name <= 1) then
-    WindowText(win, font_id, "Please man a console", offset, vertical, 0, 0, STATUS_COLOR2)
+    WindowText(win, font_id, "Please man a console", offset, vertical, 0, 0, TEXT_ITEM_COLOR)
     vertical = vertical + font_height +3
-    WindowText(win, font_id, " or type a space command to", offset, vertical, 0, 0, STATUS_COLOR2)
+    WindowText(win, font_id, " or type a space command to", offset, vertical, 0, 0, TEXT_ITEM_COLOR)
     vertical = vertical + font_height +3
-    WindowText(win, font_id, "update data.", offset, vertical, 0, 0, STATUS_COLOR2)
+    WindowText(win, font_id, "update data.", offset, vertical, 0, 0, TEXT_ITEM_COLOR)
     WindowShow (win, true)
     return
   end
   
-  WindowText(win, font_id, "Ship: ", offset, vertical, 0, 0, STATUS_COLOR2)
-  WindowText(win, font_id, ShieldStatus.Name, offset + (font_width * string.len("Ship: ")), vertical, 0, 0, STATUS_COLOR)
+  WindowText(win, font_id, "Ship: ", offset, vertical, 0, 0, TEXT_ITEM_COLOR)
+  WindowText(win, font_id, ShieldStatus.Name, offset + (font_width * string.len("Ship: ")), vertical, 0, 0, TEXT_VALUE_COLOR)
   vertical = vertical + font_height + 3
   
-  WindowText(win, font_id, "Class: ", offset, vertical, 0, 0, STATUS_COLOR2)
-  WindowText(win, font_id, ShieldStatus.Class, offset + (font_width * string.len("Class: ")), vertical, 0, 0, STATUS_COLOR)
+--  WindowText(win, font_id, "Class: ", offset, vertical, 0, 0, TEXT_ITEM_COLOR)
+  --WindowText(win, font_id, ShieldStatus.Class, offset + (font_width * string.len("Class: ")), vertical, 0, 0, TEXT_VALUE_COLOR)
+  --vertical = vertical + font_height + 3
+  WindowText(win, font_id, "Heading: ", offset, vertical, 0, 0, TEXT_ITEM_COLOR)
+  WindowText(win, font_id, Course.Yaw .. " / " .. Course.Pitch, offset + (font_width * string.len("Heading:  ")), vertical, 0, 0, TEXT_VALUE_COLOR)
   vertical = vertical + font_height + 3
-  WindowText(win, font_id, "Heading: ", offset, vertical, 0, 0, STATUS_COLOR2)
-  WindowText(win, font_id, ShieldStatus.Yaw .. " / " .. ShieldStatus.Pitch, offset + (font_width * string.len("Heading:  ")), vertical, 0, 0, STATUS_COLOR)
-  vertical = vertical + font_height + 3
-  WindowText(win, font_id, "Spd" , offset, vertical, 0, 0, STATUS_COLOR2)
-  WindowText(win, font_id, " - " , offset + (font_width * string.len("Spd ")), vertical, 0, 0, STATUS_COLOR)
-  WindowText(win, font_id, "Vel:" , offset + (font_width * string.len("Spd  - ")), vertical, 0, 0, VEL_COLOR)
+  local distance = xyz2range(Course.CoordX, Course.CoordY, Course.CoordZ, Course.DestX, Course.DestY, Course.DestZ)
+  if (distance > 0.0) then
+    local d = format_distance(distance) 
+        
+    offset_tmp = WindowText(win, font_id, "Dest: ", offset, vertical, 0, 0, TEXT_ITEM_COLOR)
+    --WindowText(win, font_id, d, offset + (font_width * (string.len("Dest:") + 2)), vertical, 0, 0, TEXT_VALUE_COLOR)
+    offset_tmp = offset_tmp + WindowText(win, font_id, d, offset + offset_tmp, vertical, 0, 0, TEXT_VALUE_COLOR)
+    if (Course.Autopilot > 0) then
+      offset_tmp = offset_tmp + WindowText(win, font_id, " (AP On)", offset + offset_tmp, vertical, 0, 0, TEXT_VALUE_COLOR2)
+    else
+      offset_tmp = offset_tmp + WindowText(win, font_id, " (AP Off)", offset + offset_tmp, vertical, 0, 0, TEXT_VALUE_COLOR2)
+    end
+    if (Course.Velocity > 0.0) then
+      offset_tmp = offset_tmp + WindowText(win, font_id, " - ", offset + offset_tmp, vertical, 0, 0, TEXT_VALUE_COLOR)
+      if ((distance / Course.Velocity) > 60*60*24) then
+        WindowText(win, font_id, " A long time", offset + offset_tmp, vertical, 0, 0, TEXT_VALUE_COLOR)
+      else
+        WindowText(win, font_id, timestring(distance / Course.Velocity), offset + offset_tmp, vertical, 0, 0, TEXT_VALUE_COLOR)
+      end
+    end
+    vertical = vertical + font_height + 3
+  end
+    
+  offset_tmp = WindowText(win, font_id, "Speed:" , offset, vertical, 0, 0, TEXT_ITEM_COLOR)
   
-  if (ShieldStatus.Speed == 0) then
-    WindowText(win, font_id, "  Stationary", offset + (font_width * string.len("Spd - Vel: ")), vertical, 0, 0, STATUS_COLOR)
+  
+  if (Course.Speed == 0) then
+    offset_tmp = offset_tmp + WindowText(win, font_id, "  Stationary", offset + offset_tmp, vertical, 0, 0, TEXT_VALUE_COLOR)
   else
     local s
-    if (ShieldStatus.Speed >= 1.0 or ShieldStatus.Speed <= -1.0) then
-      s = " w" .. ShieldStatus.Speed
+    if (Course.Speed >= 1.0 or Course.Speed <= -1.0) then
+      s = " w" .. round(Course.Speed,3)
     else
-      s = " " .. ShieldStatus.Speed * 100 .. "%"
+      s = " " .. round(Course.Speed,3) * 100 .. "%"
     end
-    local v
-    if (ShieldStatus.Velocity:find("%[")) then
-      v = ShieldStatus.Velocity .. " PC/s"
+    local v = format_distance(Course.Velocity)
+    if (Course.Velocity >9999999.0) then
+      v = v .. " PC/s"
     else
-      v = ShieldStatus.Velocity .. " SU/s"
+      v = v .. " SU/s"
     end
     
-    WindowText(win, font_id, s .. " ", offset + (font_width * string.len("Spd - Vel: ")), vertical, 0, 0, STATUS_COLOR)
-    WindowText(win, font_id, v, offset + (font_width * (string.len("Spd - Vel: ") + #s + 4)), vertical, 0, 0, VEL_COLOR)
+    offset_tmp = offset_tmp + WindowText(win, font_id, s .. " ", offset + offset_tmp, vertical, 0, 0, TEXT_VALUE_COLOR)
+    WindowText(win, font_id, v, offset + offset_tmp, vertical, 0, 0, TEXT_VALUE_COLOR2)
   end
   
   vertical = vertical + font_height + 5 -- pixel to start at
@@ -550,8 +673,22 @@ function UpdateDisplay()
 end -- draw_bar
 
 function OnPluginConnect ()
-fun_reset()
+  UpdateDisplay()
+  EnableTimer("ShieldStatus_Updater", false);
+   CallPlugin(GMCPID, "Send_GMCP_Packet", "Space.FullUpdate")
+   
 end -- function
+function OnPluginDisable ()
+  EnableTriggerGroup("ATS_ShieldStatus", false)
+  EnableTimer("ShieldStatus_Updater", false);
+  WindowShow (win, false)
+end
+
+function OnPluginDisconnect ()
+  EnableTriggerGroup("ATS_ShieldStatus", false)
+  EnableTimer("ShieldStatus_Updater", false);
+  WindowShow (win, false)
+end
 
 function OnPluginInstall ()
   
@@ -559,6 +696,7 @@ function OnPluginInstall ()
     ColourNote("orange", "", "ATS_ShieldStatus (GMCP-Aware) v" .. GetPluginInfo(GetPluginID(),19) .. " loaded.")
     EnableTriggerGroup("ATS_ShieldStatus", true) -- Still use the trigger group, for damage, etc.
     CallPlugin(GMCPID, "Send_GMCP_Packet", "Space.FullUpdate")
+    EnableTimer("ShieldStatus_Updater", true);
   else
     ColourNote("orange", "", "Attempting to load GMCP Handler...")
        local finfo = utils.info()
@@ -573,17 +711,30 @@ function OnPluginInstall ()
   end
 end
     
-  win = GetPluginID ()
-  font_id = "fn"
-  
-  font_name = "Verdana"    -- the actual font
-
   local x, y, mode, flags = 
       tonumber (GetVariable ("windowx")) or 0,
       tonumber (GetVariable ("windowy")) or 0,
       tonumber (GetVariable ("windowmode")) or 8, -- bottom right
       tonumber (GetVariable ("windowflags")) or 0
-    
+  font_name = GetVariable ("font_name") or "Verdana"
+  font_size = tonumber(GetVariable ("font_size")) or 9
+  colorscheme = GetVariable("colorscheme") or "Default"
+  GAUGE_LEFT = tonumber(GetVariable("GAUGE_LEFT")) or 100
+  NUMBER_OF_TICKS = tonumber(GetVariable("TICKS")) or 4
+  
+  set_color_scheme(colorscheme)
+  
+  -- create temp window so we can get font sizes, adjust the size, then make the window appropriately.
+  
+  check (WindowCreate (win, 0, 0, 1, 1, 0, 0, ColourNameToRGB ("#000000")))
+  check (WindowFont (win, font_id, font_name, font_size, false, false, false, false, 0, 0))  -- normal
+  
+  font_height = WindowFontInfo (win, font_id, 1)  -- height
+  font_width = WindowFontInfo (win, font_id, 6)
+  
+  WINDOW_HEIGHT = font_height * 15
+  WINDOW_WIDTH = font_width * 40
+  
   -- make miniwindow so I can grab the font info
   check (WindowCreate (win, 
                  x, y, WINDOW_WIDTH, WINDOW_HEIGHT,  
@@ -598,16 +749,13 @@ end
                    "",   -- CancelMouseOver
                    "mousedown",
                    "",   -- CancelMouseDown
-                   "",   -- MouseUp
-                   "Drag to move",  -- tooltip text
+                   "mouseUp",   -- MouseUp
+                   "Drag to move or right-click to open menu",  -- tooltip text
                    1, 0)  -- hand cursor
                    
   WindowDragHandler(win, "hs1", "dragmove", "dragrelease", 0) 
                  
-  check (WindowFont (win, font_id, font_name, 9, false, false, false, false, 0, 0))  -- normal
-  
-  font_height = WindowFontInfo (win, font_id, 1)  -- height
-  font_width = WindowFontInfo (win, font_id, 6)
+
   UpdateDisplay()
   
   if GetVariable ("enabled") == "false" then
@@ -628,8 +776,103 @@ function OnPluginSaveState ()
   SetVariable ("windowy", tostring (WindowInfo (win, 11)))
   SetVariable ("windowmode", tostring (WindowInfo (win, 7)))
   SetVariable ("windowflags", tostring (WindowInfo (win, 8)))
+  SetVariable ("font_name", font_name)
+  SetVariable ("font_size", font_size)
+  SetVariable ("colorscheme", colorscheme)
+  SetVariable ("GAUGE_LEFT", GAUGE_LEFT)
+  SetVariable ("TICKS", NUMBER_OF_TICKS)
+  
 end -- OnPluginSaveState
 
+--[[
+-- xyz2range(xa,ya,za,xb,yb,zb) returns range from two XYZ coordinates
+-- This is directly converted from aspace\space_utils.c
+-- All credit to original author, Atuare @ TrekMUSH
+--]]
+function xyz2range(xa, ya, za, xb, yb, zb)
+        local sqrt = math.sqrt
+        assert(xa, "xyz2range(): xa is nil")
+        assert(ya, "xyz2range(): ya is nil")
+        assert(za, "xyz2range(): za is nil")
+        assert(xb, "xyz2range(): xb is nil")
+        assert(yb, "xyz2range(): yb is nil")
+        assert(zb, "xyz2range(): zb is nil")
+        
+        local x = xb - xa
+        local y = yb - ya
+        local z = zb - za
+        return sqrt(x * x + y*y + z * z)
+end
+function timestring(s)
+  return string.format("%.2d:%.2d:%.2d", s/(60*60), s/60%60, s%60)
+end
+
+function format_distance(dist)
+  local PARSEC = 3085659622.014257
+  local retval = 0
+  
+  if(dist > PARSEC * 999.9) then
+    retval = round(dist / PARSEC, 0) 
+  elseif (dist > PARSEC * 99.99) then
+    retval = round(dist / PARSEC, 1)
+  elseif (dist > PARSEC * 9.999) then
+    retval = round(dist / PARSEC, 2)
+  elseif (dist > 9999999.0) then
+    retval = round(dist / PARSEC,3)
+  elseif (dist > 99999.9) then
+    retval = round(dist, 0)
+  elseif (dist > 9999.99) then
+    retval = round(dist, 1)
+  elseif (dist > 999.999) then
+    retval = round(dist, 2)
+  elseif (dist > 99.9999) then
+    retval = round(dist, 3)
+  else
+    retval = round(dist, 4)
+  end
+  if (dist > 9999999.0) then
+    return "[" .. retval .. "]"
+  else
+    return retval
+  end
+end
+
+
+function round(what, precision)
+  return math.floor(what*math.pow(10,precision)+0.5) / math.pow(10,precision)
+end
+
+function set_color_scheme(scheme)
+  
+  if (scheme == "Spro") then
+    
+    BACKGROUND_COLOR = ColourNameToRGB("black")
+    FONT_COLOR = ColourNameToRGB("gray")
+    BORDER_COLOR = ColourNameToRGB("black")
+    FONT2_COLOR = ColourNameToRGB("white")
+    TEXT_VALUE_COLOR = ColourNameToRGB("lime")
+    TEXT_ITEM_COLOR = ColourNameToRGB("gray")
+    TEXT_VALUE_COLOR2 = ColourNameToRGB("green")
+  elseif (scheme == "Custom") then
+    BACKGROUND_COLOR = GetVariable("BACKGROUND_COLOR") or ColourNameToRGB("black")
+    FONT_COLOR = GetVariable("FONT_COLOR") or ColourNameToRGB("orange")
+    BORDER_COLOR = GetVariable("BORDER_COLOR") or ColourNameToRGB("#553333")
+    FONT2_COLOR = GetVariable("FONT2_COLOR") or ColourNameToRGB("white")
+    TEXT_VALUE_COLOR = GetVariable("TEXT_VALUE_COLOR") or ColourNameToRGB("lightsteelblue")
+    TEXT_ITEM_COLOR = GetVariable("TEXT_ITEM_COLOR") or ColourNameToRGB("lime")
+    TEXT_VALUE_COLOR2 = GetVariable("TEXT_VALUE_COLOR2") or ColourNameToRGB("yellow")
+  else 
+    BACKGROUND_COLOR = ColourNameToRGB("black")
+    FONT_COLOR = ColourNameToRGB("orange")
+    BORDER_COLOR = ColourNameToRGB("#553333")
+    FONT2_COLOR = ColourNameToRGB("white")
+    TEXT_VALUE_COLOR = ColourNameToRGB("lightsteelblue")
+    TEXT_ITEM_COLOR = ColourNameToRGB("lime")
+    TEXT_VALUE_COLOR2 = ColourNameToRGB("yellow")
+  end
+     UpdateDisplay()
+end
+   
 
 ]]>
 </script>
