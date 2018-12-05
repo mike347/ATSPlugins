@@ -31,7 +31,7 @@ version_info =
 	},
 	["57a49cca2ef1da0b52498a94"] =
 	{
-		name = "ShieldStatus", version = 1.11, page = "http://zen.trekmush.org/ats/beta/",
+		name = "ShieldStatus", version = 1.12, page = "http://zen.trekmush.org/ats/beta/",
 		filename = "ATS_ShieldStatus.xml", 
 		requires = { "GMCP_handler.xml" },
 	},
