@@ -14,7 +14,7 @@
    purpose="To visually show shield status"
    date_written="2014-05-23 21:33:22"
    requires="4.84"
-   version="1.11"
+   version="1.12"
    save_state="y"
    >
 
@@ -722,7 +722,6 @@ end
   GAUGE_LEFT = tonumber(GetVariable("GAUGE_LEFT")) or 100
   NUMBER_OF_TICKS = tonumber(GetVariable("TICKS")) or 4
   
-  set_color_scheme(colorscheme)
   
   -- create temp window so we can get font sizes, adjust the size, then make the window appropriately.
   
@@ -734,7 +733,8 @@ end
   
   WINDOW_HEIGHT = font_height * 15
   WINDOW_WIDTH = font_width * 40
-  
+  set_color_scheme(colorscheme)
+
   -- make miniwindow so I can grab the font info
   check (WindowCreate (win, 
                  x, y, WINDOW_WIDTH, WINDOW_HEIGHT,  
