@@ -7,14 +7,14 @@
 
 <muclient>
 <plugin
-   name="ATS_ShieldStatus"
+   name="AAATS_ShieldStatus"
    author="marQon @ATS"
    id="57a49cca2ef1da0b52498a94"
    language="Lua"
    purpose="To visually show shield status"
    date_written="2014-05-23 21:33:22"
    requires="4.84"
-   version="1.12"
+   version="1.14"
    save_state="y"
    >
 
@@ -111,14 +111,14 @@
   </trigger>
 
   </triggers>
-<timers>
+<!-- <timers>
   <timer name="ShieldStatus_Updater" enabled="n" second="1.00" offset_second="0.00"    send_to="12"
 >
   <send>CallPlugin("74f8c420df7d59ad5aa66246", "Send_GMCP_Packet", "Space.FullUpdate")</send>
 
   </timer>
 </timers>
-
+-->
 <!--  Script  -->
 
 
@@ -131,6 +131,9 @@ local GMCPID = "74f8c420df7d59ad5aa66246"
 local ShieldStatus = { ["Forward"] = 1.0, ["Starboard"] = 1.0, ["Aft"] = 1.0, ["Port"] = 1.0, ["Dorsal"] = 1.0, ["Ventral"] = 1.0, ["SS"] = 1.0, ["Name"] = nil, ["Mode"] = "Unknown" }
 local Course = { ["Autopilot"] = 0, ["Pitch"] = 0.0, ["Yaw"] = 0.0, ["Roll"] = 0.0, ["Speed"] = 0.0, ["Velocity"] = 0.0, ["Cochranes"] = 0.0, ["DestX"] = 0.0, ["DestY"] = 0.0, ["DestZ"] = 0.0, ["CoordX"] = 0.0, ["CoordY"] = 0.0, ["CoordZ"] = 0.0 }
 local ShieldPriority = { ["Forward"] = 0, ["Starboard"] = 0, ["Aft"] = 0, ["Port"] = 0, ["Dorsal"] = 0, ["Ventral"] = 0, ["SS"] = 0, ["RepCapRate"] = 0 }
+local last_packet = {} -- Store the last packet
+local update_rate = 1 -- Store current rate of refreshes in seconds
+local update_repeat = 0 -- How many times in a row have we received same packet?
 local debugmode = false
 local colorscheme = "Default"
 local GAUGE_LEFT = 100
@@ -155,6 +158,10 @@ local font_size = 9
 local font_height = 0 -- These are set later when we make the actual window
 local font_width = 0 -- Because we cant get this until a window exists
 
+function send_pulse()
+  CallPlugin(GMCPID, "Send_GMCP_Packet", "Space.FullUpdate")
+end
+
 local function Debug(t, ...)
   if not debugmode or not t then 
     return 
@@ -163,96 +170,93 @@ local function Debug(t, ...)
 end
 
 function OnPluginBroadcast (msg, id, name, text)
- if (id == "74f8c420df7d59ad5aa66246" ) then  -- GMCP_handler
+   if (id ~= "74f8c420df7d59ad5aa66246" ) then  -- GMCP_handler
+     return
+   end
+ 
  -- pull out GMCP message, plus the data belonging to it
    message, params = string.match (text, "([%a.]+)%s+(.*)")
   
-   -- no match? oops!
-   if not message then
-      return
-   end -- if
+  -- No match.. something is wrong. Stop.
+  if (not message) then
+    return
+  end 
    
-   if (message == "console.unman") then -- Turn off timer when not manning a console
-     EnableTimer("ShieldStatus_Updater", false);
+  if (message == "console.unman") then -- Server sends this when you unman a console.
+    
+    if (IsTimer("ShieldStatus_Updater")) then
+      EnableTimer("ShieldStatus_Updater", false);
+      DeleteTimer("ShieldStatus_Updater")
+    end
     WindowFilter (win, 0, 0,  WINDOW_WIDTH, WINDOW_HEIGHT, 25, 0) -- blur both directions
-   elseif (message == "console.man") then
-     EnableTimer("ShieldStatus_Updater", true);
+    return
+   elseif (message == "console.man") then  -- Server sends this when you man a console.
+     
+     if(IsTimer("ShieldStatus_Updater")) then
+       DeleteTimer("ShieldStatus_Updater")
+     end  
+     AddTimer("ShieldStatus_Updater", 0, 0, 1, "", timer_flag.Enabled, "send_pulse")
      UpdateDisplay()
+     return
    end
   
-   if (message ~= "shield.status") then -- We only care about shields
+  if (message ~= "shield.status") then -- We only care about shields
      return
    end
    
    -- ensure we have an array or object
-   if not string.match (params, "^[%[{]") then
+  if not string.match (params, "^[%[{]") then
       params =  "[" .. params .. "]"  -- JSON hack, make msg first element of an array.
    end -- if 
    
    -- decode it
-   result = assert (json.decode (params))
-   if (result["fore"]) then
+  result = assert (json.decode (params))
+  if (result["fore"]) then
     ShieldStatus.Forward = result["fore"]
    end
-   if (result["star"]) then
+  if (result["star"]) then
     ShieldStatus.Starboard = result["star"]
    end
-   if (result["aft"]) then 
+  if (result["aft"]) then 
      ShieldStatus.Aft = result["aft"]
    end
-   if (result["port"]) then
+  if (result["port"]) then
      ShieldStatus.Port = result["port"]
    end
-   if (result["dors"]) then
+  if (result["dors"]) then
      ShieldStatus.Dorsal = result["dors"]
    end
-   if (result["vent"]) then
+  if (result["vent"]) then
      ShieldStatus.Ventral = result["vent"]
    end
-   if (result["ss"]) then
+  if (result["ss"]) then
      ShieldStatus.SS = result["ss"]
    end
-   if (result["name"]) then
+  if (result["name"]) then
      ShieldStatus.Name = result["name"]
    end
---[[   if (result["class"]) then
-     ShieldStatus.Class = result["class"]
-   end
-   if (result["vel"]) then
-    ShieldStatus.Velocity = result["vel"]
-   end
-   if (result["speed"]) then
-     ShieldStatus.Speed = result["speed"]
-   end
-   if (result["yaw"]) then
-     ShieldStatus.Yaw = result["yaw"]
-   end
-   if (result["pitch"]) then
-     ShieldStatus.Pitch = result["pitch"]
-   end
---]]
-    if (result["pri_fore"]) then
+  if (result["pri_fore"]) then
     ShieldPriority.Forward = result["pri_fore"]
    end
-   if (result["pri_star"]) then
+  if (result["pri_star"]) then
     ShieldPriority.Starboard = result["pri_star"]
    end
-   if (result["pri_aft"]) then 
+  if (result["pri_aft"]) then 
      ShieldPriority.Aft = result["pri_aft"]
    end
-   if (result["pri_port"]) then
+  if (result["pri_port"]) then
      ShieldPriority.Port = result["pri_port"]
    end
-   if (result["pri_dors"]) then
+  if (result["pri_dors"]) then
      ShieldPriority.Dorsal = result["pri_dors"]
    end
-   if (result["pri_vent"]) then
+  if (result["pri_vent"]) then
      ShieldPriority.Ventral = result["pri_vent"]
    end
-   if (result["pri_ss"]) then
+  if (result["pri_ss"]) then
      ShieldPriority.SS = result["pri_ss"]
    end
-   if (result["repcap_rate"]) then
+  if (result["repcap_rate"]) then
 	 ShieldPriority.RepCapRate = result["repcap_rate"]
 	end
 	
@@ -261,13 +265,55 @@ function OnPluginBroadcast (msg, id, name, text)
       Course[k] = tonumber(result[k])
     end
   end
+  UpdateDisplay()
+   
+  local new_rate = 1
+   
+  if(equals(result, last_packet, true)) then
+     update_repeat = update_repeat + 1
+   else
+     update_repeat = 1
+  end
   
+  if(update_repeat > 10) then -- After 10 seconds of same data, we start throttling
+    new_rate = update_repeat
+    if (new_rate > 60) then
+      new_rate = 60
+    end
+    
+  else
+    new_rate = 1
+  end
+  -- Save this packet 
+  last_packet = result
+    
+  if (new_rate ~= old_rate) then -- Our update rate is changing. Delete timer and re-add.
+    -- Make sure timer exists before we try to delete
+    if (IsTimer("ShieldStatus_Updater")) then
+      DeleteTimer("ShieldStatus_Updater")
+    end
+    if (new_rate >= (60 * 60)) then -- 1 hour is our max
+      AddTimer("ShieldStatus_Updater", 1, 0, 0, "", timer_flag.Enabled, "send_pulse")
+      ColourNote("orange", "", "ShieldStatus: Throttling updates to 1 hour. Consider unmanning your console if you are idling.")
+    elseif (new_rate >= 60) then -- Convert seconds to minutes
+      AddTimer("ShieldStatus_Updater", 0, new_rate, 0, "", timer_flag.Enabled, "send_pulse")
+      if(new_rate > 60 and update_rate < 60) then
+        ColourNote("orange", "", "Shieldstatus: Throttling updates to 1 minute intervals. Consider unmanning a console if you are idling.")
+      end      
+    else -- Seconds
+      AddTimer("ShieldStatus_Updater", 0, 0, new_rate, "", timer_flag.Enabled, "send_pulse")
+    end
+  end
+  update_rate = new_rate
   
-   UpdateDisplay()
+  -- If we get this far and don't have a timer, set one because we're obviously on a console somehow.
+  if (not IsTimer("ShieldStatus_Updater")) then
+    AddTimer("ShieldStatus_Updater", 0, 0, 1, "", timer_flag.Enabled, "send_pulse")
+  end
+end
 
-   end
- end
 -- Forward, Starboard, Aft, Port, Dorsal, Ventral
+
 function fun_update_shields(name, _, wildcards)
   
   if (name == "helmstat_shields1" or name == "helmstat_shields2") then -- From helm stats
@@ -381,9 +427,7 @@ function fun_shield_repaired(name,_,wildcards)
 
       return
     end
-  end
-  
-  
+  end  
   
 --[[
 -- Below this line is a modified version of Nick Gammon's Health_Bar_Miniwindow.xml
@@ -394,8 +438,19 @@ function right_click_menu ()
 	menustring = string.format("^Shield Status v%s|-|", tostring(GetPluginInfo(GetPluginID(), 19)))
   menustring = menustring .. "Manual Refresh"
   menustring = menustring .. "|>Settings|Change Font|Gauge Width|Gauge Ticks|<"
-  menustring = menustring.. string.format("|>Color Scheme|%sDefault|%sSpro's Favorite|%sCustom", colorscheme == "Default" and "+" or "", colorscheme == "Spro" and "+" or "", colorscheme == "Custom" and "+" or "")
+  menustring = menustring .. string.format("|>Color Scheme|%sDefault|%sNausicaan|%sCustom", colorscheme == "Default" and "+" or "", colorscheme == "Nausicaan" and "+" or "", colorscheme == "Custom" and "+" or "")
   menustring = menustring .. "|>Custom Colors|Label Color|Value Color|Value Hilight Color|Background Color|System Name Color|System Percent Color|Border Color|<|Reload Defaults|<"
+  if (update_rate > 10) then
+    local rate = ""
+    if (update_rate > (60 * 60)) then
+      rate = "1 hour"
+    elseif (update_rate > 60) then
+      rate = (update_rate / 60) .. " minutes"
+    else
+      rate = update_rate .. " seconds"
+    end
+    menustring = menustring .. "|-|^Throttling: " .. rate
+  end
   
   local result = WindowMenu (win, 
         WindowInfo (win, 14),  -- x position
@@ -407,9 +462,9 @@ function right_click_menu ()
   elseif (result == "Default") then
     colorscheme = "Default"
     ColourNote("yellow", "", "Shield Status: Setting color scheme to Default.")
-  elseif (result == "Spro's Favorite") then
-    colorscheme = "Spro"
-    ColourNote("yellow", "", "Shield Status: Setting color scheme to Spro's Favorite.")
+  elseif (result == "Nausicaan") then
+    colorscheme = "Nausicaan"
+    ColourNote("yellow", "", "Shield Status: Setting color scheme to Nausicaan.")
   elseif (result == "Custom") then
     colorscheme = "Custom"
     ColourNote("yellow", "", "Shield Status: Loading custom color scheme.")
@@ -696,7 +751,6 @@ function OnPluginInstall ()
     ColourNote("orange", "", "ATS_ShieldStatus (GMCP-Aware) v" .. GetPluginInfo(GetPluginID(),19) .. " loaded.")
     EnableTriggerGroup("ATS_ShieldStatus", true) -- Still use the trigger group, for damage, etc.
     CallPlugin(GMCPID, "Send_GMCP_Packet", "Space.FullUpdate")
-    EnableTimer("ShieldStatus_Updater", true);
   else
     ColourNote("orange", "", "Attempting to load GMCP Handler...")
        local finfo = utils.info()
@@ -722,6 +776,7 @@ end
   GAUGE_LEFT = tonumber(GetVariable("GAUGE_LEFT")) or 100
   NUMBER_OF_TICKS = tonumber(GetVariable("TICKS")) or 4
   
+
   
   -- create temp window so we can get font sizes, adjust the size, then make the window appropriately.
   
@@ -730,11 +785,10 @@ end
   
   font_height = WindowFontInfo (win, font_id, 1)  -- height
   font_width = WindowFontInfo (win, font_id, 6)
-  
+  set_color_scheme(colorscheme)
   WINDOW_HEIGHT = font_height * 15
   WINDOW_WIDTH = font_width * 40
-  set_color_scheme(colorscheme)
-
+  
   -- make miniwindow so I can grab the font info
   check (WindowCreate (win, 
                  x, y, WINDOW_WIDTH, WINDOW_HEIGHT,  
@@ -844,7 +898,7 @@ end
 
 function set_color_scheme(scheme)
   
-  if (scheme == "Spro") then
+  if (scheme == "Nausicaan") then
     
     BACKGROUND_COLOR = ColourNameToRGB("black")
     FONT_COLOR = ColourNameToRGB("gray")
@@ -873,7 +927,36 @@ function set_color_scheme(scheme)
      UpdateDisplay()
 end
    
+function equals(o1, o2, ignore_mt)
+    if o1 == o2 then return true end
+    local o1Type = type(o1)
+    local o2Type = type(o2)
+    if o1Type ~= o2Type then return false end
+    if o1Type ~= 'table' then return false end
 
+    if not ignore_mt then
+        local mt1 = getmetatable(o1)
+        if mt1 and mt1.__eq then
+            --compare using built in method
+            return o1 == o2
+        end
+    end
+
+    local keySet = {}
+
+    for key1, value1 in pairs(o1) do
+        local value2 = o2[key1]
+        if value2 == nil or equals(value1, value2, ignore_mt) == false then
+            return false
+        end
+        keySet[key1] = true
+    end
+
+    for key2, _ in pairs(o2) do
+        if not keySet[key2] then return false end
+    end
+    return true
+end
 ]]>
 </script>
 
