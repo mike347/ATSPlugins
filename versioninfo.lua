@@ -43,7 +43,7 @@ version_info =
 	},
 	["NavcompData"] = 
 	{
-		name = "NavComp Database", version = 2.16, page = "http://zen.trekmush.org/ats/beta/",
+		name = "NavComp Database", version = 2.17, page = "http://zen.trekmush.org/ats/beta/",
 		filename = "atsdata.json",  infopage = "http://zen.trekmush.org/ats-navcomp/",
 	},
     ["f92c816b178f0707847fcd1d"] =
