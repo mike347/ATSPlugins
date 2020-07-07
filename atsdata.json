@@ -1,6 +1,6 @@
 {
 	"ATS_Navcomp_DB": {
-	"version": 2.17,
+	"version": 2.18,
 	"empires": [
 {
 "name": "Cardassian",
@@ -183,7 +183,8 @@
 		{ "name":"IKB Qulpo'", "x": -9444.844174, "y": 60.000000, "z": -66.400000, "cochranes": 1342 },
 		{ "name":"IKB yoH hubwI'", "x": -9478.009867, "y": 311.638052, "z": -56.560950, "cochranes": 1013 },
 		{ "name":"IKB Hegh nach", "x": 7369.536000, "y": -5276.597000, "z": -49.229000, "cochranes": 1156 },
-		{ "name":"IKA Kadesh Hub waw'", "x": 9407.844, "y": 7.7, "z": -136.0, "cochranes":1606.133}
+		{ "name":"IKA Kadesh Hub waw'", "x": 9407.844, "y": 7.7, "z": -136.0, "cochranes":1606.133},
+		{ "name":"IKB wej qogh puQmo'", "x": -9407.844, "y": 7.700 , "z": -136.000, "cochranes": 1606.133}
 	]},
 {
 "name": "Romulan",
@@ -215,7 +216,8 @@
                 { "name": "RSB Rahoka", "x": 7312.568222, "y": -5203.542774, "z": 11.59396, "cochranes": 1521.201799, "market": -1 },
                 { "name": "RSB Ralaaram", "x": -9444.944174, "y": -184, "z": 68, "cochranes": 1325.802356, "market": -1 },
                 { "name": "RSB Uerrho'lhiet", "x": -9433.944174, "y": -246, "z": -26, "cochranes": 1419.666134, "market": -1 },
-                { "name": "Transwarp Gate T-08", "x": -9433.944174, "y": -246, "z": -26, "cochranes": 1419.666134, "market": -1 }
+                { "name": "Transwarp Gate T-08", "x": -9433.944174, "y": -246, "z": -26, "cochranes": 1419.666134, "market": -1 },
+		{ "name": "RSB Rahoka", "x": 7312.568, "y": -5203.543, "z": 11.594, "cochranes": 1521.202, "market": -1}
 	]},
 {
     "name": "GFA",
