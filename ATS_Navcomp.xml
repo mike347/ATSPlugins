@@ -1880,7 +1880,7 @@ function fun_traceheading(name, _, wildcards)
     elseif (t == 0 ) then
       errorString = "Couldn't find source in the database. Check your spelling."
     end
-    Note(errorString)
+    Debug(errorString)
     return
   end
     -- If we got this far, we should be good to go.
