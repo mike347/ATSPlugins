@@ -40,7 +40,9 @@
 		{ "name":"Varohdan Nor", "x": -9292.744000, "y": 278.900000, "z": 23.200000, "cochranes":1298, "market":-1 },
 		{ "name":"Wraikor Ser", "x": -9330.000000, "y": 378.000000, "z": 30.000000, "cochranes":1298, "market":-1 },
 		{ "name":"Xran Ser", "x": -9331.000000, "y": 280.000000, "z": 55.000000, "cochranes":1298, "market":-1 },
-		{ "name":"Zorin Nor", "x": 7396.117000, "y": -5624.900000, "z": 78.700000, "cochranes":979, "market":-1 }
+		{ "name":"Zorin Nor", "x": 7396.117000, "y": -5624.900000, "z": 78.700000, "cochranes":979, "market":-1 },
+		{ "name":"Transwarp Gate EC-04", "x": -9324.413300, "y": 226.485000, "z": -29.919000, "cochranes":1080, "market":-1 },
+		{ "name":"Transwarp Gate C-07", "x": 7396.117000, "y": -5624.900000, "z": 78.700000, "cochranes":979, "market":-1 }
 	]},
 {
 "name": "Federation",
@@ -184,7 +186,9 @@
 		{ "name":"IKB yoH hubwI'", "x": -9478.009867, "y": 311.638052, "z": -56.560950, "cochranes": 1013 },
 		{ "name":"IKB Hegh nach", "x": 7369.536000, "y": -5276.597000, "z": -49.229000, "cochranes": 1156 },
 		{ "name":"IKA Kadesh Hub waw'", "x": 9407.844, "y": 7.7, "z": -136.0, "cochranes":1606.133},
-		{ "name":"IKB wej qogh puQmo'", "x": -9407.844, "y": 7.700 , "z": -136.000, "cochranes": 1606.133}
+		{ "name":"IKB wej qogh puQmo'", "x": -9407.844, "y": 7.700 , "z": -136.000, "cochranes": 1606.133},
+		{ "name":"Transwarp Gate B-03", "x": -9588.044174, "y": 130.900000, "z": -100.500000, "cochranes":1596, "market":-1 },
+		{ "name":"Transwarp Gate Z-05", "x": 7369.536000, "y": -5276.597000, "z": -49.229000, "cochranes":1156, "market":-1 }
 	]},
 {
 "name": "Romulan",
@@ -249,7 +253,8 @@
         { "name":"FSB Brz'aak", "x": -8995.604111, "y": 302.521799,"z": -60.548258, "cochranes":1615, "market":-1 },
         { "name":"FSA fthg", "x": -8953.947696, "y": 276.884008, "z":-95.171788, "cochranes":1375, "market":-1 },
         { "name":"FSB Ferengal", "x": -8969.545098, "y": 292.579839,"z": -43.900428, "cochranes":1516, "market":-1 },
-        { "name":"FSB Honest Broker", "x": -9048.346357, "y":223.158750, "z": -52.169469, "cochranes":1281, "market":-1 }
+		{ "name":"FSB Honest Broker", "x": -9048.346357, "y":223.158750, "z": -52.169469, "cochranes":1281, "market":-1 },
+		{ "name":"Transwarp Gate LG-06", "x": -8980.714000, "y": 258.600000,"z": 55.588000, "cochranes":1578, "market":-1 }
     ]},
 {
 "name": "Orion",
