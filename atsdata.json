@@ -220,8 +220,7 @@
                 { "name": "RSB Rahoka", "x": 7312.568222, "y": -5203.542774, "z": 11.59396, "cochranes": 1521.201799, "market": -1 },
                 { "name": "RSB Ralaaram", "x": -9444.944174, "y": -184, "z": 68, "cochranes": 1325.802356, "market": -1 },
                 { "name": "RSB Uerrho'lhiet", "x": -9433.944174, "y": -246, "z": -26, "cochranes": 1419.666134, "market": -1 },
-                { "name": "Transwarp Gate T-08", "x": -9433.944174, "y": -246, "z": -26, "cochranes": 1419.666134, "market": -1 },
-		{ "name": "RSB Rahoka", "x": 7312.568, "y": -5203.543, "z": 11.594, "cochranes": 1521.202, "market": -1}
+                { "name": "Transwarp Gate T-08", "x": -9433.944174, "y": -246, "z": -26, "cochranes": 1419.666134, "market": -1 }
 	]},
 {
     "name": "GFA",
