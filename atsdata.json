@@ -23,6 +23,7 @@
 		{ "name":"Siltalk", "x": -9244.244000, "y": 329.900000, "z": 4.800000, "cochranes":1291, "market":2 },
 		{ "name":"Tohvun", "x": -9329.900000, "y": 378.000000, "z": 30.000000, "cochranes":1169, "market":2 },
 		{ "name":"Velos VII", "x": -9331.300000, "y": 279.900000, "z": 55.000000, "cochranes":1150, "market":2 },
+		{ "name":"Clispau IX", "x": 7396.117000, "y": -5624.900000, "z": 78.700000, "cochranes":979, "market":2 },
 		{ "name":"Volan", "x": -9340.700000, "y": 366.200000, "z": 10.100000, "cochranes":1271, "market":2 }
 	],
 	"stations":[
@@ -81,7 +82,9 @@
 		{ "name":"Taurus II", "x": -9264.444174, "y": 47.400000, "z": 8.100000, "cochranes":1149, "market":2 },
 		{ "name":"Tellar", "x": -9172.944174, "y": 60.100000, "z": 2.600000, "cochranes":1507, "market":2 },
 		{ "name":"Trill", "x": -9247.944174, "y": 75.000000, "z": 66.000000, "cochranes":1310, "market":2 },
-		{ "name":"Vulcan", "x": -9178.444174, "y": 60.000000, "z": -0.600000, "cochranes":1545, "market":2 }
+		{ "name":"Vulcan", "x": -9178.444174, "y": 60.000000, "z": -0.600000, "cochranes":1545, "market":2 },
+		{ "name":"Usho Prime", "x": 7446.049000, "y": -5376.000000, "z": 131.501000, "cochranes":1575, "market":2 },
+		{ "name":"Chiune V", "x": 7252.341000, "y": -5637.792000, "z": 55.796000, "cochranes":1584, "market":2 }
 	],
 	"stations":[
 		{ "name": "Starbase 73 <Camelot>", "x": -9310.544174, "y": 186.3, "z": -12.1, "cochranes": 993.78686, "market": -1 },
@@ -371,9 +374,7 @@
 		{ "name":"Auquac IV", "x": 6992.746000, "y": -5275.089000, "z": 95.556000, "cochranes":1298, "market":-1 },
 		{ "name":"Avarice Prime", "x": 6274.119000, "y": 6221.450000, "z": 9.793000, "cochranes":1298, "market":2 },
 		{ "name":"Bavo II", "x": -8990.196174, "y": -306.017000, "z": 48.773000, "cochranes":1298, "market":-1 },
-		{ "name":"Chiune V", "x": 7252.341000, "y": -5637.792000, "z": 55.796000, "cochranes":1584, "market":2 },
 		{ "name":"Cisp X", "x": 7471.562000, "y": -5170.704000, "z": -33.250000, "cochranes":1298, "market":-1 },
-		{ "name":"Clispau IX", "x": 7396.117000, "y": -5624.900000, "z": 78.700000, "cochranes":979, "market":2 },
 		{ "name":"Cloobith II", "x": -9062.607174, "y": -207.870000, "z": 96.331000, "cochranes":1298, "market":-1 },
 		{ "name":"D-572", "x": -9261.447000, "y": 248.430000, "z": 16.421000, "cochranes":1298, "market":-1 },
 		{ "name":"Easle IX", "x": -8906.822174, "y": -380.967000, "z": 27.467000, "cochranes":1298, "market":-1 },
@@ -423,7 +424,6 @@
 		{ "name":"This Planet", "x": -8875.129000, "y": -49.772000, "z": 42.840000, "cochranes":1298, "market":-1 },
 		{ "name":"Tuosho Prime", "x": 7601.996000, "y": -5197.729000, "z": -22.884000, "cochranes":1298, "market":-1 },
 		{ "name":"Urss", "x": -9663.822000, "y": 434.853000, "z": 86.496000, "cochranes":1298, "market":-1 },
-		{ "name":"Usho Prime", "x": 7446.049000, "y": -5376.000000, "z": 131.501000, "cochranes":1575, "market":2 },
 		{ "name":"Usubau VII", "x": -9000.986174, "y": 449.987000, "z": -51.791000, "cochranes":1298, "market":-1 },
 		{ "name":"Whousnod III", "x": -9499.273174, "y": -457.956000, "z": -9.871000, "cochranes":1298, "market":-1 },
 		{ "name":"Wosnav Prime", "x": 7551.731000, "y": -5267.641000, "z": -94.157000, "cochranes":1298, "market":-1 },
