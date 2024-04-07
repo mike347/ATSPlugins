@@ -16,7 +16,7 @@
     date_written="2010-04-04"
     date_modified="2015-01-02"
     requires="4.84"
-    version="2.25"
+    version="2.26"
     save_state="y"
     >
 	
@@ -48,7 +48,7 @@ USAGE:
     
     <trigger
     enabled="y" regexp="y"
-    match="^BC .+ --> .+ to dest.$"
+    match="^Border\sCrossing:\s.+ --> .+ to dest.$"
     script="message_handler"
     omit_from_output="y"
     sequence="100"
@@ -203,7 +203,7 @@ BODY_FONT_NAME = GetVariable("bodyfont") or "Dina"
 BODY_FONT_SIZE = tonumber(GetVariable("font_size") or 8)
 
 SCROLL_BAR_WIDTH = 15
-MAX_LINES = 7500 -- how many lines to store in scrollback
+MAX_LINES = 3500 -- how many lines to store in scrollback
 
 -- date_format = "[%d %b %H:%M:%S] "        -- [30 Aug 13:29:49]   date and time 24 hour
 -- date_format = "[%d %b %I:%M:%S%p] "  -- [30 Aug 01:20:12PM]     date and time 12 hour
@@ -962,7 +962,7 @@ end -- function chat_hide
 
 -- right click menu
 function right_click_menu ()
-	menustring = string.format("^ChatGrabber v%s|-|", tostring(GetPluginInfo(GetPluginID(), 19)))
+		menustring = string.format("^ChatGrabber v%s (%s)|-|", tostring(GetPluginInfo(GetPluginID(), 19)), tostring(#rawlines))
     menustring = menustring .. "Search|Copy All To Clipboard|Change Font|Rename Window"
     menustring = menustring .. string.format("|%sEcho", echo and "+" or "")
     menustring = menustring.. string.format("|>Timestamp|No Timestamps|30 Aug 13:29:49|30 Aug 01:20:12PM|13:29:08|1:22:06 PM|23:04|%sTooltip Timestamp",config_table.tooltip and "+" or "")
@@ -1448,9 +1448,6 @@ function search(term)
 	local start, position = 0, 0
 	-- "rex" is a table supplied by MUSHclient for PCRE functionality.
 	local re = rex.new("(?:https?://|mailto:)\\S*[\\w/\=@#\*\\-\\?]")
-	if (re == nil) then
-		return nil
-	end
 	re:gmatch(text,
 		function (link, _)
 			start, position = string.find(text, link, position, true)
