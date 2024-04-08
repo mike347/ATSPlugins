@@ -14,7 +14,7 @@
    purpose="To visually show shield status"
    date_written="2014-05-23 21:33:22"
    requires="4.84"
-   version="1.14"
+   version="1.15"
    save_state="y"
    >
 
@@ -131,6 +131,7 @@ local GMCPID = "74f8c420df7d59ad5aa66246"
 local ShieldStatus = { ["Forward"] = 1.0, ["Starboard"] = 1.0, ["Aft"] = 1.0, ["Port"] = 1.0, ["Dorsal"] = 1.0, ["Ventral"] = 1.0, ["SS"] = 1.0, ["Name"] = nil, ["Mode"] = "Unknown" }
 local Course = { ["Autopilot"] = 0, ["Pitch"] = 0.0, ["Yaw"] = 0.0, ["Roll"] = 0.0, ["Speed"] = 0.0, ["Velocity"] = 0.0, ["Cochranes"] = 0.0, ["DestX"] = 0.0, ["DestY"] = 0.0, ["DestZ"] = 0.0, ["CoordX"] = 0.0, ["CoordY"] = 0.0, ["CoordZ"] = 0.0 }
 local ShieldPriority = { ["Forward"] = 0, ["Starboard"] = 0, ["Aft"] = 0, ["Port"] = 0, ["Dorsal"] = 0, ["Ventral"] = 0, ["SS"] = 0, ["RepCapRate"] = 0 }
+local Specials = { ["Hellbore"] = 20, ["HellboreRecycle"] = " 0s", ["PlasmaBomb"] = 35, ["PlasmaBombRecycle"] = " 0s", ["AblativeArmor"] = 2.0, ["HazardEmitter"] = 1, ["HazardEmitterRecycle"] = " 5s"}
 local last_packet = {} -- Store the last packet
 local update_rate = 1 -- Store current rate of refreshes in seconds
 local update_repeat = 0 -- How many times in a row have we received same packet?
@@ -263,6 +264,12 @@ function OnPluginBroadcast (msg, id, name, text)
   for k, v in pairs(Course) do
     if(result[k]) then
       Course[k] = tonumber(result[k])
+    end
+  end
+  
+  for k, v in pairs(Specials) do
+    if (result[k]) then
+      Specials[k] = tonumber(result[k])
     end
   end
   UpdateDisplay()
@@ -665,8 +672,13 @@ function UpdateDisplay()
 --  WindowText(win, font_id, "Class: ", offset, vertical, 0, 0, TEXT_ITEM_COLOR)
   --WindowText(win, font_id, ShieldStatus.Class, offset + (font_width * string.len("Class: ")), vertical, 0, 0, TEXT_VALUE_COLOR)
   --vertical = vertical + font_height + 3
+  
   WindowText(win, font_id, "Heading: ", offset, vertical, 0, 0, TEXT_ITEM_COLOR)
-  WindowText(win, font_id, Course.Yaw .. " / " .. Course.Pitch, offset + (font_width * string.len("Heading:  ")), vertical, 0, 0, TEXT_VALUE_COLOR)
+  tmptxt = " " .. Course.Yaw .. " / " .. Course.Pitch
+  
+  WindowText(win, font_id, tmptxt, offset + (font_width * string.len("Heading: ")), vertical, 0, 0, TEXT_VALUE_COLOR)
+  WindowText(win, font_id, "(" .. round(Course.Cochranes,0) .. "c)", offset + (font_width * string.len("Heading:  " .. tmptxt .. "  ")), vertical, 0, 0, TEXT_VALUE_COLOR2)
+  
   vertical = vertical + font_height + 3
   local distance = xyz2range(Course.CoordX, Course.CoordY, Course.CoordZ, Course.DestX, Course.DestY, Course.DestZ)
   if (distance > 0.0) then
@@ -714,8 +726,37 @@ function UpdateDisplay()
     WindowText(win, font_id, v, offset + offset_tmp, vertical, 0, 0, TEXT_VALUE_COLOR2)
   end
   
-  vertical = vertical + font_height + 5 -- pixel to start at
-
+  vertical = vertical + font_height + 3 -- pixel to start at
+  if (Specials.Hellbore > 0) then
+    offset_tmp = WindowText(win, font_id, "Hellbore:  ", offset, vertical, 0, 0, TEXT_ITEM_COLOR)
+    if (Specials.HellboreRecycle >=90) then
+      WindowText(win, font_id, Specials.Hellbore .. "  (Ready)", offset + offset_tmp, vertical, 0, 0, TEXT_VALUE_COLOR)
+    else
+      WindowText(win, font_id, Specials.Hellbore .. "  (" .. timestring(Specials.HellboreRecycle), offset + offset_tmp, vertical, 0, 0, TEXT_VALUE_COLOR)
+    end
+    vertical = vertical + font_height + 3
+  end
+  if (Specials.PlasmaBomb > 0) then
+   offset_tmp = WindowText(win, font_id, "PlasmaBomb:  ", offset, vertical, 0, 0, TEXT_ITEM_COLOR)
+    if (Specials.PlasmaBombRecycle >=90) then
+   
+      WindowText(win, font_id, Specials.PlasmaBomb .. "  (Ready)", offset + offset_tmp, vertical, 0, 0, TEXT_VALUE_COLOR)
+    else
+    
+      WindowText(win, font_id, Specials.PlasmaBomb .. "  (" .. timestring(Specials.PlasmaBombRecycle), offset + offset_tmp, vertical, 0, 0, TEXT_VALUE_COLOR)
+    end
+    vertical = vertical + font_height + 3
+  end
+  if (Specials.HazardEmitter > 0) then
+   offset_tmp = WindowText(win, font_id, "HazardEmitter:  ", offset, vertical, 0, 0, TEXT_ITEM_COLOR)
+    if (Specials.HazardEmitterRecycle >= 90 ) then
+   
+      WindowText(win, font_id, "Ready", offset +   offset_tmp, vertical, 0, 0, TEXT_VALUE_COLOR)
+    else
+      WindowText(win, font_id, timestring(Specials.HazardEmitterRecycle), offset + offset_tmp, vertical, 0, 0, TEXT_VALUE_COLOR)
+    end
+    vertical = vertical + font_height + 3
+  end
   DoGauge ("(" .. ShieldPriority.Forward .. ") " .. "Fore: ", ShieldStatus.Forward)
   DoGauge ("(" .. ShieldPriority.Starboard .. ") " .. "Star: ", ShieldStatus.Starboard)
   DoGauge ("(" .. ShieldPriority.Aft .. ") " .. "Aft: ", ShieldStatus.Aft)
@@ -723,6 +764,8 @@ function UpdateDisplay()
   DoGauge ("(" .. ShieldPriority.Ventral .. ") " .. "Vent: ",ShieldStatus.Ventral)
   DoGauge ("(" .. ShieldPriority.Dorsal .. ") " .. "Dors: ", ShieldStatus.Dorsal)
   DoGauge ("(" .. ShieldPriority.SS .. ") " .. "SS: ", ShieldStatus.SS)
+  
+  
   WindowShow (win, true)
   
 end -- draw_bar
@@ -786,7 +829,7 @@ end
   font_height = WindowFontInfo (win, font_id, 1)  -- height
   font_width = WindowFontInfo (win, font_id, 6)
   set_color_scheme(colorscheme)
-  WINDOW_HEIGHT = font_height * 15
+  WINDOW_HEIGHT = font_height * 18
   WINDOW_WIDTH = font_width * 40
   
   -- make miniwindow so I can grab the font info
