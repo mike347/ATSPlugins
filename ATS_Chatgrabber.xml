@@ -962,7 +962,7 @@ end -- function chat_hide
 
 -- right click menu
 function right_click_menu ()
-	menustring = string.format("^ChatGrabber v%s (%s)|-|", tostring(GetPluginInfo(GetPluginID(), 19)), tostring(#rawlines))
+	menustring = string.format("^ChatGrabberM v%s (%s)|-|", tostring(GetPluginInfo(GetPluginID(), 19)), tostring(#rawlines))
     menustring = menustring .. "Search|Copy All To Clipboard|Change Font|Rename Window"
     menustring = menustring .. string.format("|%sEcho", echo and "+" or "")
     menustring = menustring.. string.format("|>Timestamp|No Timestamps|30 Aug 13:29:49|30 Aug 01:20:12PM|13:29:08|1:22:06 PM|23:04|%sTooltip Timestamp",config_table.tooltip and "+" or "")
