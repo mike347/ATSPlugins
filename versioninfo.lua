@@ -31,10 +31,10 @@ version_info =
 	},
 	["57a49cca2ef1da0b52498a94"] =
 	{
-		name = "ShieldStatus", version = 1.14, page = "http://zen.trekmush.org/ats/beta/",
+		name = "ShieldStatus", version = 1.15, page = "http://zen.trekmush.org/ats/beta/",
 		filename = "ATS_ShieldStatus.xml", 
 		requires = { "GMCP_handler.xml" },
-		whatsnew = "v1.14 - Now throttles data pulses when you are idling.",
+		whatsnew = "v1.15 -Added cochranes and ship specials to the window",
 	},
 	["14f4885e803e076273a4767a"] = 
 	{
