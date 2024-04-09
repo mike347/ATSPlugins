@@ -3,18 +3,18 @@ version_info =
 { 
 	["de6b99ef3f79191fd27d59b0"] = 
 	{ 
-		name = "ChatGrabberMain", version = 2.28, page = "http://zen.trekmush.org/ats/beta/",
+		name = "ChatGrabberMain", version = 2.29, page = "http://zen.trekmush.org/ats/beta/",
 		filename = "ATS_Chatgrabber.xml", infopage = "http://zen.trekmush.org/chatgrabber/",
-        whatsnew = "(2.28) Limit number of lines in history to 1500. Hopefully this fixes the issue when running out of memory. ",
+        whatsnew = "(2.29) Move the line limit up to 5500. Remove the code that was causing the problem. I'm stupid. ",
 	}, 
 	["981f20859e43e90c624fa1ff"] = 
 	{
-		name = "ChatGrabberSlave1", version = 2.28, page = "http://zen.trekmush.org/ats/beta/",
+		name = "ChatGrabberSlave1", version = 2.29, page = "http://zen.trekmush.org/ats/beta/",
 		filename = "ATS_ChatgrabberSlave1.xml",  infopage = "http://zen.trekmush.org/chatgrabber/",
 	},
 	["d183a293b696885487d3ad83"] =
 	{
-		name = "ChatGrabberSlave2", version = 2.28, page = "http://zen.trekmush.org/ats/beta/", 
+		name = "ChatGrabberSlave2", version = 2.29, page = "http://zen.trekmush.org/ats/beta/", 
 		filename = "ATS_ChatgrabberSlave2.xml", infopage = "http://zen.trekmush.org/chatgrabber/",
 		
 	},
