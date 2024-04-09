@@ -1,6 +1,6 @@
 {
 	"ATS_Navcomp_DB": {
-	"version": 2.19,
+	"version": 2.20,
 	"empires": [
 {
 "name": "Cardassian",
@@ -97,12 +97,11 @@
                 { "name": "Epsilon 402", "x": -9234.944174, "y": 222.3, "z": 25.1, "cochranes": 1415.279439, "market": -1 },
                 { "name": "USB Sarajevo Outpost", "x": -9376.050179, "y": 203.150816, "z": -46.281517, "cochranes": 1543.354085, "market": -1 },
                 { "name": "Epsilon 413", "x": -9264.444174, "y": 47.4, "z": 8.1, "cochranes": 1149.947568, "market": -1 },
-                { "name": "USB Kembri Outpost", "x": -9290.482477, "y": -129.996827, "z": -46.685761, "cochranes": 981.288568, "market": -1 },
+                { "name": "USB Kembri Outpost", "x": -9337.0000, "y": 207.0000, "z": -37.0000, "cochranes": 1188.408918, "market": -1 },
                 { "name": "Starbase 35 <Telstar>", "x": -9330.044174, "y": -101.1, "z": -56.7, "cochranes": 1107.657347, "market": -1 },
-                { "name": "USB Eisenhower Outpost", "x": -9401.147, "y": 18.932, "z": -107.859, "cochranes": 1615.687924, "market": -1 },
+                { "name": "USB Eisenhower Outpost", "x": -9325.0000, "y": -139.0000, "z": -20.0000, "cochranes": 1075.508253, "market": -1 },
                 { "name": "USB Invictus Station", "x": -9197.944174, "y": 0, "z": 0, "cochranes": 1615.23094, "market": -1 },
-                { "name": "Epsilon 308", "x": -9274.862114, "y": -145.9967, "z": -12.7717, "cochranes": 1057.057764, "market": -1 },
-                { "name": "Station 309 <Notus>", "x": -9325.499174, "y": -139.232, "z": -19.774, "cochranes": 1075.508253, "market": -1 },
+                { "name": "Epsilon 308", "x": -9274.862114, "y": -145.9967, "z": -12.7717, "cochranes": 1057.057764, "market": -1 },                
                 { "name": "USB Li Nalas Outpost", "x": -9325.944173, "y": 221.700021, "z": -45.1, "cochranes": 1091.283652, "market": -1 },
                 { "name": "Station 002 <Andromeda>", "x": -9247.944174, "y": 75, "z": 66, "cochranes": 1310.49998, "market": -1 },
                 { "name": "Epsilon 202", "x": -9179, "y": -20, "z": -6, "cochranes": 1548.222377, "market": -1 },
