@@ -15,7 +15,7 @@
    save_state="y"
    date_written="2015-01-04 09:00:05"
    requires="4.94"
-   version="0.93"
+   version="0.94"
    >
 
 </plugin>
@@ -81,7 +81,7 @@
  -- Do not redistribute my plugins without my authorization
  --]]
 
-VERSION_URL   = "http://zen.trekmush.org/ats/beta/versioninfo.lua"
+VERSION_URL   = "http://plugins.zens-world.org/versioninfo.lua"
 local theme = { bad = "red", normal = "wheat", hilight = "orange", good = "springgreen" }
 NavcompID = "8e3fd4f9c269365839520477"
 myID = GetPluginID()

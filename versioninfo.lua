@@ -26,7 +26,7 @@ version_info =
 	},
 	["1ec11b537d60054d832b896a"] = 
 	{
-		name = "QUpdater", version = 0.93, page = "http://plugins.zens-world.org/", 
+		name = "QUpdater", version = 0.94, page = "http://plugins.zens-world.org/", 
 		filename = "QUpdater.xml"
 	},
 	["57a49cca2ef1da0b52498a94"] =
