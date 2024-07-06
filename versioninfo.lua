@@ -4,30 +4,30 @@ version_info =
 	["de6b99ef3f79191fd27d59b0"] = 
 	{ 
 		name = "ChatGrabberMain", version = 2.29, page = "http://plugins.zens-world.org/",
-		filename = "ATS_Chatgrabber.xml", infopage = "http://zen.trekmush.org/chatgrabber/",
+		filename = "ATS_Chatgrabber.xml", 
         whatsnew = "(2.29) Move the line limit up to 5500. Remove the code that was causing the problem. I'm stupid. ",
 	}, 
 	["981f20859e43e90c624fa1ff"] = 
 	{
 		name = "ChatGrabberSlave1", version = 2.29, page = "http://plugins.zens-world.org/",
-		filename = "ATS_ChatgrabberSlave1.xml",  infopage = "http://zen.trekmush.org/chatgrabber/",
+		filename = "ATS_ChatgrabberSlave1.xml",
 	},
 	["d183a293b696885487d3ad83"] =
 	{
 		name = "ChatGrabberSlave2", version = 2.29, page = "http://plugins.zens-world.org/", 
-		filename = "ATS_ChatgrabberSlave2.xml", infopage = "http://zen.trekmush.org/chatgrabber/",
+		filename = "ATS_ChatgrabberSlave2.xml",
 		
 	},
 	["8e3fd4f9c269365839520477"] = 
 	{
 		name = "ATS_Navcomp", version = 1.63, page = "http://plugins.zens-world.org/",
-		filename = "ATS_Navcomp.xml",  infopage = "http://zen.trekmush.org/ats-navcomp/",
+		filename = "ATS_Navcomp.xml",
         whatsnew = "Add Thieurull to conduit list.",
 	},
 	["1ec11b537d60054d832b896a"] = 
 	{
 		name = "QUpdater", version = 0.93, page = "http://plugins.zens-world.org/", 
-		filename = "QUpdater.xml", infopage = "http://zen.trekmush.org/qupdater/",
+		filename = "QUpdater.xml"
 	},
 	["57a49cca2ef1da0b52498a94"] =
 	{
@@ -39,12 +39,12 @@ version_info =
 	["14f4885e803e076273a4767a"] = 
 	{
 		name = "Paste_As_MUSH", version = 1.22, page = "http://plugins.zens-world.org/",
-		filename = "Paste_As_MUSH.xml", infopage = nil,
+		filename = "Paste_As_MUSH.xml"
 	},
 	["NavcompData"] = 
 	{
 		name = "NavComp Database", version = 2.20, page = "http://plugins.zens-world.org/",
-		filename = "atsdata.json",  infopage = "http://zen.trekmush.org/ats-navcomp/",
+		filename = "atsdata.json",  
 	},
     ["f92c816b178f0707847fcd1d"] =
     {

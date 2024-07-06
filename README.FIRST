@@ -1,0 +1,16 @@
+I recommend you download and install the QUpdater plugin FIRST.
+
+Download it and place it in your MUSHClient\worlds\plugins directory.
+
+Open your global preferences (file->global preferences), click on Lua and remove the sandbox stuff in the dialog box. Make sure 'Allow DLLs to be loaded' is checked ON.
+
+Open the plugins menu (control-shift-p) and click Add. Find the Qupdater plugin and add it.
+
+
+Now you can 'qlist' to see a list of available plugins, and then 'qinstall <pluginname>'.
+
+E.g.
+
+'qinstall ats_navcomp'
+
+
