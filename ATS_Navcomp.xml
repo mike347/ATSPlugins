@@ -20,7 +20,7 @@
 
   date_modified="2018-02-27 09:02"
 
-  version="1.63">
+  version="1.64">
 
     <description trim="y">
 
@@ -3320,7 +3320,8 @@ function OnPluginInstall ()
   
   config_table.auto_check = tonumber(GetVariable("AUTOCHECK")) and true or true
   config_table.ansi_color = tonumber(GetVariable("ANSI")) and true or true
-  config_table.condense_combat =  tonumber(GetVariable("CONDENSE_COMBAT")) and true or false
+  --config_table.condense_combat =  tonumber(GetVariable("CONDENSE_COMBAT")) and true or false
+  config_table.condense_combat = false -- Removed because ATS does this on its own now.
   config_table.missionparser = tonumber(GetVariable("MISSION_PARSER")) and true or false
   config_table.debugmode = tonumber(GetVariable("DEBUGMODE")) and true or false
   config_table.condense_scan = tonumber(GetVariable("CONDENSE_SCAN")) and true or false
