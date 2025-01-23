@@ -20,9 +20,9 @@ version_info =
 	},
 	["8e3fd4f9c269365839520477"] = 
 	{
-		name = "ATS_Navcomp", version = 1.63, page = "http://plugins.zens-world.org/",
+		name = "ATS_Navcomp", version = 1.64, page = "http://plugins.zens-world.org/",
 		filename = "ATS_Navcomp.xml",
-        whatsnew = "Add Thieurull to conduit list.",
+        whatsnew = "Disable condense_combat, ATS now does it on its own.",
 	},
 	["1ec11b537d60054d832b896a"] = 
 	{
