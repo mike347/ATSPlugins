@@ -14,7 +14,7 @@
    purpose="To visually show shield status"
    date_written="2014-05-23 21:33:22"
    requires="4.84"
-   version="1.15"
+   version="1.16"
    save_state="y"
    >
 
@@ -727,36 +727,43 @@ function UpdateDisplay()
   end
   
   vertical = vertical + font_height + 3 -- pixel to start at
-  if (Specials.Hellbore > 0) then
+  if (Specials.Hellbore and Specials.Hellbore > 0) then
     offset_tmp = WindowText(win, font_id, "Hellbore:  ", offset, vertical, 0, 0, TEXT_ITEM_COLOR)
-    if (Specials.HellboreRecycle >=90) then
+    if (Specials.HellboreRecycle and Specials.HellboreRecycle >= 90) then
       WindowText(win, font_id, Specials.Hellbore .. "  (Ready)", offset + offset_tmp, vertical, 0, 0, TEXT_VALUE_COLOR)
     else
-      WindowText(win, font_id, Specials.Hellbore .. "  (" .. timestring(Specials.HellboreRecycle), offset + offset_tmp, vertical, 0, 0, TEXT_VALUE_COLOR)
+      WindowText(win, font_id, Specials.Hellbore .. "  (" .. timestring(Specials.HellboreRecycle or 0), offset + offset_tmp, vertical, 0, 0, TEXT_VALUE_COLOR)
     end
     vertical = vertical + font_height + 3
   end
-  if (Specials.PlasmaBomb > 0) then
-   offset_tmp = WindowText(win, font_id, "PlasmaBomb:  ", offset, vertical, 0, 0, TEXT_ITEM_COLOR)
-    if (Specials.PlasmaBombRecycle >=90) then
-   
+  if (Specials.PlasmaBomb and Specials.PlasmaBomb > 0) then
+    offset_tmp = WindowText(win, font_id, "PlasmaBomb:  ", offset, vertical, 0, 0, TEXT_ITEM_COLOR)
+    if (Specials.PlasmaBombRecycle and Specials.PlasmaBombRecycle >= 90) then
       WindowText(win, font_id, Specials.PlasmaBomb .. "  (Ready)", offset + offset_tmp, vertical, 0, 0, TEXT_VALUE_COLOR)
     else
-    
-      WindowText(win, font_id, Specials.PlasmaBomb .. "  (" .. timestring(Specials.PlasmaBombRecycle), offset + offset_tmp, vertical, 0, 0, TEXT_VALUE_COLOR)
+      WindowText(win, font_id, Specials.PlasmaBomb .. "  (" .. timestring(Specials.PlasmaBombRecycle or 0), offset + offset_tmp, vertical, 0, 0, TEXT_VALUE_COLOR)
     end
     vertical = vertical + font_height + 3
   end
-  if (Specials.HazardEmitter > 0) then
-   offset_tmp = WindowText(win, font_id, "HazardEmitter:  ", offset, vertical, 0, 0, TEXT_ITEM_COLOR)
-    if (Specials.HazardEmitterRecycle >= 90 ) then
-   
-      WindowText(win, font_id, "Ready", offset +   offset_tmp, vertical, 0, 0, TEXT_VALUE_COLOR)
+  if (Specials.SRD and Specials.SRD > 0) then
+    offset_tmp = WindowText(win, font_id, "SRD:  ", offset, vertical, 0, 0, TEXT_ITEM_COLOR)
+    if (Specials.SRDRecycle and Specials.SRDRecycle >= 90) then
+      WindowText(win, font_id, "Ready", offset + offset_tmp, vertical, 0, 0, TEXT_VALUE_COLOR)
     else
-      WindowText(win, font_id, timestring(Specials.HazardEmitterRecycle), offset + offset_tmp, vertical, 0, 0, TEXT_VALUE_COLOR)
+      WindowText(win, font_id, timestring(Specials.SRDRecycle or 0), offset + offset_tmp, vertical, 0, 0, TEXT_VALUE_COLOR)
     end
     vertical = vertical + font_height + 3
   end
+  if (Specials.HRD and Specials.HRD > 0) then
+    offset_tmp = WindowText(win, font_id, "HRD:  ", offset, vertical, 0, 0, TEXT_ITEM_COLOR)
+    if (Specials.HRDRecycle and Specials.HRDRecycle >= 90) then
+      WindowText(win, font_id, "Ready", offset + offset_tmp, vertical, 0, 0, TEXT_VALUE_COLOR)
+    else
+      WindowText(win, font_id, timestring(Specials.HRDRecycle or 0), offset + offset_tmp, vertical, 0, 0, TEXT_VALUE_COLOR)
+    end
+    vertical = vertical + font_height + 3
+  end
+	
   DoGauge ("(" .. ShieldPriority.Forward .. ") " .. "Fore: ", ShieldStatus.Forward)
   DoGauge ("(" .. ShieldPriority.Starboard .. ") " .. "Star: ", ShieldStatus.Starboard)
   DoGauge ("(" .. ShieldPriority.Aft .. ") " .. "Aft: ", ShieldStatus.Aft)
