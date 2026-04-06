@@ -17,7 +17,7 @@
     date_written="2010-04-04"
     date_modified="2015-01-02"
     requires="4.84"
-    version="2.29"
+    version="2.30"
     save_state="y"
     >
 
@@ -162,7 +162,6 @@ USAGE:
 
 <script>
 <![CDATA[
-
 require "movewindow"  -- load the movewindow.lua module
 require "copytable"
 require "pairsbykeys"
@@ -395,7 +394,9 @@ function init(firstTime)
         for _,styles in ipairs(rawlines) do 
             fillBuffer(styles)
         end  -- for each line
-
+		lineStart = math.max(1, #lines - WINDOW_LINES + 2)
+    	lineEnd = math.max(1, #lines)
+	
 		local endTime = GetInfo (232)
 		ColourNote("orange", "", string.format("%s v%s (%s) loaded. (%fs)",GetPluginInfo(GetPluginID(),1), GetPluginInfo(GetPluginID(),19), 
 				window_title, endTime - startTime))
@@ -547,7 +548,7 @@ end -- Display_Line
 function writeLines()
     for count = lineStart, lineEnd do
         if (lines[count] and lines[count][1] ) then
-		  Display_Line( count-lineStart, lines[count][1], false )
+		  Display_Line( count-lineStart, lines[count][1])
 		end
     end  -- for each line	
     Redraw()
@@ -761,9 +762,9 @@ function chats (name, styles)
     end -- if
     
     -- store the raw lines for use during resizing
---    if #rawlines >= MAX_LINES then
-  --      table.remove(rawlines, 1)
---    end
+    if #rawlines >= MAX_LINES then
+    	table.remove(rawlines, 1)
+    end
     rawlines[#rawlines+1] = styles
     
     fillBuffer(styles)
@@ -794,6 +795,8 @@ function add_line ( line, is_beginning_of_message, location )
     if #lines > 1 then
         lineEnd = lineEnd + 1
     end -- if
+	lineEnd = math.min(lineEnd, #lines)
+    lineStart = math.max(1, lineEnd - WINDOW_LINES + 2)
 end -- function add_line
 
 keepscrolling = false
@@ -963,7 +966,7 @@ end -- function chat_hide
 
 -- right click menu
 function right_click_menu ()
-    menustring = string.format("^ChatGrabberS1 v%s (%s)|-|", tostring(GetPluginInfo(GetPluginID(), 19)), tostring(#rawlines))
+	menustring = string.format("^ChatGrabberM v%s (%s)|-|", tostring(GetPluginInfo(GetPluginID(), 19)), tostring(#rawlines))
     menustring = menustring .. "Search|Copy All To Clipboard|Change Font|Rename Window"
     menustring = menustring .. string.format("|%sEcho", echo and "+" or "")
     menustring = menustring.. string.format("|>Timestamp|No Timestamps|30 Aug 13:29:49|30 Aug 01:20:12PM|13:29:08|1:22:06 PM|23:04|%sTooltip Timestamp",config_table.tooltip and "+" or "")
@@ -1452,12 +1455,13 @@ function search(term)
 	if (re == nil) then
 		return nil
 	end
-	re:gmatch(text,
+	  re:gmatch(text,
 		function (link, _)
 			start, position = string.find(text, link, position, true)
 			URLs = {start=start, stop=position, text=link}
 		end
-	)
+	  )
+
     if (URLs.text) then
         
       return URLs
@@ -1469,9 +1473,6 @@ end -- function findURL
 function clearbuffer()
     for k,_ in ipairs(rawlines) do 
         rawlines[k] = nil
-    end
-    for i = 1, #lines do
-        lines[1] = nil
     end
     lines = { }
     rawlines = { }
@@ -1519,7 +1520,6 @@ function OnPluginCommandEntered (sText)
         return sText
     end
  end
-
 ]]>
 </script>
 </muclient>
