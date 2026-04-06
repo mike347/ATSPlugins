@@ -3,18 +3,18 @@ version_info =
 { 
 	["de6b99ef3f79191fd27d59b0"] = 
 	{ 
-		name = "ChatGrabberMain", version = 2.29, page = "http://plugins.zens-world.org/",
+		name = "ChatGrabberMain", version = 2.30, page = "http://plugins.zens-world.org/",
 		filename = "ATS_Chatgrabber.xml", 
-        whatsnew = "(2.29) Move the line limit up to 5500. Remove the code that was causing the problem. I'm stupid. ",
+        whatsnew = "(2.30) Bugfixes.",
 	}, 
 	["981f20859e43e90c624fa1ff"] = 
 	{
-		name = "ChatGrabberSlave1", version = 2.29, page = "http://plugins.zens-world.org/",
+		name = "ChatGrabberSlave1", version = 2.30, page = "http://plugins.zens-world.org/",
 		filename = "ATS_ChatgrabberSlave1.xml",
 	},
 	["d183a293b696885487d3ad83"] =
 	{
-		name = "ChatGrabberSlave2", version = 2.29, page = "http://plugins.zens-world.org/", 
+		name = "ChatGrabberSlave2", version = 2.30, page = "http://plugins.zens-world.org/", 
 		filename = "ATS_ChatgrabberSlave2.xml",
 		
 	},
