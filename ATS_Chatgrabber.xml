@@ -16,7 +16,7 @@
     date_written="2010-04-04"
     date_modified="2015-01-04"
     requires="4.84"
-    version="2.29"
+    version="2.30"
     save_state="y"
     >
 
@@ -394,7 +394,9 @@ function init(firstTime)
         for _,styles in ipairs(rawlines) do 
             fillBuffer(styles)
         end  -- for each line
-
+		lineStart = math.max(1, #lines - WINDOW_LINES + 2)
+    	lineEnd = math.max(1, #lines)
+	
 		local endTime = GetInfo (232)
 		ColourNote("orange", "", string.format("%s v%s (%s) loaded. (%fs)",GetPluginInfo(GetPluginID(),1), GetPluginInfo(GetPluginID(),19), 
 				window_title, endTime - startTime))
@@ -546,7 +548,7 @@ end -- Display_Line
 function writeLines()
     for count = lineStart, lineEnd do
         if (lines[count] and lines[count][1] ) then
-		  Display_Line( count-lineStart, lines[count][1], false )
+		  Display_Line( count-lineStart, lines[count][1])
 		end
     end  -- for each line	
     Redraw()
@@ -760,9 +762,9 @@ function chats (name, styles)
     end -- if
     
     -- store the raw lines for use during resizing
-   -- if #rawlines >= MAX_LINES then
-     --   table.remove(rawlines, 1)
-    --end
+    if #rawlines >= MAX_LINES then
+    	table.remove(rawlines, 1)
+    end
     rawlines[#rawlines+1] = styles
     
     fillBuffer(styles)
@@ -793,6 +795,8 @@ function add_line ( line, is_beginning_of_message, location )
     if #lines > 1 then
         lineEnd = lineEnd + 1
     end -- if
+	lineEnd = math.min(lineEnd, #lines)
+    lineStart = math.max(1, lineEnd - WINDOW_LINES + 2)
 end -- function add_line
 
 keepscrolling = false
@@ -1469,9 +1473,6 @@ end -- function findURL
 function clearbuffer()
     for k,_ in ipairs(rawlines) do 
         rawlines[k] = nil
-    end
-    for i = 1, #lines do
-        lines[1] = nil
     end
     lines = { }
     rawlines = { }
