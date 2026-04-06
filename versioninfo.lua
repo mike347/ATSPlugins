@@ -34,7 +34,7 @@ version_info =
 		name = "ShieldStatus", version = 1.16, page = "http://plugins.zens-world.org/",
 		filename = "ATS_ShieldStatus.xml", 
 		requires = { "GMCP_handler.xml" },
-		whatsnew = "v1.15 - Remove HazardEmitters, added SRD and HRD specials. ",
+		whatsnew = "v1.15 - Remove HazardEmitters, added SRD and HRD specials. Add additional theme options. Adjust default theme.",
 	},
 	["14f4885e803e076273a4767a"] = 
 	{
